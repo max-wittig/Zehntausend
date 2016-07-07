@@ -34,6 +34,6 @@ public class Dice
 
     public void roll()
     {
-        diceNumber = random.nextInt(6);
+        diceNumber = random.nextInt(6)+1;
     }
 }
