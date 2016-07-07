@@ -85,19 +85,19 @@ class Game
                 }
                 else
                 {
-                    score += (key * 100) * (diceHashMap.get(key)-2);
+                    score += (key * 100) + score * 2;
                 }
             }
             else
             {
                 if(key == 5)
                 {
-                    score =+ 50;
+                    score += 50 * diceHashMap.get(key);
                 }
 
                 if(key == 1)
                 {
-                    score =+ 100;
+                    score += 100 * diceHashMap.get(key);
                 }
             }
         }

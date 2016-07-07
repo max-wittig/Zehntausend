@@ -3,6 +3,7 @@ package com.spaghettic0der;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -176,6 +177,7 @@ public class Main extends Application
         root.getChildren().add(drawnDiceHBox);
         root.getChildren().add(currentPlayerLabel);
         root.getChildren().add(scoreLabel);
+        root.setAlignment(Pos.CENTER);
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         primaryStage.setScene(scene);
         primaryStage.show();
