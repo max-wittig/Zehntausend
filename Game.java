@@ -55,7 +55,6 @@ class Game
                 {
                     return false;
                 }
-
             }
         }
 
@@ -83,7 +82,7 @@ class Game
                     dicesSinceLastRoll.add(currentDice);
                 }
             }
-            
+
             if(!containsDiceNumber(2, dicesSinceLastRoll) && !containsDiceNumber(3, dicesSinceLastRoll)
                     && !containsDiceNumber(4, dicesSinceLastRoll) && !containsDiceNumber(6, dicesSinceLastRoll))
             {
@@ -93,7 +92,6 @@ class Game
             else
             {
                 return containsMultiple(dicesSinceLastRoll);
-
             }
 
         }
@@ -101,7 +99,6 @@ class Game
         {
             return false;
         }
-
     }
 
     public void increaseNumberDrawnSinceLastRoll()
@@ -120,9 +117,11 @@ class Game
         initPlayers();
     }
 
+
     public void nextPlayer()
     {
-        if(currentPlayerNumber <= totalPlayers)
+        getCurrentPlayer().clearDices();
+        if(currentPlayerNumber < totalPlayers-1)
         {
             currentPlayerNumber++;
         }
