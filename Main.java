@@ -27,6 +27,7 @@ public class Main extends Application
     private HBox drawnDiceHBox;
     private Label currentPlayerLabel;
     private Label scoreLabel;
+    private boolean debug = true;
 
     private void updateUI()
     {

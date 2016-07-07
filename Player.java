@@ -8,7 +8,6 @@ public class Player
     private ArrayList<Dice> remainingDices;
     private ArrayList<Dice> drawnDices;
     private int playerNumber;
-    private final int TOTAL_DICE_NUMBER = 6;
     private int score = 0;
     private String playerName = null;
 
@@ -22,7 +21,7 @@ public class Player
 
     private void initDice()
     {
-        for(int i=0; i < TOTAL_DICE_NUMBER; i++)
+        for (int i = 0; i < Settings.TOTAL_DICE_NUMBER; i++)
         {
             Dice dice = new Dice(i);
             dice.roll();
@@ -39,14 +38,21 @@ public class Player
 
     public void rollDice()
     {
-        for(int i=0; i < remainingDices.size(); i++)
+        if (!remainingDices.isEmpty())
         {
-            remainingDices.get(i).roll();
-        }
+            for (int i = 0; i < remainingDices.size(); i++)
+            {
+                remainingDices.get(i).roll();
+            }
 
-        for(int i=0; i < drawnDices.size(); i++)
+            for (int i = 0; i < drawnDices.size(); i++)
+            {
+                drawnDices.get(i).setDiceDrawnThisRound(false);
+            }
+        }
+        else
         {
-            drawnDices.get(i).setDiceDrawnThisRound(false);
+            clearDices();
         }
     }
 
@@ -70,14 +76,14 @@ public class Player
         return score;
     }
 
-    public void addToScore(int number)
-    {
-        score += number;
-    }
-
     public void setScore(int score)
     {
         this.score = score;
+    }
+
+    public void addToScore(int number)
+    {
+        score += number;
     }
 
     public String getPlayerName()

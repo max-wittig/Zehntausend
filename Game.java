@@ -15,6 +15,12 @@ class Game
     private int roundNumber = 0;
     private int numberOfDicesDrawnSinceLastRoll = 0;
 
+    public Game()
+    {
+        players = new ArrayList<>();
+        initPlayers();
+    }
+
     private void initPlayers()
     {
         for(int i=0; i < totalPlayers; i++)
@@ -78,14 +84,29 @@ class Game
         {
             if(diceHashMap.get(key) > 2)
             {
-                //min 3 dices
-                if(diceHashMap.get(key) == 3)
+                if (key == 1)
                 {
-                    score += key * 100;
+                    if (diceHashMap.get(key) == 3)
+                    {
+                        score += key * 1000;
+                    }
+                    else
+                    {
+                        // FIXME: 07.07.16 
+                        score += diceHashMap.get(key) * key * 1000;
+                    }
                 }
                 else
                 {
-                    score += (key * 100) + score * 2;
+                    //min 3 dices
+                    if (diceHashMap.get(key) == 3)
+                    {
+                        score += key * 100;
+                    }
+                    else
+                    {
+                        score += diceHashMap.get(key) * key * 100;
+                    }
                 }
             }
             else
@@ -153,13 +174,6 @@ class Game
     {
         numberOfDicesDrawnSinceLastRoll--;
     }
-
-    public Game()
-    {
-        players = new ArrayList<>();
-        initPlayers();
-    }
-
 
     public void nextPlayer()
     {

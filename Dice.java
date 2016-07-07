@@ -18,7 +18,9 @@ public class Dice
 
     public int getDiceNumber()
     {
-        return diceNumber;
+        if (diceNumber > 3) return 1;
+        else return 5;
+        //return diceNumber;
     }
 
     public int getDiceID()
