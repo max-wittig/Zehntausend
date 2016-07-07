@@ -35,7 +35,6 @@ public class Main extends Application
     {
         for(int i=0; i < game.getCurrentPlayer().getDrawnDices().size(); i++)
         {
-
             Button dice = new Button("" +game.getCurrentPlayer().getDrawnDices().get(i).getDiceNumber());
             dice.setId(""+i);
             dice.setOnAction(new EventHandler<ActionEvent>()
@@ -72,6 +71,7 @@ public class Main extends Application
     {
         ArrayList<Dice> remainingDices = game.getCurrentPlayer().getRemainingDices();
         Dice dice = remainingDices.get(diceId);
+        game.increaseNumberDrawnSinceLastRoll();
         remainingDices.remove(diceId);
         game.getCurrentPlayer().getDrawnDices().add(dice);
         updateUI();
@@ -81,9 +81,13 @@ public class Main extends Application
     {
         ArrayList<Dice> drawnDices = game.getCurrentPlayer().getDrawnDices();
         Dice dice = drawnDices.get(diceId);
-        drawnDices.remove(diceId);
-        game.getCurrentPlayer().getRemainingDices().add(dice);
-        updateUI();
+        if(dice.canDiceBeDrawnThisRound())
+        {
+            game.decreaseNumberDrawnSinceLastRoll();
+            drawnDices.remove(diceId);
+            game.getCurrentPlayer().getRemainingDices().add(dice);
+            updateUI();
+        }
     }
 
     private void initUI(Stage primaryStage)
@@ -97,8 +101,12 @@ public class Main extends Application
             @Override
             public void handle(ActionEvent event)
             {
-                game.getCurrentPlayer().rollDice();
-                updateUI();
+                if(game.isValidState())
+                {
+                    game.resetNumberOfDicesDrawnSinceLastRoll();
+                    game.getCurrentPlayer().rollDice();
+                    updateUI();
+                }
             }
         });
         Button nextButton = new Button("NEXT");
@@ -112,6 +120,7 @@ public class Main extends Application
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         primaryStage.setScene(scene);
         primaryStage.show();
+
     }
 
     @Override
@@ -119,5 +128,7 @@ public class Main extends Application
     {
         game = new Game();
         initUI(primaryStage);
+        game.getCurrentPlayer().rollDice();
+        updateUI();
     }
 }

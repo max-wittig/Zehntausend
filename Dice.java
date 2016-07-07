@@ -7,7 +7,6 @@ public class Dice
 {
     private int diceNumber;
     private int diceID;
-    private boolean isDiceDrawn = false;
     private boolean canDiceBeDrawnThisRound = true;
     private Random random;
 
@@ -27,9 +26,14 @@ public class Dice
         return diceID;
     }
 
-    public boolean isCanDiceBeDrawnThisRound()
+    public boolean canDiceBeDrawnThisRound()
     {
         return canDiceBeDrawnThisRound;
+    }
+
+    public void setDiceDrawnThisRound(boolean canDiceBeDrawnThisRound)
+    {
+        this.canDiceBeDrawnThisRound = canDiceBeDrawnThisRound;
     }
 
     public void roll()

@@ -33,7 +33,11 @@ public class Player
         for(int i=0; i < remainingDices.size(); i++)
         {
             remainingDices.get(i).roll();
+        }
 
+        for(int i=0; i < drawnDices.size(); i++)
+        {
+            drawnDices.get(i).setDiceDrawnThisRound(false);
         }
     }
 
