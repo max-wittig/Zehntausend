@@ -70,6 +70,16 @@ public class Player
         return score;
     }
 
+    public void addToScore(int number)
+    {
+        score += number;
+    }
+
+    public void setScore(int score)
+    {
+        this.score = score;
+    }
+
     public String getPlayerName()
     {
         return playerName;

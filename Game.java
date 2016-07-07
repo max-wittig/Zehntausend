@@ -36,7 +36,7 @@ class Game
         return false;
     }
 
-    private boolean containsMultiple(ArrayList<Dice> dices)
+    private HashMap<Integer, Integer> getDiceHashMap(ArrayList<Dice> dices)
     {
         HashMap<Integer, Integer> diceHashMap = new HashMap<>();
         for(Dice currentDice : dices)
@@ -45,6 +45,12 @@ class Game
             diceHashMap.putIfAbsent(diceNumber, 0);
             diceHashMap.put(diceNumber, diceHashMap.get(diceNumber) + 1);
         }
+        return diceHashMap;
+    }
+
+    private boolean containsMultiple(ArrayList<Dice> dices)
+    {
+        HashMap<Integer, Integer> diceHashMap = getDiceHashMap(dices);
         System.out.println(diceHashMap.keySet());
         System.out.println(diceHashMap.values());
         for(Integer key : diceHashMap.keySet())
@@ -59,7 +65,43 @@ class Game
         }
 
         return true;
+    }
 
+    //dices are all thrown in one roll
+    public int getScoreFromDicesInRoll(ArrayList<Dice> dices)
+    {
+        HashMap<Integer, Integer> diceHashMap = getDiceHashMap(dices);
+        int score = 0;
+        System.out.println(diceHashMap.keySet());
+        System.out.println(diceHashMap.values());
+        for(Integer key : diceHashMap.keySet())
+        {
+            if(diceHashMap.get(key) > 2)
+            {
+                //min 3 dices
+                if(diceHashMap.get(key) == 3)
+                {
+                    score += key * 100;
+                }
+                else
+                {
+                    score += (key * 100) * (diceHashMap.get(key)-2);
+                }
+            }
+            else
+            {
+                if(key == 5)
+                {
+                    score =+ 50;
+                }
+
+                if(key == 1)
+                {
+                    score =+ 100;
+                }
+            }
+        }
+        return score;
     }
 
     public void resetNumberOfDicesDrawnSinceLastRoll()
@@ -82,6 +124,7 @@ class Game
                     dicesSinceLastRoll.add(currentDice);
                 }
             }
+            getCurrentPlayer().addToScore(getScoreFromDicesInRoll(dicesSinceLastRoll));
 
             if(!containsDiceNumber(2, dicesSinceLastRoll) && !containsDiceNumber(3, dicesSinceLastRoll)
                     && !containsDiceNumber(4, dicesSinceLastRoll) && !containsDiceNumber(6, dicesSinceLastRoll))
