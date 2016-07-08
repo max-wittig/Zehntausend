@@ -7,4 +7,5 @@ public class Settings
     public static int TOTAL_PLAYERS = 3;
     public static boolean STREET_ENABLED = true;
     public static int SCORE_STREET = 1500;
+    public static int MIN_SCORE_REQUIRED_TO_SAVE_IN_ROUND = 300;
 }

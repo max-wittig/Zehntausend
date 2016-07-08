@@ -11,6 +11,8 @@ class Game
     private int currentPlayerNumber = 0;
     private int roundNumber = 0;
     private int numberOfDicesDrawnSinceLastRoll = 0;
+    private int scoreInRoll = 0;
+    private int scoreInRound = 0;
 
     public Game()
     {
@@ -154,12 +156,27 @@ class Game
         numberOfDicesDrawnSinceLastRoll = 0;
     }
 
+    public boolean minScoreReached()
+    {
+        if (scoreInRound >= Settings.MIN_SCORE_REQUIRED_TO_SAVE_IN_ROUND)
+        {
+            System.out.println("Min Score reached!");
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     /* returns boolean, based on rules if game is valid
     * is called when roll is called
     * */
-    public boolean isValidState()
+    public boolean isValidState(State state)
     {
-        if(numberOfDicesDrawnSinceLastRoll > 0)
+        //in case scoreInRound < 300 -> State.Next is just not gonna save this round for the player. No additional points
+        //but we still need to check so we allow State.Next to go into the method
+        if (numberOfDicesDrawnSinceLastRoll > 0 || state == State.NEXT)
         {
             ArrayList<Dice> dicesSinceLastRoll = new ArrayList<>();
             for(Dice currentDice : getCurrentPlayer().getDrawnDices())
@@ -169,8 +186,38 @@ class Game
                     dicesSinceLastRoll.add(currentDice);
                 }
             }
-            //handles scoring
-            getCurrentPlayer().addToScore(getScoreFromDicesInRoll(dicesSinceLastRoll));
+
+            if (state != State.NEXT)
+            {
+                //handles scoring
+                scoreInRoll = getScoreFromDicesInRoll(dicesSinceLastRoll);
+                System.out.println("Score in Roll: " + scoreInRoll);
+                scoreInRound += scoreInRoll;
+                System.out.println("Score in Round: " + scoreInRound);
+            }
+
+            //checks if player, who pressed done is able to continue
+            if (state == State.DONE)
+            {
+                int toReduce = scoreInRoll;
+
+                if (!minScoreReached())
+                {
+                    scoreInRound -= toReduce;
+                    return false;
+                }
+
+            }
+
+            if (state != State.NEXT)
+            {
+                getCurrentPlayer().addToScore(scoreInRoll);
+            }
+            else
+            {
+                scoreInRound = 0;
+            }
+            scoreInRoll = 0;
 
             if(!containsDiceNumber(2, dicesSinceLastRoll) && !containsDiceNumber(3, dicesSinceLastRoll)
                     && !containsDiceNumber(4, dicesSinceLastRoll) && !containsDiceNumber(6, dicesSinceLastRoll))
@@ -184,7 +231,6 @@ class Game
                 //if so gameState is valid
                 return (containsMultiple(dicesSinceLastRoll) || isStreet(dicesSinceLastRoll));
             }
-
         }
         else
         {
@@ -220,6 +266,18 @@ class Game
     private void nextRound()
     {
         roundNumber++;
+        scoreInRoll = 0;
+        scoreInRound = 0;
+    }
+
+    public int getScoreInRoll()
+    {
+        return scoreInRoll;
+    }
+
+    public int getScoreInRound()
+    {
+        return scoreInRound;
     }
 
     public Player getCurrentPlayer()

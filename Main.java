@@ -27,7 +27,7 @@ public class Main extends Application
     private HBox drawnDiceHBox;
     private Label currentPlayerLabel;
     private Label scoreLabel;
-    private boolean debug = true;
+    private Label scoreInRoundLabel;
 
     private void updateUI()
     {
@@ -35,12 +35,9 @@ public class Main extends Application
         drawnDiceHBox.getChildren().clear();
         createRemainingDiceButtons();
         createDrawnDiceButtons();
+        currentPlayerLabel.setText("Current Player: " + game.getCurrentPlayer().getPlayerNumber());
         scoreLabel.setText("Score: " + game.getCurrentPlayer().getScore());
-    }
-
-    private void updateCurrentPlayerLabel()
-    {
-        currentPlayerLabel.setText("Current Player: "+game.getCurrentPlayer().getPlayerNumber());
+        scoreInRoundLabel.setText("Score in Round: " + game.getScoreInRound());
     }
 
     private void createDrawnDiceButtons()
@@ -114,14 +111,16 @@ public class Main extends Application
     {
         root = new VBox();
         remainingDiceHBox = new HBox();
+        remainingDiceHBox.setAlignment(Pos.CENTER);
         drawnDiceHBox = new HBox();
+        drawnDiceHBox.setAlignment(Pos.CENTER);
         Button rollButton = new Button("ROLL");
         rollButton.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
             public void handle(ActionEvent event)
             {
-                if(game.isValidState())
+                if (game.isValidState(State.ROLL))
                 {
                     game.resetNumberOfDicesDrawnSinceLastRoll();
                     game.getCurrentPlayer().rollDice();
@@ -139,10 +138,9 @@ public class Main extends Application
             @Override
             public void handle(ActionEvent event)
             {
-                if(game.isValidState())
+                if (game.isValidState(State.NEXT))
                 {
                     game.nextPlayer();
-                    updateCurrentPlayerLabel();
                     updateUI();
                 }
                 else
@@ -158,7 +156,7 @@ public class Main extends Application
             @Override
             public void handle(ActionEvent event)
             {
-                if(game.isValidState())
+                if (game.isValidState(State.DONE))
                 {
                     updateUI();
                 }
@@ -170,6 +168,7 @@ public class Main extends Application
         });
         currentPlayerLabel = new Label("Current Player: 0");
         scoreLabel = new Label("Score: 0");
+        scoreInRoundLabel = new Label("Score in Round: 0");
         root.getChildren().add(rollButton);
         root.getChildren().add(nextButton);
         root.getChildren().add(doneButton);
@@ -178,6 +177,7 @@ public class Main extends Application
         root.getChildren().add(drawnDiceHBox);
         root.getChildren().add(currentPlayerLabel);
         root.getChildren().add(scoreLabel);
+        root.getChildren().add(scoreInRoundLabel);
         root.setAlignment(Pos.CENTER);
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         primaryStage.setScene(scene);
