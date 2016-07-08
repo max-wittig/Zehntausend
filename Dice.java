@@ -18,9 +18,9 @@ public class Dice
 
     public int getDiceNumber()
     {
-        return 1;
+        //return 1;
 
-        //return diceNumber;
+        return diceNumber;
     }
 
     public int getDiceID()
@@ -42,4 +42,5 @@ public class Dice
     {
         diceNumber = random.nextInt(6)+1;
     }
+
 }

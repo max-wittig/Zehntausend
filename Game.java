@@ -1,8 +1,7 @@
 package com.spaghettic0der;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 class Game
 {
@@ -71,49 +70,78 @@ class Game
         return true;
     }
 
+    public boolean isStreet(ArrayList<Dice> dices)
+    {
+        if (Settings.STREET_ENABLED)
+        {
+            //TODO find better way to do this
+            ArrayList<Integer> diceValueArrayList = new ArrayList<>();
+            for (Dice currentDice : dices)
+            {
+                diceValueArrayList.add(currentDice.getDiceNumber());
+            }
+            Collections.sort(diceValueArrayList);
+
+            System.out.println(diceValueArrayList);
+            return false; // FIXME: 08.07.16
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
     //dices are all thrown in one roll
     public int getScoreFromDicesInRoll(ArrayList<Dice> dices)
     {
         HashMap<Integer, Integer> diceHashMap = getDiceHashMap(dices);
         int score = 0;
-        System.out.println(diceHashMap.keySet());
-        System.out.println(diceHashMap.values());
-        for(Integer key : diceHashMap.keySet())
+
+        if (isStreet(dices))
         {
-            if(diceHashMap.get(key) > 2)
+            score += Settings.SCORE_STREET;
+        }
+        else
+        {
+            //key is number [1,2,3,4,5,6]
+            //diceHashMap.get(key) is occurrence of number
+            // TODO: 08.07.16 add variables to make this clearer
+            for (Integer key : diceHashMap.keySet())
             {
-                if (key == 1)
+                if (diceHashMap.get(key) > 2)
                 {
-                    int sum = key * 1000;
-                    for (int i = 1; i < diceHashMap.get(key) - 2; i++)
+                    if (key == 1)
                     {
-                        sum *= 2;
-                    }
-                    score += sum;
-                }
-                else
-                {
-                    //min 3 dices
-                    if (diceHashMap.get(key) == 3)
-                    {
-                        score += key * 100;
+                        //TODO find better math solution for this
+                        int sum = key * 1000;
+                        for (int i = 1; i < diceHashMap.get(key) - 2; i++)
+                        {
+                            sum *= 2;
+                        }
+                        score += sum;
                     }
                     else
                     {
-                        score += diceHashMap.get(key) * key * 100;
+                        int sum = key * 100;
+                        for (int i = 1; i < diceHashMap.get(key) - 2; i++)
+                        {
+                            sum *= 2;
+                        }
+                        score += sum;
                     }
                 }
-            }
-            else
-            {
-                if(key == 5)
+                else
                 {
-                    score += 50 * diceHashMap.get(key);
-                }
+                    if (key == 5)
+                    {
+                        score += 50 * diceHashMap.get(key);
+                    }
 
-                if(key == 1)
-                {
-                    score += 100 * diceHashMap.get(key);
+                    if (key == 1)
+                    {
+                        score += 100 * diceHashMap.get(key);
+                    }
                 }
             }
         }

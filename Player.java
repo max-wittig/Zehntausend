@@ -52,6 +52,8 @@ public class Player
         }
         else
         {
+            //clears dices on board and re_init them again
+            //incase you finish the roll
             clearDices();
         }
     }
