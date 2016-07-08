@@ -187,14 +187,12 @@ class Game
                 }
             }
 
-            if (state != State.NEXT)
-            {
-                //handles scoring
-                scoreInRoll = getScoreFromDicesInRoll(dicesSinceLastRoll);
-                System.out.println("Score in Roll: " + scoreInRoll);
-                scoreInRound += scoreInRoll;
-                System.out.println("Score in Round: " + scoreInRound);
-            }
+            //handles scoring
+            scoreInRoll = getScoreFromDicesInRoll(dicesSinceLastRoll);
+            System.out.println("Score in Roll: " + scoreInRoll);
+            scoreInRound += scoreInRoll;
+            System.out.println("Score in Round: " + scoreInRound);
+            
 
             //checks if player, who pressed done is able to continue
             if (state == State.DONE || state == State.NEXT)
