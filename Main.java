@@ -36,7 +36,7 @@ public class Main extends Application
         createRemainingDiceButtons();
         createDrawnDiceButtons();
         currentPlayerLabel.setText("Current Player: " + game.getCurrentPlayer().getPlayerNumber());
-        scoreLabel.setText("Score: " + game.getCurrentPlayer().getScore());
+        scoreLabel.setText("Score: " + (game.getCurrentPlayer().getScore() + game.getScoreInRound()));
         scoreInRoundLabel.setText("Score in Round: " + game.getScoreInRound());
     }
 

@@ -209,12 +209,9 @@ class Game
 
             }
 
-            if (state != State.NEXT)
+            if (state == State.NEXT)
             {
-                getCurrentPlayer().addToScore(scoreInRoll);
-            }
-            else
-            {
+                getCurrentPlayer().addToScore(scoreInRound);
                 scoreInRound = 0;
             }
             scoreInRoll = 0;
