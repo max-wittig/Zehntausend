@@ -18,8 +18,8 @@ public class Dice
 
     public int getDiceNumber()
     {
-        if (diceNumber > 3) return 1;
-        else return 5;
+        return 1;
+
         //return diceNumber;
     }
 

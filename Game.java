@@ -6,8 +6,6 @@ import java.util.HashMap;
 
 class Game
 {
-    //totalPlayer count that players this game
-    private int totalPlayers = 3;   //TODO remove Hardcode
     //contains all player objects
     private ArrayList<Player> players;
     //shows which players turn it is currently
@@ -23,7 +21,7 @@ class Game
 
     private void initPlayers()
     {
-        for(int i=0; i < totalPlayers; i++)
+        for (int i = 0; i < Settings.TOTAL_PLAYERS; i++)
         {
             Player player = new Player(i);
             players.add(player);
@@ -86,15 +84,12 @@ class Game
             {
                 if (key == 1)
                 {
-                    if (diceHashMap.get(key) == 3)
+                    int sum = key * 1000;
+                    for (int i = 1; i < diceHashMap.get(key) - 2; i++)
                     {
-                        score += key * 1000;
+                        sum *= 2;
                     }
-                    else
-                    {
-                        // FIXME: 07.07.16 
-                        score += diceHashMap.get(key) * key * 1000;
-                    }
+                    score += sum;
                 }
                 else
                 {
@@ -178,7 +173,7 @@ class Game
     public void nextPlayer()
     {
         getCurrentPlayer().clearDices();
-        if(currentPlayerNumber < totalPlayers-1)
+        if (currentPlayerNumber < Settings.TOTAL_PLAYERS - 1)
         {
             currentPlayerNumber++;
         }
