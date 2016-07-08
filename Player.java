@@ -2,6 +2,7 @@ package com.spaghettic0der;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Player
 {
@@ -56,6 +57,19 @@ public class Player
             //incase you finish the roll
             clearDices();
         }
+
+        // FIXME: 08.07.16 Debug
+        remainingDices.clear();
+        ArrayList<Dice> debugStreetArrayList = new ArrayList<>();
+        for (int i = 1; i <= 6; i++)
+        {
+            Dice dice = new Dice(i);
+            dice.setDiceNumber(i);
+            debugStreetArrayList.add(dice);
+
+        }
+
+        remainingDices = debugStreetArrayList;
     }
 
     public ArrayList<Dice> getRemainingDices()

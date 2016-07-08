@@ -19,8 +19,12 @@ public class Dice
     public int getDiceNumber()
     {
         //return 1;
-
         return diceNumber;
+    }
+
+    public void setDiceNumber(int diceNumber)
+    {
+        this.diceNumber = diceNumber;
     }
 
     public int getDiceID()

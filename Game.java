@@ -74,22 +74,19 @@ class Game
     {
         if (Settings.STREET_ENABLED)
         {
-            //TODO find better way to do this
-            ArrayList<Integer> diceValueArrayList = new ArrayList<>();
-            for (Dice currentDice : dices)
+            if (containsDiceNumber(1, dices) && containsDiceNumber(2, dices) &&
+                    containsDiceNumber(3, dices) && containsDiceNumber(4, dices) &&
+                    containsDiceNumber(5, dices) && containsDiceNumber(6, dices))
             {
-                diceValueArrayList.add(currentDice.getDiceNumber());
+                return true;
             }
-            Collections.sort(diceValueArrayList);
 
-            System.out.println(diceValueArrayList);
-            return false; // FIXME: 08.07.16
         }
         else
         {
             return false;
         }
-
+        return false;
     }
 
     //dices are all thrown in one roll
@@ -111,6 +108,7 @@ class Game
             {
                 if (diceHashMap.get(key) > 2)
                 {
+                    //3 times 1 == 1000, 4 times 1 == 2000 etc...
                     if (key == 1)
                     {
                         //TODO find better math solution for this
@@ -133,6 +131,7 @@ class Game
                 }
                 else
                 {
+                    //no more occurrences then 2 --> normal system
                     if (key == 5)
                     {
                         score += 50 * diceHashMap.get(key);
@@ -148,6 +147,8 @@ class Game
         return score;
     }
 
+    //resets dices currently in roll to zero, so that the player cannot continue
+    //if he doesn't draw any dices
     public void resetNumberOfDicesDrawnSinceLastRoll()
     {
         numberOfDicesDrawnSinceLastRoll = 0;
@@ -168,6 +169,7 @@ class Game
                     dicesSinceLastRoll.add(currentDice);
                 }
             }
+            //handles scoring
             getCurrentPlayer().addToScore(getScoreFromDicesInRoll(dicesSinceLastRoll));
 
             if(!containsDiceNumber(2, dicesSinceLastRoll) && !containsDiceNumber(3, dicesSinceLastRoll)
@@ -178,7 +180,9 @@ class Game
             }
             else
             {
-                return containsMultiple(dicesSinceLastRoll);
+                //checks if there are any multiplications of dice (3 times 2 == 200, 3 times 3 == 300 etc...)
+                //if so gameState is valid
+                return (containsMultiple(dicesSinceLastRoll) || isStreet(dicesSinceLastRoll));
             }
 
         }
@@ -198,6 +202,7 @@ class Game
         numberOfDicesDrawnSinceLastRoll--;
     }
 
+    //cycles through players
     public void nextPlayer()
     {
         getCurrentPlayer().clearDices();
