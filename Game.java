@@ -197,17 +197,23 @@ class Game
             }
 
             //checks if player, who pressed done is able to continue
-            if (state == State.DONE)
+            if (state == State.DONE || state == State.NEXT)
             {
-                int toReduce = scoreInRoll;
-
                 if (!minScoreReached())
                 {
-                    scoreInRound -= toReduce;
-                    return false;
+                    scoreInRound -= scoreInRoll;
+                    if (state == State.DONE)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        //score gets reset. You get nothing this round
+                        scoreInRound = 0;
+                    }
                 }
-
             }
+
 
             if (state == State.NEXT)
             {
