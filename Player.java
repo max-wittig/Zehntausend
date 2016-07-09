@@ -3,6 +3,7 @@ package com.spaghettic0der;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class Player
 {
@@ -62,6 +63,8 @@ public class Player
         {
             //clears dices on board and re_init them again
             //incase you finish the roll
+            addToScore(Scoring.getScoreFromAllDicesInRound(rollArrayList));
+            rollArrayList.clear();
             clearDices();
         }
     }

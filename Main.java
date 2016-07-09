@@ -40,8 +40,8 @@ public class Main extends Application
         createRemainingDiceButtons();
         createDrawnDiceButtons();
         currentPlayerLabel.setText("Current Player: " + (game.getCurrentPlayer().getPlayerNumber() + 1));
-        scoreLabel.setText("Score: " + (game.getCurrentPlayer().getScore() + game.getScoreFromAllDicesInRound()));
-        scoreInRoundLabel.setText("Score in Round: " + game.getScoreFromAllDicesInRound());
+        scoreLabel.setText("Score: " + (game.getCurrentPlayer().getScore() + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getRollArrayList())));
+        scoreInRoundLabel.setText("Score in Round: " + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getRollArrayList()));
     }
 
     private void createDrawnDiceButtons()
