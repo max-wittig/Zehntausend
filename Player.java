@@ -7,15 +7,15 @@ import java.util.Arrays;
 public class Player
 {
     private ArrayList<Dice> remainingDices;
-    private ArrayList<Dice> drawnDices;
+    private ArrayList<Roll> rollArrayList;
     private int playerNumber;
     private int score = 0;
     private String playerName = null;
 
     public Player(int playerNumber)
     {
+        rollArrayList = new ArrayList<>();
         remainingDices = new ArrayList<>();
-        drawnDices = new ArrayList<>();
         initDice();
         this.playerNumber = playerNumber;
     }
@@ -32,23 +32,30 @@ public class Player
 
     public void clearDices()
     {
-        drawnDices.clear();
+        Roll roll = new Roll();
+        rollArrayList.add(roll);
         remainingDices.clear();
         initDice();
     }
 
+    public void setLastDrawnDicesToCantBeDrawn()
+    {
+        for (Dice currentDice : getLastDrawnDices())
+        {
+            currentDice.setDiceDrawnThisRound(false);
+        }
+    }
+
     public void rollDice()
     {
+        setLastDrawnDicesToCantBeDrawn();
+        Roll roll = new Roll();
+        rollArrayList.add(roll);
         if (!remainingDices.isEmpty())
         {
             for (int i = 0; i < remainingDices.size(); i++)
             {
                 remainingDices.get(i).roll();
-            }
-
-            for (int i = 0; i < drawnDices.size(); i++)
-            {
-                drawnDices.get(i).setDiceDrawnThisRound(false);
             }
         }
         else
@@ -64,9 +71,50 @@ public class Player
         return remainingDices;
     }
 
-    public ArrayList<Dice> getDrawnDices()
+    public ArrayList<Dice> getAllDrawnDices()
     {
-        return drawnDices;
+        ArrayList<Dice> dices = new ArrayList<>();
+        for (Roll currentRoll : rollArrayList)
+        {
+            for (Dice currentDice : currentRoll.getDrawnDices())
+            {
+                dices.add(currentDice);
+            }
+        }
+        return dices;
+    }
+
+    public void clearRollArrayList()
+    {
+        rollArrayList.clear();
+    }
+
+    public void removeLastDrawnDiceWithNumber(int number)
+    {
+        Roll roll = rollArrayList.get(rollArrayList.size() - 1);
+        for (Dice toRemove : roll.getDrawnDices())
+        {
+            if (toRemove.getDiceNumber() == number)
+            {
+                rollArrayList.get(rollArrayList.size() - 1).getDrawnDices().remove(toRemove);
+                break;
+            }
+        }
+    }
+
+    public ArrayList<Dice> getLastDrawnDices()
+    {
+        Roll roll;
+        if (rollArrayList.size() > 0)
+        {
+            roll = rollArrayList.get(rollArrayList.size() - 1);
+        }
+        else
+        {
+            roll = new Roll();
+            rollArrayList.add(roll);
+        }
+        return roll.getDrawnDices();
     }
 
     public int getPlayerNumber()
@@ -86,11 +134,17 @@ public class Player
 
     public void addToScore(int number)
     {
-        score += number;
+        if (number >= Settings.MIN_SCORE_REQUIRED_TO_SAVE_IN_ROUND)
+            score += number;
     }
 
     public String getPlayerName()
     {
         return playerName;
+    }
+
+    public ArrayList<Roll> getRollArrayList()
+    {
+        return rollArrayList;
     }
 }

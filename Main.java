@@ -20,7 +20,6 @@ public class Main extends Application
 {
     private final int WIDTH = 640;
     private final int HEIGHT = 480;
-    private final int NUMBER_OF_DICE = 6;
     private Game game;
     private VBox root;
     private HBox remainingDiceHBox;
@@ -29,22 +28,27 @@ public class Main extends Application
     private Label scoreLabel;
     private Label scoreInRoundLabel;
 
+    public static void main(String[] args)
+    {
+        Application.launch(args);
+    }
+
     private void updateUI()
     {
         remainingDiceHBox.getChildren().clear();
         drawnDiceHBox.getChildren().clear();
         createRemainingDiceButtons();
         createDrawnDiceButtons();
-        currentPlayerLabel.setText("Current Player: " + game.getCurrentPlayer().getPlayerNumber());
-        scoreLabel.setText("Score: " + (game.getCurrentPlayer().getScore() + game.getScoreInRound()));
-        scoreInRoundLabel.setText("Score in Round: " + game.getScoreInRound());
+        currentPlayerLabel.setText("Current Player: " + (game.getCurrentPlayer().getPlayerNumber() + 1));
+        scoreLabel.setText("Score: " + (game.getCurrentPlayer().getScore() + game.getScoreFromAllDicesInRound()));
+        scoreInRoundLabel.setText("Score in Round: " + game.getScoreFromAllDicesInRound());
     }
 
     private void createDrawnDiceButtons()
     {
-        for(int i=0; i < game.getCurrentPlayer().getDrawnDices().size(); i++)
+        for (int i = 0; i < game.getCurrentPlayer().getAllDrawnDices().size(); i++)
         {
-            Button dice = new Button("" +game.getCurrentPlayer().getDrawnDices().get(i).getDiceNumber());
+            Button dice = new Button("" + game.getCurrentPlayer().getAllDrawnDices().get(i).getDiceNumber());
             dice.setId(""+i);
             dice.setOnAction(new EventHandler<ActionEvent>()
             {
@@ -82,18 +86,18 @@ public class Main extends Application
         Dice dice = remainingDices.get(diceId);
         game.increaseNumberDrawnSinceLastRoll();
         remainingDices.remove(diceId);
-        game.getCurrentPlayer().getDrawnDices().add(dice);
+        game.getCurrentPlayer().getLastDrawnDices().add(dice);
         updateUI();
     }
 
     private void moveToRemainingDices(int diceId)
     {
-        ArrayList<Dice> drawnDices = game.getCurrentPlayer().getDrawnDices();
+        ArrayList<Dice> drawnDices = game.getCurrentPlayer().getAllDrawnDices();
         Dice dice = drawnDices.get(diceId);
         if(dice.canDiceBeDrawnThisRound())
         {
             game.decreaseNumberDrawnSinceLastRoll();
-            drawnDices.remove(diceId);
+            game.getCurrentPlayer().removeLastDrawnDiceWithNumber(dice.getDiceNumber());
             game.getCurrentPlayer().getRemainingDices().add(dice);
             updateUI();
         }
@@ -150,28 +154,11 @@ public class Main extends Application
             }
         });
 
-        Button doneButton = new Button("DONE");
-        doneButton.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
-            {
-                if (game.isValidState(State.DONE))
-                {
-                    updateUI();
-                }
-                else
-                {
-                    showInvalidMoveAlert();
-                }
-            }
-        });
         currentPlayerLabel = new Label("Current Player: 0");
         scoreLabel = new Label("Score: 0");
         scoreInRoundLabel = new Label("Score in Round: 0");
         root.getChildren().add(rollButton);
         root.getChildren().add(nextButton);
-        root.getChildren().add(doneButton);
         createRemainingDiceButtons();
         root.getChildren().add(remainingDiceHBox);
         root.getChildren().add(drawnDiceHBox);

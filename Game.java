@@ -11,8 +11,6 @@ class Game
     private int currentPlayerNumber = 0;
     private int roundNumber = 0;
     private int numberOfDicesDrawnSinceLastRoll = 0;
-    private int scoreInRoll = 0;
-    private int scoreInRound = 0;
 
     public Game()
     {
@@ -91,8 +89,18 @@ class Game
         return false;
     }
 
+    public int getScoreFromAllDicesInRound()
+    {
+        int sum = 0;
+        for (Roll currentRoll : getCurrentPlayer().getRollArrayList())
+        {
+            sum += getScoreFromDicesInRoll(currentRoll.getDrawnDices());
+        }
+        return sum;
+    }
+
     //dices are all thrown in one roll
-    public int getScoreFromDicesInRoll(ArrayList<Dice> dices)
+    private int getScoreFromDicesInRoll(ArrayList<Dice> dices)
     {
         HashMap<Integer, Integer> diceHashMap = getDiceHashMap(dices);
         int score = 0;
@@ -158,7 +166,7 @@ class Game
 
     public boolean minScoreReached()
     {
-        if (scoreInRound >= Settings.MIN_SCORE_REQUIRED_TO_SAVE_IN_ROUND)
+        if (getScoreFromAllDicesInRound() >= Settings.MIN_SCORE_REQUIRED_TO_SAVE_IN_ROUND)
         {
             System.out.println("Min Score reached!");
             return true;
@@ -179,46 +187,13 @@ class Game
         if (numberOfDicesDrawnSinceLastRoll > 0 || state == State.NEXT)
         {
             ArrayList<Dice> dicesSinceLastRoll = new ArrayList<>();
-            for(Dice currentDice : getCurrentPlayer().getDrawnDices())
+            for (Dice currentDice : getCurrentPlayer().getLastDrawnDices())
             {
                 if(currentDice.canDiceBeDrawnThisRound())
                 {
                     dicesSinceLastRoll.add(currentDice);
                 }
             }
-
-            //handles scoring
-            scoreInRoll = getScoreFromDicesInRoll(dicesSinceLastRoll);
-            System.out.println("Score in Roll: " + scoreInRoll);
-            scoreInRound += scoreInRoll;
-            System.out.println("Score in Round: " + scoreInRound);
-            
-
-            //checks if player, who pressed done is able to continue
-            if (state == State.DONE || state == State.NEXT)
-            {
-                if (!minScoreReached())
-                {
-                    scoreInRound -= scoreInRoll;
-                    if (state == State.DONE)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        //score gets reset. You get nothing this round
-                        scoreInRound = 0;
-                    }
-                }
-            }
-
-
-            if (state == State.NEXT)
-            {
-                getCurrentPlayer().addToScore(scoreInRound);
-                scoreInRound = 0;
-            }
-            scoreInRoll = 0;
 
             if(!containsDiceNumber(2, dicesSinceLastRoll) && !containsDiceNumber(3, dicesSinceLastRoll)
                     && !containsDiceNumber(4, dicesSinceLastRoll) && !containsDiceNumber(6, dicesSinceLastRoll))
@@ -230,7 +205,8 @@ class Game
             {
                 //checks if there are any multiplications of dice (3 times 2 == 200, 3 times 3 == 300 etc...)
                 //if so gameState is valid
-                return (containsMultiple(dicesSinceLastRoll) || isStreet(dicesSinceLastRoll));
+                boolean valid = (containsMultiple(dicesSinceLastRoll) || isStreet(dicesSinceLastRoll));
+                return valid;
             }
         }
         else
@@ -252,6 +228,8 @@ class Game
     //cycles through players
     public void nextPlayer()
     {
+        getCurrentPlayer().addToScore(getScoreFromAllDicesInRound());
+        getCurrentPlayer().clearRollArrayList();
         getCurrentPlayer().clearDices();
         if (currentPlayerNumber < Settings.TOTAL_PLAYERS - 1)
         {
@@ -267,22 +245,11 @@ class Game
     private void nextRound()
     {
         roundNumber++;
-        scoreInRoll = 0;
-        scoreInRound = 0;
-    }
-
-    public int getScoreInRoll()
-    {
-        return scoreInRoll;
-    }
-
-    public int getScoreInRound()
-    {
-        return scoreInRound;
     }
 
     public Player getCurrentPlayer()
     {
         return players.get(currentPlayerNumber);
     }
+
 }
