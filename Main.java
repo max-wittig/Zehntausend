@@ -5,13 +5,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.StrokeLineCap;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -21,7 +16,7 @@ public class Main extends Application
     private final int WIDTH = 640;
     private final int HEIGHT = 480;
     private Game game;
-    private VBox root;
+    private BorderPane root;
     private HBox remainingDiceHBox;
     private HBox drawnDiceHBox;
     private Label currentPlayerLabel;
@@ -111,9 +106,53 @@ public class Main extends Application
         alert.show();
     }
 
+    private void initMenu(Stage primaryStage)
+    {
+        MenuBar menuBar = new MenuBar();
+        menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
+
+        Menu gameMenu = new Menu("Game");
+
+        MenuItem newGameItem = new MenuItem("New");
+        newGameItem.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                game = new Game();
+                updateUI();
+            }
+        });
+        MenuItem settingsItem = new MenuItem("Settings");
+        MenuItem loadItem = new MenuItem("Load");
+        MenuItem saveItem = new MenuItem("Save");
+        gameMenu.getItems().addAll(newGameItem, settingsItem, loadItem, saveItem);
+
+        Menu aboutMenu = new Menu("About");
+        MenuItem infoItem = new MenuItem("Zehntausend");
+        infoItem.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("About");
+                alert.setContentText("Made by spaghettic0der in 2016\nMade possible with the help of Deadlocker");
+                alert.show();
+            }
+        });
+        aboutMenu.getItems().add(infoItem);
+
+        menuBar.getMenus().addAll(gameMenu, aboutMenu);
+        root.setTop(menuBar);
+    }
+
     private void initUI(Stage primaryStage)
     {
-        root = new VBox();
+        root = new BorderPane();
+        VBox vBox = new VBox();
+        root.setCenter(vBox);
+        initMenu(primaryStage);
         remainingDiceHBox = new HBox();
         remainingDiceHBox.setAlignment(Pos.CENTER);
         drawnDiceHBox = new HBox();
@@ -157,15 +196,15 @@ public class Main extends Application
         currentPlayerLabel = new Label("Current Player: 0");
         scoreLabel = new Label("Score: 0");
         scoreInRoundLabel = new Label("Score in Round: 0");
-        root.getChildren().add(rollButton);
-        root.getChildren().add(nextButton);
+        vBox.getChildren().add(rollButton);
+        vBox.getChildren().add(nextButton);
         createRemainingDiceButtons();
-        root.getChildren().add(remainingDiceHBox);
-        root.getChildren().add(drawnDiceHBox);
-        root.getChildren().add(currentPlayerLabel);
-        root.getChildren().add(scoreLabel);
-        root.getChildren().add(scoreInRoundLabel);
-        root.setAlignment(Pos.CENTER);
+        vBox.getChildren().add(remainingDiceHBox);
+        vBox.getChildren().add(drawnDiceHBox);
+        vBox.getChildren().add(currentPlayerLabel);
+        vBox.getChildren().add(scoreLabel);
+        vBox.getChildren().add(scoreInRoundLabel);
+        vBox.setAlignment(Pos.CENTER);
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         primaryStage.setScene(scene);
         primaryStage.show();
