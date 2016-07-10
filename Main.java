@@ -35,15 +35,15 @@ public class Main extends Application
         createRemainingDiceButtons();
         createDrawnDiceButtons();
         currentPlayerLabel.setText("Current Player: " + (game.getCurrentPlayer().getPlayerNumber() + 1));
-        scoreLabel.setText("Score: " + (game.getCurrentPlayer().getScore() + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getRoundArrayList())));
-        scoreInRoundLabel.setText("Score in Round: " + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getRoundArrayList()));
+        scoreLabel.setText("Score: " + (game.getCurrentPlayer().getScore() + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getLastTurn().getRoundArrayList())));
+        scoreInRoundLabel.setText("Score in Round: " + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getLastTurn().getRoundArrayList()));
     }
 
     private void createDrawnDiceButtons()
     {
-        for (int i = 0; i < game.getCurrentPlayer().getDrawnDicesFromLastRound().size(); i++)
+        for (int i = 0; i < game.getCurrentPlayer().getLastTurn().getDrawnDicesFromLastRound().size(); i++)
         {
-            Button dice = new Button("" + game.getCurrentPlayer().getDrawnDicesFromLastRound().get(i).getDiceNumber());
+            Button dice = new Button("" + game.getCurrentPlayer().getLastTurn().getDrawnDicesFromLastRound().get(i).getDiceNumber());
             dice.setId(""+i);
             dice.setOnAction(new EventHandler<ActionEvent>()
             {

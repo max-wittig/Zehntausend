@@ -10,11 +10,11 @@ public class Player
     private int playerNumber;
     private int score = 0;
     private String playerName = null;
-    private ArrayList<Round> roundArrayList;
+    private ArrayList<Turn> turnArrayList;
 
     public Player(int playerNumber)
     {
-        roundArrayList = new ArrayList<>();
+        turnArrayList = new ArrayList<>();
         remainingDices = new ArrayList<>();
         initDice();
         this.playerNumber = playerNumber;
@@ -35,7 +35,7 @@ public class Player
         Round round = new Round();
         Roll roll = new Roll();
         round.addToRound(roll);
-        roundArrayList.add(round);
+        getLastTurn().getRoundArrayList().add(round);
         remainingDices.clear();
         initDice();
     }
@@ -56,26 +56,25 @@ public class Player
         }
     }
 
-    private Round getLastRound()
+    public Turn getLastTurn()
     {
-        Round round;
-        if (roundArrayList.size() > 0)
+        Turn turn;
+        if (turnArrayList.size() > 0)
         {
-            round = roundArrayList.get(roundArrayList.size() - 1);
+            turn = turnArrayList.get(turnArrayList.size() - 1);
         }
         else
         {
-            round = new Round();
-            roundArrayList.add(round);
+            turn = new Turn();
+            turnArrayList.add(turn);
         }
-        return round;
+        return turn;
     }
 
     public void rollDice()
     {
-
         Roll roll = new Roll();
-        getLastRound().addToRound(roll);
+        getLastTurn().getLastRound().addToRound(roll);
         if (!remainingDices.isEmpty())
         {
             for (int i = 0; i < remainingDices.size(); i++)
@@ -98,10 +97,12 @@ public class Player
         return remainingDices;
     }
 
+    //from last turn only
     public ArrayList<Dice> getAllDrawnDices()
     {
         ArrayList<Dice> dices = new ArrayList<>();
-        for (Round currentRound : roundArrayList)
+
+        for (Round currentRound : getLastTurn().getRoundArrayList())
         {
             for (Roll currentRoll : currentRound.getRollArrayList())
             {
@@ -114,15 +115,25 @@ public class Player
         return dices;
     }
 
+    public void nextTurn()
+    {
+        Turn turn = new Turn();
+        Round round = new Round();
+        Roll roll = new Roll();
+        round.addToRound(roll);
+        turn.addToTurn(round);
+        turnArrayList.add(turn);
+    }
+
     //delete everything
-    public void clearRoundArrayList()
+    /*public void clearRoundArrayList()
     {
         roundArrayList.clear();
-    }
+    }*/
 
     public void removeLastDrawnDiceWithNumber(int number)
     {
-        Roll roll = getLastRound().getLastRoll();
+        Roll roll = getLastTurn().getLastRound().getLastRoll();
         for (Dice toRemove : roll.getDrawnDices())
         {
             if (toRemove.getDiceNumber() == number)
@@ -137,32 +148,18 @@ public class Player
     public ArrayList<Dice> getLastDrawnDices()
     {
         Roll roll;
-        if (getLastRound().getRollArrayList().size() > 0)
+        if (getLastTurn().getLastRound().getRollArrayList().size() > 0)
         {
-            roll = getLastRound().getLastRoll();
+            roll = getLastTurn().getLastRound().getLastRoll();
         }
         else
         {
             roll = new Roll();
-            getLastRound().addToRound(roll);
+            getLastTurn().getLastRound().addToRound(roll);
         }
         return roll.getDrawnDices();
     }
 
-    public ArrayList<Dice> getDrawnDicesFromLastRound()
-    {
-        ArrayList<Dice> dices = new ArrayList<>();
-
-        for (Roll currentRoll : getLastRound().getRollArrayList())
-        {
-            for (Dice currentDice : currentRoll.getDrawnDices())
-            {
-                dices.add(currentDice);
-            }
-        }
-
-        return dices;
-    }
 
     public int getPlayerNumber()
     {
@@ -183,11 +180,6 @@ public class Player
     {
         if (number >= Settings.MIN_SCORE_REQUIRED_TO_SAVE_IN_ROUND)
             score += number;
-    }
-
-    public ArrayList<Round> getRoundArrayList()
-    {
-        return roundArrayList;
     }
 
     public String getPlayerName()
