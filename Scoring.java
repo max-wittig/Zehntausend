@@ -39,12 +39,15 @@ public class Scoring
     }
 
 
-    public static int getScoreFromAllDicesInRound(ArrayList<Roll> rollArrayList)
+    public static int getScoreFromAllDicesInRound(ArrayList<Round> roundArrayList)
     {
         int sum = 0;
-        for (Roll currentRoll : rollArrayList)
+        for (Round currentRound : roundArrayList)
         {
-            sum += getScoreFromDicesInRoll(currentRoll.getDrawnDices());
+            for (Roll currentRoll : currentRound.getRollArrayList())
+            {
+                sum += getScoreFromDicesInRoll(currentRoll.getDrawnDices());
+            }
         }
         return sum;
     }

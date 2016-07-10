@@ -36,7 +36,7 @@ class Game
 
     public boolean minScoreReached()
     {
-        if (Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getRollArrayList()) >= Settings.MIN_SCORE_REQUIRED_TO_SAVE_IN_ROUND)
+        if (Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getRoundArrayList()) >= Settings.MIN_SCORE_REQUIRED_TO_SAVE_IN_ROUND)
         {
             System.out.println("Min Score reached!");
             return true;
@@ -100,8 +100,8 @@ class Game
     public void nextPlayer()
     {
         if (minScoreReached() && numberOfDicesDrawnSinceLastRoll > 0)
-            getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getRollArrayList()));
-        getCurrentPlayer().clearRollArrayList();
+            getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getRoundArrayList()));
+        getCurrentPlayer().clearRoundArrayList();
         getCurrentPlayer().clearDices();
         if (currentPlayerNumber < Settings.TOTAL_PLAYERS - 1)
         {
