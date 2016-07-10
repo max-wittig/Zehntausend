@@ -111,4 +111,9 @@ public class Player
     {
         return playerName;
     }
+
+    public ArrayList<Turn> getTurnArrayList()
+    {
+        return turnArrayList;
+    }
 }

@@ -1,6 +1,7 @@
 package com.spaghettic0der;
 
 
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 
 import java.util.*;
@@ -43,7 +44,11 @@ class Game
 
     public boolean winScoreReached()
     {
-        return false;
+        if (Scoring.getScoreFromAllDices(getCurrentPlayer().getTurnArrayList()) >= Settings.MIN_SCORE_REQUIRED_TO_WIN)
+            return true;
+        else
+            return false;
+
     }
 
 
@@ -101,18 +106,20 @@ class Game
         {
             showWinAlert();
         }
-
-        getCurrentPlayer().initDice();
-        getCurrentPlayer().nextTurn();
-        getCurrentPlayer().getLastTurn().nextRound();
-
-        if (currentPlayerNumber < Settings.TOTAL_PLAYERS - 1)
-        {
-            currentPlayerNumber++;
-        }
         else
         {
-            currentPlayerNumber = 0;
+            getCurrentPlayer().initDice();
+            getCurrentPlayer().nextTurn();
+            getCurrentPlayer().getLastTurn().nextRound();
+
+            if (currentPlayerNumber < Settings.TOTAL_PLAYERS - 1)
+            {
+                currentPlayerNumber++;
+            }
+            else
+            {
+                currentPlayerNumber = 0;
+            }
         }
     }
 

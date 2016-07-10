@@ -52,6 +52,22 @@ public class Scoring
         return sum;
     }
 
+    public static int getScoreFromAllDices(ArrayList<Turn> turnArrayList)
+    {
+        int sum = 0;
+        for (Turn currentTurn : turnArrayList)
+        {
+            for (Round currentRound : currentTurn.getRoundArrayList())
+            {
+                for (Roll currentRoll : currentRound.getRollArrayList())
+                {
+                    sum += getScoreFromDicesInRoll(currentRoll.getDrawnDices());
+                }
+            }
+        }
+        return sum;
+    }
+
 
     public static boolean containsMultiple(ArrayList<Dice> dices)
     {
