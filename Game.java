@@ -1,6 +1,8 @@
 package com.spaghettic0der;
 
 
+import javafx.scene.control.Alert;
+
 import java.util.*;
 
 class Game
@@ -39,6 +41,11 @@ class Game
         }
     }
 
+    public boolean winScoreReached()
+    {
+        return false;
+    }
+
 
     /* returns boolean, based on rules if game is valid
     * is called when roll is called
@@ -75,12 +82,25 @@ class Game
         }
     }
 
+    public void showWinAlert()
+    {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("You won!");
+        alert.setContentText("Congrats!");
+        alert.show();
+    }
+
     //cycles through players
     public void nextPlayer()
     {
         //always clear --> if not fullfiled score is gone!
         if (minScoreReached() && getCurrentPlayer().getLastTurn().getLastRound().getDrawnDices().size() > 0)
             getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getLastTurn().getRoundArrayList()));
+
+        if (winScoreReached())
+        {
+            showWinAlert();
+        }
 
         getCurrentPlayer().initDice();
         getCurrentPlayer().nextTurn();

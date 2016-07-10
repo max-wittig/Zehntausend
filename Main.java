@@ -13,8 +13,6 @@ import java.util.ArrayList;
 
 public class Main extends Application
 {
-    private final int WIDTH = 640;
-    private final int HEIGHT = 480;
     private Game game;
     private BorderPane root;
     private HBox remainingDiceHBox;
@@ -95,7 +93,7 @@ public class Main extends Application
         {
             if (drawnDices.contains(dice))
             {
-                game.getCurrentPlayer().removeLastDrawnDiceWithNumber(dice.getDiceNumber());
+                game.getCurrentPlayer().getLastTurn().getLastRound().getLastRoll().removeDiceWithNumber(dice.getDiceNumber());
                 game.getCurrentPlayer().getRemainingDices().add(dice);
                 updateUI();
             }
@@ -208,7 +206,7 @@ public class Main extends Application
         vBox.getChildren().add(scoreLabel);
         vBox.getChildren().add(scoreInRoundLabel);
         vBox.setAlignment(Pos.CENTER);
-        Scene scene = new Scene(root, WIDTH, HEIGHT);
+        Scene scene = new Scene(root, Settings.WIDTH, Settings.HEIGHT);
         primaryStage.setScene(scene);
         primaryStage.show();
 

@@ -86,20 +86,6 @@ public class Player
         turnArrayList.add(turn);
     }
 
-    public void removeLastDrawnDiceWithNumber(int number)
-    {
-        Roll roll = getLastTurn().getLastRound().getLastRoll();
-        for (Dice toRemove : roll.getDrawnDices())
-        {
-            if (toRemove.getDiceNumber() == number)
-            {
-                roll.getDrawnDices().remove(toRemove);
-                System.out.println("Removed: " + toRemove.getDiceNumber());
-                break;
-            }
-        }
-    }
-
     public int getPlayerNumber()
     {
         return playerNumber;
