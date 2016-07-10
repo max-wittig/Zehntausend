@@ -9,7 +9,6 @@ class Game
     private ArrayList<Player> players;
     //shows which players turn it is currently
     private int currentPlayerNumber = 0;
-    private int numberOfDicesDrawnSinceLastRoll = 0;
 
     public Game()
     {
@@ -28,11 +27,6 @@ class Game
 
     //resets dices currently in roll to zero, so that the player cannot continue
     //if he doesn't draw any dices
-    public void resetNumberOfDicesDrawnSinceLastRoll()
-    {
-        numberOfDicesDrawnSinceLastRoll = 0;
-    }
-
     public boolean minScoreReached()
     {
         if (Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getLastTurn().getRoundArrayList()) >= Settings.MIN_SCORE_REQUIRED_TO_SAVE_IN_ROUND)
@@ -53,7 +47,7 @@ class Game
     {
         //in case scoreInRound < 300 -> State.Next is just not gonna save this round for the player. No additional points
         //but we still need to check so we allow State.Next to go into the method
-        if (numberOfDicesDrawnSinceLastRoll > 0 || state == State.NEXT)
+        if (getCurrentPlayer().getLastTurn().getLastRound().getLastRoll().getDrawnDices().size() > 0 || state == State.NEXT)
         {
             ArrayList<Dice> dicesSinceLastRoll = new ArrayList<>();
             for (Dice currentDice : getCurrentPlayer().getLastTurn().getLastRound().getLastRoll().getDrawnDices())
@@ -81,21 +75,11 @@ class Game
         }
     }
 
-    public void increaseNumberDrawnSinceLastRoll()
-    {
-        numberOfDicesDrawnSinceLastRoll++;
-    }
-
-    public void decreaseNumberDrawnSinceLastRoll()
-    {
-        numberOfDicesDrawnSinceLastRoll--;
-    }
-
     //cycles through players
     public void nextPlayer()
     {
         //always clear --> if not fullfiled score is gone!
-        if (minScoreReached() && numberOfDicesDrawnSinceLastRoll > 0)
+        if (minScoreReached() && getCurrentPlayer().getLastTurn().getLastRound().getDrawnDices().size() > 0)
             getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getLastTurn().getRoundArrayList()));
 
         getCurrentPlayer().initDice();

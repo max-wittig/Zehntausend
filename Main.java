@@ -83,7 +83,6 @@ public class Main extends Application
     private void moveToDrawnDices(Dice dice)
     {
         ArrayList<Dice> remainingDices = game.getCurrentPlayer().getRemainingDices();
-        game.increaseNumberDrawnSinceLastRoll();
         remainingDices.remove(dice);
         game.getCurrentPlayer().getLastTurn().getLastRound().getLastRoll().getDrawnDices().add(dice);
         updateUI();
@@ -96,7 +95,6 @@ public class Main extends Application
         {
             if (drawnDices.contains(dice))
             {
-                game.decreaseNumberDrawnSinceLastRoll();
                 game.getCurrentPlayer().removeLastDrawnDiceWithNumber(dice.getDiceNumber());
                 game.getCurrentPlayer().getRemainingDices().add(dice);
                 updateUI();
@@ -171,7 +169,6 @@ public class Main extends Application
             {
                 if (game.isValidState(State.ROLL))
                 {
-                    game.resetNumberOfDicesDrawnSinceLastRoll();
                     game.getCurrentPlayer().rollDice();
                     updateUI();
                 }
