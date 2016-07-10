@@ -9,7 +9,6 @@ class Game
     private ArrayList<Player> players;
     //shows which players turn it is currently
     private int currentPlayerNumber = 0;
-    private int roundNumber = 0;
     private int numberOfDicesDrawnSinceLastRoll = 0;
 
     public Game()
@@ -38,7 +37,6 @@ class Game
     {
         if (Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getLastTurn().getRoundArrayList()) >= Settings.MIN_SCORE_REQUIRED_TO_SAVE_IN_ROUND)
         {
-            System.out.println("Min Score reached!");
             return true;
         }
         else
@@ -58,12 +56,9 @@ class Game
         if (numberOfDicesDrawnSinceLastRoll > 0 || state == State.NEXT)
         {
             ArrayList<Dice> dicesSinceLastRoll = new ArrayList<>();
-            for (Dice currentDice : getCurrentPlayer().getLastDrawnDices())
+            for (Dice currentDice : getCurrentPlayer().getLastTurn().getLastRound().getLastRoll().getDrawnDices())
             {
-                if(currentDice.canDiceBeDrawnThisRound())
-                {
-                    dicesSinceLastRoll.add(currentDice);
-                }
+                dicesSinceLastRoll.add(currentDice);
             }
 
             if (!Scoring.containsDiceNumber(2, dicesSinceLastRoll) && !Scoring.containsDiceNumber(3, dicesSinceLastRoll)
@@ -103,9 +98,10 @@ class Game
         if (minScoreReached() && numberOfDicesDrawnSinceLastRoll > 0)
             getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getLastTurn().getRoundArrayList()));
 
+        getCurrentPlayer().initDice();
         getCurrentPlayer().nextTurn();
+        getCurrentPlayer().getLastTurn().nextRound();
 
-        getCurrentPlayer().clearDices();
         if (currentPlayerNumber < Settings.TOTAL_PLAYERS - 1)
         {
             currentPlayerNumber++;
@@ -113,13 +109,7 @@ class Game
         else
         {
             currentPlayerNumber = 0;
-            nextRound();
         }
-    }
-
-    private void nextRound()
-    {
-        roundNumber++;
     }
 
     public Player getCurrentPlayer()

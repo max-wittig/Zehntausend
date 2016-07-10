@@ -17,6 +17,24 @@ public class Turn
         return roundArrayList;
     }
 
+    //from last turn only
+    public ArrayList<Dice> getAllDrawnDices()
+    {
+        ArrayList<Dice> dices = new ArrayList<>();
+
+        for (Round currentRound : getRoundArrayList())
+        {
+            for (Roll currentRoll : currentRound.getRollArrayList())
+            {
+                for (Dice currentDice : currentRoll.getDrawnDices())
+                {
+                    dices.add(currentDice);
+                }
+            }
+        }
+        return dices;
+    }
+
     public Round getLastRound()
     {
         Round round;
@@ -37,18 +55,18 @@ public class Turn
         roundArrayList.add(round);
     }
 
-    public ArrayList<Dice> getDrawnDicesFromLastRound()
+
+    //starts new round
+    public void nextRound()
     {
-        ArrayList<Dice> dices = new ArrayList<>();
-
-        for (Roll currentRoll : getLastRound().getRollArrayList())
-        {
-            for (Dice currentDice : currentRoll.getDrawnDices())
-            {
-                dices.add(currentDice);
-            }
-        }
-
-        return dices;
+        //no new turn, because turn is only renewed, when player presses next
+        Round round = new Round();
+        Roll roll = new Roll();
+        round.addToRound(roll);
+        roundArrayList.add(round);
+        //getLastTurn().getRoundArrayList().add(round);
+        //remainingDices.clear();
+        //initDice();
     }
+
 }

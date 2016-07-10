@@ -41,16 +41,19 @@ public class Main extends Application
 
     private void createDrawnDiceButtons()
     {
-        for (int i = 0; i < game.getCurrentPlayer().getLastTurn().getDrawnDicesFromLastRound().size(); i++)
+        final ArrayList<Dice> dices = game.getCurrentPlayer().getLastTurn().getLastRound().getDrawnDices();
+
+        for (int i = 0; i < dices.size(); i++)
         {
-            Button dice = new Button("" + game.getCurrentPlayer().getLastTurn().getDrawnDicesFromLastRound().get(i).getDiceNumber());
+            Dice currentDice = dices.get(i);
+            Button dice = new Button("" + dices.get(i).getDiceNumber());
             dice.setId(""+i);
             dice.setOnAction(new EventHandler<ActionEvent>()
             {
                 @Override
                 public void handle(ActionEvent event)
                 {
-                    moveToRemainingDices(Integer.parseInt(dice.getId()));
+                    moveToRemainingDices(currentDice);
                 }
             });
             drawnDiceHBox.getChildren().add(dice);
@@ -59,42 +62,45 @@ public class Main extends Application
 
     private void createRemainingDiceButtons()
     {
+        final ArrayList<Dice> dices = game.getCurrentPlayer().getRemainingDices();
         for(int i=0; i < game.getCurrentPlayer().getRemainingDices().size(); i++)
         {
-            Button dice = new Button("" +game.getCurrentPlayer().getRemainingDices().get(i).getDiceNumber());
-            dice.setId(""+i);
-            dice.setOnAction(new EventHandler<ActionEvent>()
+            Dice dice = dices.get(i);
+            Button diceButton = new Button("" + game.getCurrentPlayer().getRemainingDices().get(i).getDiceNumber());
+            diceButton.setId("" + i);
+            diceButton.setOnAction(new EventHandler<ActionEvent>()
             {
                 @Override
                 public void handle(ActionEvent event)
                 {
-                    moveToDrawnDices(Integer.parseInt(dice.getId()));
+                    moveToDrawnDices(dice);
                 }
             });
-            remainingDiceHBox.getChildren().add(dice);
+            remainingDiceHBox.getChildren().add(diceButton);
         }
     }
 
-    private void moveToDrawnDices(int diceId)
+    private void moveToDrawnDices(Dice dice)
     {
         ArrayList<Dice> remainingDices = game.getCurrentPlayer().getRemainingDices();
-        Dice dice = remainingDices.get(diceId);
         game.increaseNumberDrawnSinceLastRoll();
-        remainingDices.remove(diceId);
-        game.getCurrentPlayer().getLastDrawnDices().add(dice);
+        remainingDices.remove(dice);
+        game.getCurrentPlayer().getLastTurn().getLastRound().getLastRoll().getDrawnDices().add(dice);
         updateUI();
     }
 
-    private void moveToRemainingDices(int diceId)
+    private void moveToRemainingDices(Dice dice)
     {
-        ArrayList<Dice> drawnDices = game.getCurrentPlayer().getAllDrawnDices();
-        Dice dice = drawnDices.get(diceId);
-        if(dice.canDiceBeDrawnThisRound())
+        ArrayList<Dice> drawnDices = game.getCurrentPlayer().getLastTurn().getLastRound().getLastRoll().getDrawnDices();
+        if (drawnDices.size() > 0)
         {
-            game.decreaseNumberDrawnSinceLastRoll();
-            game.getCurrentPlayer().removeLastDrawnDiceWithNumber(dice.getDiceNumber());
-            game.getCurrentPlayer().getRemainingDices().add(dice);
-            updateUI();
+            if (drawnDices.contains(dice))
+            {
+                game.decreaseNumberDrawnSinceLastRoll();
+                game.getCurrentPlayer().removeLastDrawnDiceWithNumber(dice.getDiceNumber());
+                game.getCurrentPlayer().getRemainingDices().add(dice);
+                updateUI();
+            }
         }
     }
 

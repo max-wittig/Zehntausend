@@ -20,41 +20,17 @@ public class Player
         this.playerNumber = playerNumber;
     }
 
-    private void initDice()
+    public void initDice()
     {
+        remainingDices.clear();
         for (int i = 0; i < Settings.TOTAL_DICE_NUMBER; i++)
         {
-            Dice dice = new Dice(i);
+            Dice dice = new Dice();
             dice.roll();
             remainingDices.add(dice);
         }
     }
 
-    public void clearDices()
-    {
-        Round round = new Round();
-        Roll roll = new Roll();
-        round.addToRound(roll);
-        getLastTurn().getRoundArrayList().add(round);
-        remainingDices.clear();
-        initDice();
-    }
-
-    public void setLastDrawnDicesToCantBeDrawn()
-    {
-        for (Dice currentDice : getLastDrawnDices())
-        {
-            currentDice.setDiceDrawnThisRound(false);
-        }
-    }
-
-    public void setLastDrawnDicesToCanBeDrawn()
-    {
-        for (Dice currentDice : getLastDrawnDices())
-        {
-            currentDice.setDiceDrawnThisRound(true);
-        }
-    }
 
     public Turn getLastTurn()
     {
@@ -73,22 +49,26 @@ public class Player
 
     public void rollDice()
     {
-        Roll roll = new Roll();
-        getLastTurn().getLastRound().addToRound(roll);
         if (!remainingDices.isEmpty())
         {
             for (int i = 0; i < remainingDices.size(); i++)
             {
                 remainingDices.get(i).roll();
             }
-            setLastDrawnDicesToCantBeDrawn();
+            Roll roll = new Roll();
+            getLastTurn().getLastRound().addToRound(roll);
         }
         else
         {
-            setLastDrawnDicesToCanBeDrawn();
+            Round round = new Round();
+            Roll roll = new Roll();
+            round.addToRound(roll);
+            getLastTurn().addToTurn(round);
+            initDice();
+            //getLastTurn().getLastRound().addToRound(roll);
             //clears dices on board and re_init them again
             //incase you finish the roll
-            clearDices();
+
         }
     }
 
@@ -97,39 +77,14 @@ public class Player
         return remainingDices;
     }
 
-    //from last turn only
-    public ArrayList<Dice> getAllDrawnDices()
-    {
-        ArrayList<Dice> dices = new ArrayList<>();
-
-        for (Round currentRound : getLastTurn().getRoundArrayList())
-        {
-            for (Roll currentRoll : currentRound.getRollArrayList())
-            {
-                for (Dice currentDice : currentRoll.getDrawnDices())
-                {
-                    dices.add(currentDice);
-                }
-            }
-        }
-        return dices;
-    }
 
     public void nextTurn()
     {
         Turn turn = new Turn();
         Round round = new Round();
-        Roll roll = new Roll();
-        round.addToRound(roll);
         turn.addToTurn(round);
         turnArrayList.add(turn);
     }
-
-    //delete everything
-    /*public void clearRoundArrayList()
-    {
-        roundArrayList.clear();
-    }*/
 
     public void removeLastDrawnDiceWithNumber(int number)
     {
@@ -144,22 +99,6 @@ public class Player
             }
         }
     }
-
-    public ArrayList<Dice> getLastDrawnDices()
-    {
-        Roll roll;
-        if (getLastTurn().getLastRound().getRollArrayList().size() > 0)
-        {
-            roll = getLastTurn().getLastRound().getLastRoll();
-        }
-        else
-        {
-            roll = new Roll();
-            getLastTurn().getLastRound().addToRound(roll);
-        }
-        return roll.getDrawnDices();
-    }
-
 
     public int getPlayerNumber()
     {
