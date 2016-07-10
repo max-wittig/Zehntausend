@@ -18,7 +18,6 @@ public class Dice
 
     public int getDiceNumber()
     {
-        //return 1;
         return diceNumber;
     }
 
@@ -40,6 +39,11 @@ public class Dice
     public void setDiceDrawnThisRound(boolean canDiceBeDrawnThisRound)
     {
         this.canDiceBeDrawnThisRound = canDiceBeDrawnThisRound;
+    }
+
+    public boolean isCanDiceBeDrawnThisRound()
+    {
+        return canDiceBeDrawnThisRound;
     }
 
     public void roll()

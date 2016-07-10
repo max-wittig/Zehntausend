@@ -49,6 +49,14 @@ public class Player
         }
     }
 
+    public void setLastDrawnDicesToCanBeDrawn()
+    {
+        for (Dice currentDice : getLastDrawnDices())
+        {
+            currentDice.setDiceDrawnThisRound(true);
+        }
+    }
+
     private Round getLastRound()
     {
         Round round;
@@ -66,7 +74,7 @@ public class Player
 
     public void rollDice()
     {
-        setLastDrawnDicesToCantBeDrawn();
+
         Roll roll = new Roll();
         getLastRound().addToRound(roll);
         if (!remainingDices.isEmpty())
@@ -75,9 +83,11 @@ public class Player
             {
                 remainingDices.get(i).roll();
             }
+            setLastDrawnDicesToCantBeDrawn();
         }
         else
         {
+            setLastDrawnDicesToCanBeDrawn();
             //clears dices on board and re_init them again
             //incase you finish the roll
             clearDices();
@@ -119,6 +129,7 @@ public class Player
             if (toRemove.getDiceNumber() == number)
             {
                 roll.getDrawnDices().remove(toRemove);
+                System.out.println("Removed: " + toRemove.getDiceNumber());
                 break;
             }
         }
