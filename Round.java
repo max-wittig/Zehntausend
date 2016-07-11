@@ -16,11 +16,6 @@ public class Round
         return rollArrayList;
     }
 
-    public void addToRound(Roll roll)
-    {
-        rollArrayList.add(roll);
-    }
-
     public Roll getLastRoll()
     {
         Roll roll;
@@ -49,6 +44,12 @@ public class Round
         }
 
         return dices;
+    }
+
+    public void nextRoll()
+    {
+        Roll roll = new Roll();
+        rollArrayList.add(roll);
     }
 
 }

@@ -50,23 +50,12 @@ public class Turn
         return round;
     }
 
-    public void addToTurn(Round round)
-    {
-        roundArrayList.add(round);
-    }
-
-
     //starts new round
     public void nextRound()
     {
         //no new turn, because turn is only renewed, when player presses next
         Round round = new Round();
-        Roll roll = new Roll();
-        round.addToRound(roll);
         roundArrayList.add(round);
-        //getLastTurn().getRoundArrayList().add(round);
-        //remainingDices.clear();
-        //initDice();
     }
 
 }

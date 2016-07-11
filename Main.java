@@ -3,6 +3,7 @@ package com.spaghettic0der;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -14,8 +15,11 @@ import java.util.ArrayList;
 
 public class Main extends Application
 {
-    private final int buttonSize = 50;
+    private final int textButtonWidth = 100;
+    private final int textButtonHeight = 50;
+    private final int diceButtonSize = 50;
     private final int buttonFontSize = 20;
+    private final String versionNumber = "0.0.6";
     private Game game;
     private BorderPane root;
     private HBox remainingDiceHBox;
@@ -48,8 +52,8 @@ public class Main extends Application
         {
             Dice currentDice = dices.get(i);
             Button diceButton = new Button("" + dices.get(i).getDiceNumber());
-            diceButton.setPrefWidth(buttonSize);
-            diceButton.setPrefHeight(buttonSize);
+            diceButton.setPrefWidth(diceButtonSize);
+            diceButton.setPrefHeight(diceButtonSize);
             diceButton.setFont(new Font(buttonFontSize));
 
             //checks if dices are in last roll -> if so you can still move them back --> yellowgreen color
@@ -82,8 +86,8 @@ public class Main extends Application
         {
             Dice currentDice = dices.get(i);
             Button diceButton = new Button("" + game.getCurrentPlayer().getRemainingDices().get(i).getDiceNumber());
-            diceButton.setPrefWidth(buttonSize);
-            diceButton.setPrefHeight(buttonSize);
+            diceButton.setPrefWidth(diceButtonSize);
+            diceButton.setPrefHeight(diceButtonSize);
             diceButton.setStyle("-fx-background-color: greenyellow; -fx-border-color: gray");
             diceButton.setFont(new Font(buttonFontSize));
             diceButton.setId("" + i);
@@ -159,11 +163,12 @@ public class Main extends Application
             public void handle(ActionEvent event)
             {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText("About");
+                alert.setHeaderText("About Zehntausend\nVersion: " + versionNumber);
                 alert.setContentText("Made by spaghettic0der in 2016\nMade possible with the help of Deadlocker");
                 alert.show();
             }
         });
+
         aboutMenu.getItems().add(infoItem);
 
         menuBar.getMenus().addAll(gameMenu, aboutMenu);
@@ -177,10 +182,15 @@ public class Main extends Application
         root.setCenter(vBox);
         initMenu(primaryStage);
         remainingDiceHBox = new HBox();
+        remainingDiceHBox.setMinHeight(diceButtonSize);
         remainingDiceHBox.setAlignment(Pos.CENTER);
         drawnDiceHBox = new HBox();
+        drawnDiceHBox.setMinHeight(diceButtonSize);
         drawnDiceHBox.setAlignment(Pos.CENTER);
         Button rollButton = new Button("ROLL");
+        rollButton.setPrefWidth(textButtonWidth);
+        rollButton.setPrefHeight(textButtonHeight);
+        rollButton.setFont(new Font(buttonFontSize));
         rollButton.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -198,6 +208,10 @@ public class Main extends Application
             }
         });
         Button nextButton = new Button("NEXT");
+
+        nextButton.setPrefHeight(textButtonHeight);
+        nextButton.setPrefWidth(textButtonWidth);
+        nextButton.setFont(new Font(buttonFontSize));
         nextButton.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -216,16 +230,25 @@ public class Main extends Application
         });
 
         currentPlayerLabel = new Label("Current Player: 0");
+        currentPlayerLabel.setFont(new Font(buttonFontSize));
         scoreLabel = new Label("Score: 0");
+        scoreLabel.setFont(new Font(buttonFontSize));
         scoreInRoundLabel = new Label("Score in Round: 0");
-        vBox.getChildren().add(rollButton);
-        vBox.getChildren().add(nextButton);
+        scoreInRoundLabel.setFont(new Font(buttonFontSize));
+        VBox.setMargin(rollButton, new Insets(-50, 0, 10, 0));
+        VBox buttonBox = new VBox(rollButton, nextButton);
+        buttonBox.setPadding(new Insets(0, 0, 20, 0));
+        buttonBox.setAlignment(Pos.CENTER);
+        vBox.getChildren().add(buttonBox);
         createRemainingDiceButtons();
         vBox.getChildren().add(remainingDiceHBox);
         vBox.getChildren().add(drawnDiceHBox);
+        VBox.setMargin(drawnDiceHBox, new Insets(5, 0, 20, 0));
+
         vBox.getChildren().add(currentPlayerLabel);
         vBox.getChildren().add(scoreLabel);
         vBox.getChildren().add(scoreInRoundLabel);
+
         vBox.setAlignment(Pos.CENTER);
         Scene scene = new Scene(root, Settings.WIDTH, Settings.HEIGHT);
         primaryStage.setScene(scene);

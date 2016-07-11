@@ -43,7 +43,7 @@ class Game
 
     public boolean winScoreReached()
     {
-        if (Scoring.getScoreFromAllDices(getCurrentPlayer().getTurnArrayList()) >= Settings.MIN_SCORE_REQUIRED_TO_WIN)
+        if (Scoring.getScoreFromAllDices(getCurrentPlayer().getTurnArrayList()) >= Settings.MIN_SCORE_REQUIRED_TO_WIN && isValidState(State.WIN))
             return true;
         else
             return false;
@@ -90,7 +90,7 @@ class Game
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText("You won!");
-        alert.setContentText("Congrats!");
+        alert.setContentText("Congrats Player " + getCurrentPlayer().getPlayerNumber());
         alert.show();
     }
 
@@ -98,7 +98,7 @@ class Game
     public void nextPlayer()
     {
         //always clear --> if not fullfiled score is gone!
-        if (minScoreReached() && getCurrentPlayer().getLastTurn().getLastRound().getDrawnDices().size() > 0)
+        if (minScoreReached() && getCurrentPlayer().getLastTurn().getLastRound().getLastRoll().getDrawnDices().size() > 0 && !winScoreReached())
             getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getLastTurn().getRoundArrayList()));
 
         if (winScoreReached())

@@ -3,7 +3,7 @@ package com.spaghettic0der;
 
 public enum State
 {
-    DONE,
+    WIN,
     ROLL,
     NEXT
 }

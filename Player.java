@@ -55,20 +55,16 @@ public class Player
             {
                 remainingDices.get(i).roll();
             }
-            Roll roll = new Roll();
-            getLastTurn().getLastRound().addToRound(roll);
+            getLastTurn().getLastRound().nextRoll();
         }
         else
         {
-            Round round = new Round();
-            Roll roll = new Roll();
-            round.addToRound(roll);
-            getLastTurn().addToTurn(round);
+            getLastTurn().nextRound();
+            getLastTurn().getLastRound().nextRoll();
             initDice();
             //getLastTurn().getLastRound().addToRound(roll);
             //clears dices on board and re_init them again
             //incase you finish the roll
-
         }
     }
 
@@ -81,8 +77,6 @@ public class Player
     public void nextTurn()
     {
         Turn turn = new Turn();
-        Round round = new Round();
-        turn.addToTurn(round);
         turnArrayList.add(turn);
     }
 
