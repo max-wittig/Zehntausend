@@ -118,14 +118,16 @@ public class Scoring
             // TODO: 08.07.16 add variables to make this clearer
             for (Integer key : diceHashMap.keySet())
             {
+                int diceNumber = key;
+                int occurrence = diceHashMap.get(key);
                 if (diceHashMap.get(key) > 2)
                 {
                     //3 times 1 == 1000, 4 times 1 == 2000 etc...
-                    if (key == 1)
+                    if (diceNumber == 1)
                     {
                         //TODO find better math solution for this
-                        int sum = key * 1000;
-                        for (int i = 1; i < diceHashMap.get(key) - 2; i++)
+                        int sum = diceNumber * 1000;
+                        for (int i = 1; i < occurrence - 2; i++)
                         {
                             sum *= 2;
                         }
@@ -133,8 +135,8 @@ public class Scoring
                     }
                     else
                     {
-                        int sum = key * 100;
-                        for (int i = 1; i < diceHashMap.get(key) - 2; i++)
+                        int sum = diceNumber * 100;
+                        for (int i = 1; i < occurrence - 2; i++)
                         {
                             sum *= 2;
                         }
@@ -144,14 +146,14 @@ public class Scoring
                 else
                 {
                     //no more occurrences then 2 --> normal system
-                    if (key == 5)
+                    if (diceNumber == 5)
                     {
-                        score += 50 * diceHashMap.get(key);
+                        score += 50 * occurrence;
                     }
 
-                    if (key == 1)
+                    if (diceNumber == 1)
                     {
-                        score += 100 * diceHashMap.get(key);
+                        score += 100 * occurrence;
                     }
                 }
             }
