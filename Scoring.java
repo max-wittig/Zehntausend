@@ -134,6 +134,11 @@ public class Scoring
             return Settings.SCORE_THREE_X_TWO;
         }
 
+        if (isSixDicesInARow(dices))
+        {
+            return Settings.SCORE_SIX_DICES_IN_A_ROW;
+        }
+
         //normal cases
         //key is number [1,2,3,4,5,6]
         //diceHashMap.get(key) is occurrence of number
@@ -203,6 +208,26 @@ public class Scoring
             {
                 return false;
             }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public static boolean isSixDicesInARow(ArrayList<Dice> dices)
+    {
+        if (Settings.SIX_DICES_IN_A_ROW_ENABLED)
+        {
+            HashMap<Integer, Integer> diceHashMap = getDiceHashMap(dices);
+            for (Integer key : diceHashMap.keySet())
+            {
+                if (diceHashMap.get(key) >= Settings.TOTAL_DICE_NUMBER)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         else
         {

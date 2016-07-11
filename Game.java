@@ -78,6 +78,7 @@ class Game
                 //if so gameState is valid
                 boolean valid = (Scoring.containsMultiple(dicesSinceLastRoll)
                         || Scoring.isStreet(dicesSinceLastRoll)
+                        || Scoring.isSixDicesInARow(dicesSinceLastRoll)
                         || Scoring.isThreeTimesTwo(dicesSinceLastRoll));
                 return valid;
             }

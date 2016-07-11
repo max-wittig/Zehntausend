@@ -15,7 +15,6 @@ public class Dice
 
     public int getDiceNumber()
     {
-        //return 1;
         return diceNumber;
     }
 
