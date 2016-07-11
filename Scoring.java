@@ -115,7 +115,6 @@ public class Scoring
         {
             //key is number [1,2,3,4,5,6]
             //diceHashMap.get(key) is occurrence of number
-            // TODO: 08.07.16 add variables to make this clearer
             for (Integer key : diceHashMap.keySet())
             {
                 int diceNumber = key;
@@ -125,7 +124,6 @@ public class Scoring
                     //3 times 1 == 1000, 4 times 1 == 2000 etc...
                     if (diceNumber == 1)
                     {
-                        //TODO find better math solution for this
                         int sum = diceNumber * 1000;
                         for (int i = 1; i < occurrence - 2; i++)
                         {
