@@ -7,12 +7,15 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
 public class Main extends Application
 {
+    private final int buttonSize = 50;
+    private final int buttonFontSize = 20;
     private Game game;
     private BorderPane root;
     private HBox remainingDiceHBox;
@@ -44,9 +47,23 @@ public class Main extends Application
         for (int i = 0; i < dices.size(); i++)
         {
             Dice currentDice = dices.get(i);
-            Button dice = new Button("" + dices.get(i).getDiceNumber());
-            dice.setId(""+i);
-            dice.setOnAction(new EventHandler<ActionEvent>()
+            Button diceButton = new Button("" + dices.get(i).getDiceNumber());
+            diceButton.setPrefWidth(buttonSize);
+            diceButton.setPrefHeight(buttonSize);
+            diceButton.setFont(new Font(buttonFontSize));
+
+            //checks if dices are in last roll -> if so you can still move them back --> yellowgreen color
+            if (game.getCurrentPlayer().getLastTurn().getLastRound().getLastRoll().getDrawnDices().contains(dices.get(i)))
+            {
+                diceButton.setStyle("-fx-background-color: yellowgreen; -fx-border-color: gray");
+            }
+            else
+            {
+                diceButton.setStyle("-fx-background-color: #ff5f50; -fx-border-color: gray");
+            }
+
+            diceButton.setId("" + i);
+            diceButton.setOnAction(new EventHandler<ActionEvent>()
             {
                 @Override
                 public void handle(ActionEvent event)
@@ -54,7 +71,7 @@ public class Main extends Application
                     moveToRemainingDices(currentDice);
                 }
             });
-            drawnDiceHBox.getChildren().add(dice);
+            drawnDiceHBox.getChildren().add(diceButton);
         }
     }
 
@@ -63,15 +80,19 @@ public class Main extends Application
         final ArrayList<Dice> dices = game.getCurrentPlayer().getRemainingDices();
         for(int i=0; i < game.getCurrentPlayer().getRemainingDices().size(); i++)
         {
-            Dice dice = dices.get(i);
+            Dice currentDice = dices.get(i);
             Button diceButton = new Button("" + game.getCurrentPlayer().getRemainingDices().get(i).getDiceNumber());
+            diceButton.setPrefWidth(buttonSize);
+            diceButton.setPrefHeight(buttonSize);
+            diceButton.setStyle("-fx-background-color: greenyellow; -fx-border-color: gray");
+            diceButton.setFont(new Font(buttonFontSize));
             diceButton.setId("" + i);
             diceButton.setOnAction(new EventHandler<ActionEvent>()
             {
                 @Override
                 public void handle(ActionEvent event)
                 {
-                    moveToDrawnDices(dice);
+                    moveToDrawnDices(currentDice);
                 }
             });
             remainingDiceHBox.getChildren().add(diceButton);
