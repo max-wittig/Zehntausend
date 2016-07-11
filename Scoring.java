@@ -95,7 +95,9 @@ public class Scoring
         for (Dice currentDice : dices)
         {
             int diceNumber = currentDice.getDiceNumber();
-            diceHashMap.putIfAbsent(diceNumber, 0);
+            //diceHashMap.putIfAbsent(diceNumber, 0);
+            if (diceHashMap.get(diceNumber) == null) //it's so complicated, because android javafx
+                diceHashMap.put(diceNumber, 0);      // doesn't support putIfAbsend
             diceHashMap.put(diceNumber, diceHashMap.get(diceNumber) + 1);
         }
         return diceHashMap;

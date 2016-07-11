@@ -90,7 +90,7 @@ class Game
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText("You won!");
-        alert.setContentText("Congrats Player " + getCurrentPlayer().getPlayerNumber());
+        alert.setContentText("Congrats Player " + (getCurrentPlayer().getPlayerNumber() + 1));
         alert.show();
     }
 
