@@ -76,7 +76,9 @@ class Game
             {
                 //checks if there are any multiplications of dice (3 times 2 == 200, 3 times 3 == 300 etc...)
                 //if so gameState is valid
-                boolean valid = (Scoring.containsMultiple(dicesSinceLastRoll) || Scoring.isStreet(dicesSinceLastRoll));
+                boolean valid = (Scoring.containsMultiple(dicesSinceLastRoll)
+                        || Scoring.isStreet(dicesSinceLastRoll)
+                        || Scoring.isThreeTimesTwo(dicesSinceLastRoll));
                 return valid;
             }
         }
@@ -98,8 +100,11 @@ class Game
     public void nextPlayer()
     {
         //always clear --> if not fullfiled score is gone!
-        if (minScoreReached() && getCurrentPlayer().getLastTurn().getLastRound().getLastRoll().getDrawnDices().size() > 0 && !winScoreReached())
+        int numberOfDicesInLastRoll = getCurrentPlayer().getLastTurn().getLastRound().getLastRoll().getDrawnDices().size();
+        if (numberOfDicesInLastRoll > 0 && !winScoreReached() && minScoreReached())
+        {
             getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getLastTurn().getRoundArrayList()));
+        }
 
         if (winScoreReached())
         {

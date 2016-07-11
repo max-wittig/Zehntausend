@@ -19,6 +19,21 @@ public class Scoring
         return false;
     }
 
+    public static boolean containsDiceNumbers(ArrayList<Integer> numbers, ArrayList<Dice> dices)
+    {
+        for (int number : numbers)
+        {
+            for (Dice currentDice : dices)
+            {
+                if (currentDice.getDiceNumber() == number)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public static boolean isStreet(ArrayList<Dice> dices)
     {
         if (Settings.STREET_ENABLED)
@@ -111,54 +126,88 @@ public class Scoring
 
         if (isStreet(dices))
         {
-            score += Settings.SCORE_STREET;
+            return Settings.SCORE_STREET;
         }
-        else
+
+        if (isThreeTimesTwo(dices))
         {
-            //key is number [1,2,3,4,5,6]
-            //diceHashMap.get(key) is occurrence of number
-            for (Integer key : diceHashMap.keySet())
+            return Settings.SCORE_THREE_X_TWO;
+        }
+
+        //normal cases
+        //key is number [1,2,3,4,5,6]
+        //diceHashMap.get(key) is occurrence of number
+        for (Integer key : diceHashMap.keySet())
+        {
+            int diceNumber = key;
+            int occurrence = diceHashMap.get(key);
+            if (diceHashMap.get(key) > 2)
             {
-                int diceNumber = key;
-                int occurrence = diceHashMap.get(key);
-                if (diceHashMap.get(key) > 2)
+                //3 times 1 == 1000, 4 times 1 == 2000 etc...
+                if (diceNumber == 1)
                 {
-                    //3 times 1 == 1000, 4 times 1 == 2000 etc...
-                    if (diceNumber == 1)
+                    int sum = diceNumber * 1000;
+                    for (int i = 1; i < occurrence - 2; i++)
                     {
-                        int sum = diceNumber * 1000;
-                        for (int i = 1; i < occurrence - 2; i++)
-                        {
-                            sum *= 2;
-                        }
-                        score += sum;
+                        sum *= 2;
                     }
-                    else
-                    {
-                        int sum = diceNumber * 100;
-                        for (int i = 1; i < occurrence - 2; i++)
-                        {
-                            sum *= 2;
-                        }
-                        score += sum;
-                    }
+                    score += sum;
                 }
                 else
                 {
-                    //no more occurrences then 2 --> normal system
-                    if (diceNumber == 5)
+                    int sum = diceNumber * 100;
+                    for (int i = 1; i < occurrence - 2; i++)
                     {
-                        score += 50 * occurrence;
+                        sum *= 2;
                     }
+                    score += sum;
+                }
+            }
+            else
+            {
+                //no more occurrences then 2 --> normal system
+                if (diceNumber == 5)
+                {
+                    score += 50 * occurrence;
+                }
 
-                    if (diceNumber == 1)
-                    {
-                        score += 100 * occurrence;
-                    }
+                if (diceNumber == 1)
+                {
+                    score += 100 * occurrence;
                 }
             }
         }
+
         return score;
+    }
+
+    public static boolean isThreeTimesTwo(ArrayList<Dice> dices)
+    {
+        if (Settings.THREE_X_TWO_ENABLED)
+        {
+            HashMap<Integer, Integer> diceHashMap = getDiceHashMap(dices);
+            int numberOfDicesWithTwoOccurrences = 0;
+            for (Integer key : diceHashMap.keySet())
+            {
+                if (diceHashMap.get(key) >= 2)
+                {
+                    numberOfDicesWithTwoOccurrences++;
+                }
+            }
+
+            if (numberOfDicesWithTwoOccurrences >= 3)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
 
 }
