@@ -12,10 +12,12 @@ class Game
     //shows which players turn it is currently
     private int currentPlayerNumber = 0;
 
+
     public Game()
     {
         players = new ArrayList<>();
         initPlayers();
+
     }
 
     private void initPlayers()
@@ -47,7 +49,6 @@ class Game
             return true;
         else
             return false;
-
     }
 
 

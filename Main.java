@@ -33,6 +33,13 @@ public class Main extends Application
     private Label scoreInRoundLabel;
     private Stage settingsStage;
     private Scene mainScene;
+    private JsonHelper jsonHelper;
+
+    public Main()
+    {
+        jsonHelper = new JsonHelper();
+    }
+
     public static void main(String[] args)
     {
         Application.launch(args);
@@ -298,6 +305,14 @@ public class Main extends Application
         });
         MenuItem loadItem = new MenuItem("Load");
         MenuItem saveItem = new MenuItem("Save");
+        saveItem.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                jsonHelper.saveGameState(game);
+            }
+        });
         gameMenu.getItems().addAll(newGameItem, settingsItem, loadItem, saveItem);
 
         Menu aboutMenu = new Menu("About");
