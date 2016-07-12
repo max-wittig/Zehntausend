@@ -3,22 +3,142 @@ package com.spaghettic0der;
 
 public class Settings
 {
-    public static int WIDTH = 640;
-    public static int HEIGHT = 480;
+    private int width = 640;
+    private int height = 480;
 
-    public static int TOTAL_DICE_NUMBER = 6;
-    public static int TOTAL_PLAYERS = 3;
+    private int totalDiceNumber = 6;
+    private int totalPlayers = 3;
 
-    public static boolean STREET_ENABLED = true;
-    public static int SCORE_STREET = 1500;
+    private boolean streetEnabled = true;
+    private int scoreStreet = 1500;
 
-    public static int MIN_SCORE_REQUIRED_TO_SAVE_IN_ROUND = 300;
-    public static int MIN_SCORE_REQUIRED_TO_WIN = 5000;
+    private int minScoreRequiredToSaveInRound = 300;
+    private int minScoreRequiredToWin = 5000;
 
 
-    public static boolean THREE_X_TWO_ENABLED = true; //2x3 -> 2,2,4,4,6,6 --> 1000 points
-    public static int SCORE_THREE_X_TWO = 1000;
+    private boolean threeXTwoEnabled = true; //2x3 -> 2,2,4,4,6,6 --> 1000 points
+    private int scoreThreeXTwo = 1000;
 
-    public static boolean SIX_DICES_IN_A_ROW_ENABLED = true;
-    public static int SCORE_SIX_DICES_IN_A_ROW = MIN_SCORE_REQUIRED_TO_WIN; //can be ajusted
+    private boolean sixDicesInARowEnabled = true;
+    private int scoreSixDicesInARow = minScoreRequiredToWin; //can be ajusted
+
+    public int getWidth()
+    {
+        return width;
+    }
+
+    public void setWidth(int width)
+    {
+        this.width = width;
+    }
+
+    public int getHeight()
+    {
+        return height;
+    }
+
+    public void setHeight(int height)
+    {
+        this.height = height;
+    }
+
+    public int getTotalDiceNumber()
+    {
+        return totalDiceNumber;
+    }
+
+    public void setTotalDiceNumber(int totalDiceNumber)
+    {
+        this.totalDiceNumber = totalDiceNumber;
+    }
+
+    public int getTotalPlayers()
+    {
+        return totalPlayers;
+    }
+
+    public void setTotalPlayers(int totalPlayers)
+    {
+        this.totalPlayers = totalPlayers;
+    }
+
+    public boolean isStreetEnabled()
+    {
+        return streetEnabled;
+    }
+
+    public void setStreetEnabled(boolean streetEnabled)
+    {
+        this.streetEnabled = streetEnabled;
+    }
+
+    public int getScoreStreet()
+    {
+        return scoreStreet;
+    }
+
+    public void setScoreStreet(int scoreStreet)
+    {
+        this.scoreStreet = scoreStreet;
+    }
+
+    public int getMinScoreRequiredToSaveInRound()
+    {
+        return minScoreRequiredToSaveInRound;
+    }
+
+    public void setMinScoreRequiredToSaveInRound(int minScoreRequiredToSaveInRound)
+    {
+        this.minScoreRequiredToSaveInRound = minScoreRequiredToSaveInRound;
+    }
+
+    public int getMinScoreRequiredToWin()
+    {
+        return minScoreRequiredToWin;
+    }
+
+    public void setMinScoreRequiredToWin(int minScoreRequiredToWin)
+    {
+        this.minScoreRequiredToWin = minScoreRequiredToWin;
+    }
+
+    public boolean isThreeXTwoEnabled()
+    {
+        return threeXTwoEnabled;
+    }
+
+    public void setThreeXTwoEnabled(boolean threeXTwoEnabled)
+    {
+        this.threeXTwoEnabled = threeXTwoEnabled;
+    }
+
+    public int getScoreThreeXTwo()
+    {
+        return scoreThreeXTwo;
+    }
+
+    public void setScoreThreeXTwo(int scoreThreeXTwo)
+    {
+        this.scoreThreeXTwo = scoreThreeXTwo;
+    }
+
+    public boolean isSixDicesInARowEnabled()
+    {
+        return sixDicesInARowEnabled;
+    }
+
+    public void setSixDicesInARowEnabled(boolean sixDicesInARowEnabled)
+    {
+        this.sixDicesInARowEnabled = sixDicesInARowEnabled;
+    }
+
+    public int getScoreSixDicesInARow()
+    {
+        return scoreSixDicesInARow;
+    }
+
+    public void setScoreSixDicesInARow(int scoreSixDicesInARow)
+    {
+        this.scoreSixDicesInARow = scoreSixDicesInARow;
+    }
 }

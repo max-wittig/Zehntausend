@@ -11,11 +11,13 @@ public class Player
     private int score = 0;
     private String playerName = null;
     private ArrayList<Turn> turnArrayList;
+    private Settings settings;
 
-    public Player(int playerNumber)
+    public Player(int playerNumber, Settings settings)
     {
         turnArrayList = new ArrayList<>();
         remainingDices = new ArrayList<>();
+        this.settings = settings;
         initDice();
         this.playerNumber = playerNumber;
     }
@@ -23,7 +25,7 @@ public class Player
     public void initDice()
     {
         remainingDices.clear();
-        for (int i = 0; i < Settings.TOTAL_DICE_NUMBER; i++)
+        for (int i = 0; i < settings.getTotalDiceNumber(); i++)
         {
             Dice dice = new Dice();
             dice.roll();
@@ -97,8 +99,8 @@ public class Player
 
     public void addToScore(int number)
     {
-        if (number >= Settings.MIN_SCORE_REQUIRED_TO_SAVE_IN_ROUND)
-            score += number;
+        // TODO: 12.07.16 check if this is bad //if(number <= 300)
+        score += number;
     }
 
     public String getPlayerName()

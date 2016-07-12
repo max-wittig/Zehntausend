@@ -11,10 +11,12 @@ class Game
     private ArrayList<Player> players;
     //shows which players turn it is currently
     private int currentPlayerNumber = 0;
+    private Settings settings;
 
 
     public Game()
     {
+        settings = new Settings();
         players = new ArrayList<>();
         initPlayers();
 
@@ -22,9 +24,9 @@ class Game
 
     private void initPlayers()
     {
-        for (int i = 0; i < Settings.TOTAL_PLAYERS; i++)
+        for (int i = 0; i < settings.getTotalPlayers(); i++)
         {
-            Player player = new Player(i);
+            Player player = new Player(i, settings);
             players.add(player);
         }
     }
@@ -33,7 +35,7 @@ class Game
     //if he doesn't draw any dices
     public boolean minScoreReached()
     {
-        if (Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getLastTurn().getRoundArrayList()) >= Settings.MIN_SCORE_REQUIRED_TO_SAVE_IN_ROUND)
+        if (Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getLastTurn().getRoundArrayList(), settings) >= settings.getMinScoreRequiredToSaveInRound())
         {
             return true;
         }
@@ -45,7 +47,7 @@ class Game
 
     public boolean winScoreReached()
     {
-        if (getCurrentPlayer().getScore() + Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getLastTurn().getRoundArrayList()) >= Settings.MIN_SCORE_REQUIRED_TO_WIN && isValidState(State.WIN))
+        if (getCurrentPlayer().getScore() + Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getLastTurn().getRoundArrayList(), settings) >= settings.getMinScoreRequiredToWin() && isValidState(State.WIN))
             return true;
         else
             return false;
@@ -78,9 +80,9 @@ class Game
                 //checks if there are any multiplications of dice (3 times 2 == 200, 3 times 3 == 300 etc...)
                 //if so gameState is valid
                 boolean valid = (Scoring.containsMultiple(dicesSinceLastRoll)
-                        || Scoring.isStreet(dicesSinceLastRoll)
-                        || Scoring.isSixDicesInARow(dicesSinceLastRoll)
-                        || Scoring.isThreeTimesTwo(dicesSinceLastRoll));
+                        || Scoring.isStreet(dicesSinceLastRoll, settings.isStreetEnabled())
+                        || Scoring.isSixDicesInARow(dicesSinceLastRoll, settings)
+                        || Scoring.isThreeTimesTwo(dicesSinceLastRoll, settings));
                 return valid;
             }
         }
@@ -105,7 +107,7 @@ class Game
         int numberOfDicesInLastRoll = getCurrentPlayer().getLastTurn().getLastRound().getLastRoll().getDrawnDices().size();
         if (numberOfDicesInLastRoll > 0 && !winScoreReached() && minScoreReached())
         {
-            getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getLastTurn().getRoundArrayList()));
+            getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getLastTurn().getRoundArrayList(), settings));
         }
         else
         {
@@ -122,7 +124,7 @@ class Game
             getCurrentPlayer().nextTurn();
             getCurrentPlayer().getLastTurn().nextRound();
 
-            if (currentPlayerNumber < Settings.TOTAL_PLAYERS - 1)
+            if (currentPlayerNumber < settings.getTotalPlayers() - 1)
             {
                 currentPlayerNumber++;
             }
@@ -138,4 +140,8 @@ class Game
         return players.get(currentPlayerNumber);
     }
 
+    public Settings getSettings()
+    {
+        return settings;
+    }
 }

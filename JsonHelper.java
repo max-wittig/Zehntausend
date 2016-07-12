@@ -2,13 +2,11 @@ package com.spaghettic0der;
 
 
 import com.google.gson.Gson;
-import jdk.nashorn.internal.ir.debug.JSONWriter;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.util.ArrayList;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 
 public class JsonHelper
 {
@@ -33,6 +31,23 @@ public class JsonHelper
         {
             System.out.println(e);
         }
+
+    }
+
+    public Game loadGameState()
+    {
+        try
+        {
+            String json = new String(Files.readAllBytes(Paths.get("game.json")));
+            Game game = gson.fromJson(json, Game.class);
+            return game;
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+
+        return null;
 
     }
 }

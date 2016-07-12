@@ -34,9 +34,9 @@ public class Scoring
         return false;
     }
 
-    public static boolean isStreet(ArrayList<Dice> dices)
+    public static boolean isStreet(ArrayList<Dice> dices, boolean streetEnabled)
     {
-        if (Settings.STREET_ENABLED)
+        if (streetEnabled)
         {
             if (containsDiceNumber(1, dices) && containsDiceNumber(2, dices) &&
                     containsDiceNumber(3, dices) && containsDiceNumber(4, dices) &&
@@ -54,20 +54,20 @@ public class Scoring
     }
 
 
-    public static int getScoreFromAllDicesInRound(ArrayList<Round> roundArrayList)
+    public static int getScoreFromAllDicesInRound(ArrayList<Round> roundArrayList, Settings settings)
     {
         int sum = 0;
         for (Round currentRound : roundArrayList)
         {
             for (Roll currentRoll : currentRound.getRollArrayList())
             {
-                sum += getScoreFromDicesInRoll(currentRoll.getDrawnDices());
+                sum += getScoreFromDicesInRoll(currentRoll.getDrawnDices(), settings);
             }
         }
         return sum;
     }
 
-    public static int getScoreFromAllDices(ArrayList<Turn> turnArrayList)
+    public static int getScoreFromAllDices(ArrayList<Turn> turnArrayList, Settings settings)
     {
         int sum = 0;
         for (Turn currentTurn : turnArrayList)
@@ -78,7 +78,7 @@ public class Scoring
                 {
                     for (Roll currentRoll : currentRound.getRollArrayList())
                     {
-                        sum += getScoreFromDicesInRoll(currentRoll.getDrawnDices());
+                        sum += getScoreFromDicesInRoll(currentRoll.getDrawnDices(), settings);
                     }
                 }
             }
@@ -122,24 +122,24 @@ public class Scoring
     }
 
     //dices are all thrown in one roll
-    private static int getScoreFromDicesInRoll(ArrayList<Dice> dices)
+    private static int getScoreFromDicesInRoll(ArrayList<Dice> dices, Settings settings)
     {
         HashMap<Integer, Integer> diceHashMap = getDiceHashMap(dices);
         int score = 0;
 
-        if (isStreet(dices))
+        if (isStreet(dices, settings.isStreetEnabled()))
         {
-            return Settings.SCORE_STREET;
+            return settings.getScoreStreet();
         }
 
-        if (isThreeTimesTwo(dices))
+        if (isThreeTimesTwo(dices, settings))
         {
-            return Settings.SCORE_THREE_X_TWO;
+            return settings.getScoreThreeXTwo();
         }
 
-        if (isSixDicesInARow(dices))
+        if (isSixDicesInARow(dices, settings))
         {
-            return Settings.SCORE_SIX_DICES_IN_A_ROW;
+            return settings.getScoreSixDicesInARow();
         }
 
         //normal cases
@@ -189,9 +189,9 @@ public class Scoring
         return score;
     }
 
-    public static boolean isThreeTimesTwo(ArrayList<Dice> dices)
+    public static boolean isThreeTimesTwo(ArrayList<Dice> dices, Settings settings)
     {
-        if (Settings.THREE_X_TWO_ENABLED)
+        if (settings.isThreeXTwoEnabled())
         {
             HashMap<Integer, Integer> diceHashMap = getDiceHashMap(dices);
             int numberOfDicesWithTwoOccurrences = 0;
@@ -218,14 +218,14 @@ public class Scoring
         }
     }
 
-    public static boolean isSixDicesInARow(ArrayList<Dice> dices)
+    public static boolean isSixDicesInARow(ArrayList<Dice> dices, Settings settings)
     {
-        if (Settings.SIX_DICES_IN_A_ROW_ENABLED)
+        if (settings.isSixDicesInARowEnabled())
         {
             HashMap<Integer, Integer> diceHashMap = getDiceHashMap(dices);
             for (Integer key : diceHashMap.keySet())
             {
-                if (diceHashMap.get(key) >= Settings.TOTAL_DICE_NUMBER)
+                if (diceHashMap.get(key) >= settings.getTotalDiceNumber())
                 {
                     return true;
                 }

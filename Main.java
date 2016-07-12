@@ -1,7 +1,6 @@
 package com.spaghettic0der;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -10,12 +9,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 public class Main extends Application
 {
@@ -52,9 +48,9 @@ public class Main extends Application
         createRemainingDiceButtons();
         createDrawnDiceButtons();
         currentPlayerLabel.setText("Current Player: " + (game.getCurrentPlayer().getPlayerNumber() + 1));
-        scoreLabel.setText("Score: " + (game.getCurrentPlayer().getScore() + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getLastTurn().getRoundArrayList())));
-        scoreInRoundLabel.setText("Score in Round: " + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getLastTurn().getRoundArrayList()));
-        System.out.println(Scoring.getScoreFromAllDices(game.getCurrentPlayer().getTurnArrayList()));
+        scoreLabel.setText("Score: " + (game.getCurrentPlayer().getScore() + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getLastTurn().getRoundArrayList(), game.getSettings())));
+        scoreInRoundLabel.setText("Score in Round: " + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getLastTurn().getRoundArrayList(), game.getSettings()));
+        System.out.println(Scoring.getScoreFromAllDices(game.getCurrentPlayer().getTurnArrayList(), game.getSettings()));
     }
 
     private void createDrawnDiceButtons()
@@ -148,14 +144,15 @@ public class Main extends Application
 
     private void initSettingsStage(Stage primaryStage)
     {
+        Settings settings = game.getSettings();
         BorderPane borderPane = new BorderPane();
-        Scene settingsScene = new Scene(borderPane, Settings.WIDTH, Settings.HEIGHT);
+        Scene settingsScene = new Scene(borderPane, settings.getWidth(), settings.getHeight());
         VBox vBox = new VBox();
 
         //player count
         HBox playerHBox = new HBox();
         Label playerLabel = new Label("Players:");
-        Slider playerSlider = new Slider(2, 6, Settings.TOTAL_PLAYERS);
+        Slider playerSlider = new Slider(2, 6, settings.getTotalPlayers());
         playerSlider.setMajorTickUnit(1);
         playerSlider.setMinorTickCount(0);
         playerSlider.setSnapToTicks(true);
@@ -169,7 +166,7 @@ public class Main extends Application
         //dice count
         HBox diceHBox = new HBox();
         Label diceLabel = new Label("Dices:");
-        Slider diceSlider = new Slider(4, 10, Settings.TOTAL_DICE_NUMBER);
+        Slider diceSlider = new Slider(4, 10, settings.getTotalDiceNumber());
         diceSlider.setMajorTickUnit(1);
         diceSlider.setMinorTickCount(0);
         diceSlider.setSnapToTicks(true);
@@ -183,7 +180,7 @@ public class Main extends Application
         //win score
         HBox winScoreHBox = new HBox();
         Label winScoreLabel = new Label("Win Score:");
-        TextField winScoreTextField = new TextField("" + Settings.MIN_SCORE_REQUIRED_TO_WIN);
+        TextField winScoreTextField = new TextField("" + settings.getMinScoreRequiredToWin());
         winScoreHBox.getChildren().addAll(winScoreLabel, winScoreTextField);
         HBox.setHgrow(winScoreTextField, Priority.ALWAYS);
         HBox.setMargin(winScoreTextField, new Insets(-3, 0, 0, 0));
@@ -194,7 +191,7 @@ public class Main extends Application
         //minsave Score
         HBox minScoreHBox = new HBox();
         Label minScoreLabel = new Label("Min Score to save:");
-        TextField minScoreTextField = new TextField("" + Settings.MIN_SCORE_REQUIRED_TO_SAVE_IN_ROUND);
+        TextField minScoreTextField = new TextField("" + settings.getMinScoreRequiredToSaveInRound());
         minScoreHBox.getChildren().addAll(minScoreLabel, minScoreTextField);
         HBox.setHgrow(minScoreTextField, Priority.ALWAYS);
         HBox.setMargin(minScoreTextField, new Insets(-3, 0, 0, 0));
@@ -207,9 +204,9 @@ public class Main extends Application
         //street
         HBox streetHBox = new HBox();
         ToggleButton streetToggleButton = new ToggleButton("Street");
-        streetToggleButton.setSelected(Settings.STREET_ENABLED);
+        streetToggleButton.setSelected(game.getSettings().isStreetEnabled());
 
-        TextField streetTextField = new TextField("" + Settings.SCORE_STREET);
+        TextField streetTextField = new TextField("" + settings.getScoreStreet());
         streetHBox.getChildren().addAll(streetToggleButton, streetTextField);
         vBox.getChildren().add(streetHBox);
         HBox.setMargin(streetToggleButton, new Insets(0, 20, 0, 20));
@@ -253,12 +250,13 @@ public class Main extends Application
             @Override
             public void handle(ActionEvent event)
             {
-                Settings.TOTAL_PLAYERS = (int) playerSlider.getValue();
-                Settings.TOTAL_DICE_NUMBER = (int) diceSlider.getValue();
-                Settings.MIN_SCORE_REQUIRED_TO_WIN = Integer.parseInt(winScoreTextField.getText());
+                Settings settings = game.getSettings();
+                settings.setTotalPlayers((int) playerSlider.getValue());
+                settings.setTotalDiceNumber((int) diceSlider.getValue());
+                settings.setMinScoreRequiredToWin(Integer.parseInt(winScoreTextField.getText()));
 
-                Settings.STREET_ENABLED = streetToggleButton.isSelected();
-                Settings.SCORE_STREET = Integer.parseInt(streetTextField.getText());
+                settings.setStreetEnabled(streetToggleButton.isSelected());
+                settings.setScoreStreet(Integer.parseInt(streetTextField.getText()));
                 game = new Game();
                 updateUI();
                 settingsStage.close();
@@ -304,6 +302,15 @@ public class Main extends Application
             }
         });
         MenuItem loadItem = new MenuItem("Load");
+        loadItem.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                game = jsonHelper.loadGameState();
+                updateUI();
+            }
+        });
         MenuItem saveItem = new MenuItem("Save");
         saveItem.setOnAction(new EventHandler<ActionEvent>()
         {
@@ -410,7 +417,7 @@ public class Main extends Application
         vBox.getChildren().add(scoreInRoundLabel);
 
         vBox.setAlignment(Pos.CENTER);
-        mainScene = new Scene(root, Settings.WIDTH, Settings.HEIGHT);
+        mainScene = new Scene(root, game.getSettings().getWidth(), game.getSettings().getHeight());
         primaryStage.setScene(mainScene);
         primaryStage.show();
 
