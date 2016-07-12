@@ -13,7 +13,7 @@ public class Settings
     public static int SCORE_STREET = 1500;
 
     public static int MIN_SCORE_REQUIRED_TO_SAVE_IN_ROUND = 300;
-    public static int MIN_SCORE_REQUIRED_TO_WIN = 10000;
+    public static int MIN_SCORE_REQUIRED_TO_WIN = 5000;
 
 
     public static boolean THREE_X_TWO_ENABLED = true; //2x3 -> 2,2,4,4,6,6 --> 1000 points

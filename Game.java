@@ -43,7 +43,7 @@ class Game
 
     public boolean winScoreReached()
     {
-        if (Scoring.getScoreFromAllDices(getCurrentPlayer().getTurnArrayList()) >= Settings.MIN_SCORE_REQUIRED_TO_WIN && isValidState(State.WIN))
+        if (getCurrentPlayer().getScore() + Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getLastTurn().getRoundArrayList()) >= Settings.MIN_SCORE_REQUIRED_TO_WIN && isValidState(State.WIN))
             return true;
         else
             return false;
@@ -105,6 +105,10 @@ class Game
         if (numberOfDicesInLastRoll > 0 && !winScoreReached() && minScoreReached())
         {
             getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getLastTurn().getRoundArrayList()));
+        }
+        else
+        {
+            getCurrentPlayer().getLastTurn().getLastRound().setValid(false);
         }
 
         if (winScoreReached())

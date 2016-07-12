@@ -33,7 +33,6 @@ public class Main extends Application
     private Label scoreInRoundLabel;
     private Stage settingsStage;
     private Scene mainScene;
-
     public static void main(String[] args)
     {
         Application.launch(args);
@@ -48,6 +47,7 @@ public class Main extends Application
         currentPlayerLabel.setText("Current Player: " + (game.getCurrentPlayer().getPlayerNumber() + 1));
         scoreLabel.setText("Score: " + (game.getCurrentPlayer().getScore() + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getLastTurn().getRoundArrayList())));
         scoreInRoundLabel.setText("Score in Round: " + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getLastTurn().getRoundArrayList()));
+        System.out.println(Scoring.getScoreFromAllDices(game.getCurrentPlayer().getTurnArrayList()));
     }
 
     private void createDrawnDiceButtons()

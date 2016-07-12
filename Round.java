@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Round
 {
     private ArrayList<Roll> rollArrayList;
+    private boolean isValid = true;
 
     public Round()
     {
@@ -14,6 +15,16 @@ public class Round
     public ArrayList<Roll> getRollArrayList()
     {
         return rollArrayList;
+    }
+
+    public boolean isValid()
+    {
+        return isValid;
+    }
+
+    public void setValid(boolean valid)
+    {
+        isValid = valid;
     }
 
     public Roll getLastRoll()

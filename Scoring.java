@@ -74,9 +74,12 @@ public class Scoring
         {
             for (Round currentRound : currentTurn.getRoundArrayList())
             {
-                for (Roll currentRoll : currentRound.getRollArrayList())
+                if (currentRound.isValid())
                 {
-                    sum += getScoreFromDicesInRoll(currentRoll.getDrawnDices());
+                    for (Roll currentRoll : currentRound.getRollArrayList())
+                    {
+                        sum += getScoreFromDicesInRoll(currentRoll.getDrawnDices());
+                    }
                 }
             }
         }
