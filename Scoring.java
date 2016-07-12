@@ -19,6 +19,8 @@ public class Scoring
         return false;
     }
 
+    //don't use doesn't work
+    /*
     public static boolean containsDiceNumbers(ArrayList<Integer> numbers, ArrayList<Dice> dices)
     {
         for (int number : numbers)
@@ -33,7 +35,7 @@ public class Scoring
         }
         return false;
     }
-
+*/
     public static boolean isStreet(ArrayList<Dice> dices, boolean streetEnabled)
     {
         if (streetEnabled)
@@ -132,12 +134,12 @@ public class Scoring
             return settings.getScoreStreet();
         }
 
-        if (isThreeTimesTwo(dices, settings))
+        if (isThreeTimesTwo(dices, settings.isThreeXTwoEnabled()))
         {
             return settings.getScoreThreeXTwo();
         }
 
-        if (isSixDicesInARow(dices, settings))
+        if (isSixDicesInARow(dices, settings.isSixDicesInARowEnabled(), settings.getTotalDiceNumber()))
         {
             return settings.getScoreSixDicesInARow();
         }
@@ -189,9 +191,9 @@ public class Scoring
         return score;
     }
 
-    public static boolean isThreeTimesTwo(ArrayList<Dice> dices, Settings settings)
+    public static boolean isThreeTimesTwo(ArrayList<Dice> dices, boolean threeXTwoEnabled)
     {
-        if (settings.isThreeXTwoEnabled())
+        if (threeXTwoEnabled)
         {
             HashMap<Integer, Integer> diceHashMap = getDiceHashMap(dices);
             int numberOfDicesWithTwoOccurrences = 0;
@@ -218,14 +220,14 @@ public class Scoring
         }
     }
 
-    public static boolean isSixDicesInARow(ArrayList<Dice> dices, Settings settings)
+    public static boolean isSixDicesInARow(ArrayList<Dice> dices, boolean sixDicesInARowEnabled, int totalDiceNumber)
     {
-        if (settings.isSixDicesInARowEnabled())
+        if (sixDicesInARowEnabled)
         {
             HashMap<Integer, Integer> diceHashMap = getDiceHashMap(dices);
             for (Integer key : diceHashMap.keySet())
             {
-                if (diceHashMap.get(key) >= settings.getTotalDiceNumber())
+                if (diceHashMap.get(key) >= totalDiceNumber)
                 {
                     return true;
                 }

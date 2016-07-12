@@ -13,13 +13,11 @@ class Game
     private int currentPlayerNumber = 0;
     private Settings settings;
 
-
-    public Game()
+    public Game(Settings settings)
     {
-        settings = new Settings();
+        this.settings = settings;
         players = new ArrayList<>();
         initPlayers();
-
     }
 
     private void initPlayers()
@@ -81,8 +79,8 @@ class Game
                 //if so gameState is valid
                 boolean valid = (Scoring.containsMultiple(dicesSinceLastRoll)
                         || Scoring.isStreet(dicesSinceLastRoll, settings.isStreetEnabled())
-                        || Scoring.isSixDicesInARow(dicesSinceLastRoll, settings)
-                        || Scoring.isThreeTimesTwo(dicesSinceLastRoll, settings));
+                        || Scoring.isSixDicesInARow(dicesSinceLastRoll, settings.isSixDicesInARowEnabled(), settings.getTotalDiceNumber())
+                        || Scoring.isThreeTimesTwo(dicesSinceLastRoll, settings.isThreeXTwoEnabled()));
                 return valid;
             }
         }
@@ -143,5 +141,10 @@ class Game
     public Settings getSettings()
     {
         return settings;
+    }
+
+    public void setSettings(Settings settings)
+    {
+        this.settings = settings;
     }
 }

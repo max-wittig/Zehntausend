@@ -30,10 +30,12 @@ public class Main extends Application
     private Stage settingsStage;
     private Scene mainScene;
     private JsonHelper jsonHelper;
+    private Settings settings;
 
     public Main()
     {
         jsonHelper = new JsonHelper();
+        settings = new Settings();
     }
 
     public static void main(String[] args)
@@ -257,7 +259,7 @@ public class Main extends Application
 
                 settings.setStreetEnabled(streetToggleButton.isSelected());
                 settings.setScoreStreet(Integer.parseInt(streetTextField.getText()));
-                game = new Game();
+                game = new Game(settings);
                 updateUI();
                 settingsStage.close();
             }
@@ -288,7 +290,7 @@ public class Main extends Application
             @Override
             public void handle(ActionEvent event)
             {
-                game = new Game();
+                game = new Game(settings);
                 updateUI();
             }
         });
@@ -426,7 +428,7 @@ public class Main extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-        game = new Game();
+        game = new Game(settings);
         initUI(primaryStage);
         game.getCurrentPlayer().rollDice();
         updateUI();
