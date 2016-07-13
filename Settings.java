@@ -22,6 +22,18 @@ public class Settings
     private boolean sixDicesInARowEnabled = true;
     private int scoreSixDicesInARow = minScoreRequiredToWin; //can be ajusted
 
+    private boolean diceImageShown = true;
+
+    public boolean isDiceImageShown()
+    {
+        return diceImageShown;
+    }
+
+    public void setDiceImageShown(boolean diceImageShown)
+    {
+        this.diceImageShown = diceImageShown;
+    }
+
     public int getWidth()
     {
         return width;

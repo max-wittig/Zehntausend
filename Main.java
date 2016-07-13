@@ -7,6 +7,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -62,10 +64,19 @@ public class Main extends Application
         for (int i = 0; i < dices.size(); i++)
         {
             Dice currentDice = dices.get(i);
-            Button diceButton = new Button("" + dices.get(i).getDiceNumber());
+            Button diceButton = new Button();
             diceButton.setPrefWidth(diceButtonSize);
             diceButton.setPrefHeight(diceButtonSize);
             diceButton.setFont(new Font(buttonFontSize));
+            if (settings.isDiceImageShown())
+            {
+                String diceImageLocation = "res/" + dices.get(i).getDiceNumber() + ".png";
+                setDiceImage(diceButton, diceImageLocation);
+            }
+            else
+            {
+                diceButton.setText("" + dices.get(i).getDiceNumber());
+            }
 
             //checks if dices are in last roll -> if so you can still move them back --> yellowgreen color
             if (game.getCurrentPlayer().getLastTurn().getLastRound().getLastRoll().getDrawnDices().contains(dices.get(i)))
@@ -90,18 +101,37 @@ public class Main extends Application
         }
     }
 
+    private void setDiceImage(Button diceButton, String diceImageLocation)
+    {
+
+        Image image = new Image(getClass().getResourceAsStream(diceImageLocation));
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(diceButtonSize / 2);
+        imageView.setFitHeight(diceButtonSize / 2);
+        diceButton.setGraphic(imageView);
+    }
+
     private void createRemainingDiceButtons()
     {
         final ArrayList<Dice> dices = game.getCurrentPlayer().getRemainingDices();
         for(int i=0; i < game.getCurrentPlayer().getRemainingDices().size(); i++)
         {
             Dice currentDice = dices.get(i);
-            Button diceButton = new Button("" + game.getCurrentPlayer().getRemainingDices().get(i).getDiceNumber());
+            Button diceButton = new Button();
             diceButton.setPrefWidth(diceButtonSize);
             diceButton.setPrefHeight(diceButtonSize);
             diceButton.setStyle("-fx-background-color: greenyellow; -fx-border-color: gray");
             diceButton.setFont(new Font(buttonFontSize));
             diceButton.setId("" + i);
+            if (settings.isDiceImageShown())
+            {
+                String diceImageLocation = "res/" + dices.get(i).getDiceNumber() + ".png";
+                setDiceImage(diceButton, diceImageLocation);
+            }
+            else
+            {
+                diceButton.setText("" + game.getCurrentPlayer().getRemainingDices().get(i).getDiceNumber());
+            }
             diceButton.setOnAction(new EventHandler<ActionEvent>()
             {
                 @Override
