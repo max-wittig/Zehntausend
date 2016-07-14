@@ -92,8 +92,6 @@ public class Scoring
     public static boolean containsMultiple(ArrayList<Dice> dices)
     {
         HashMap<Integer, Integer> diceHashMap = getDiceHashMap(dices);
-        System.out.println(diceHashMap.keySet());
-        System.out.println(diceHashMap.values());
         for (Integer key : diceHashMap.keySet())
         {
             if (key != 5 && key != 1)
@@ -199,7 +197,7 @@ public class Scoring
             int numberOfDicesWithTwoOccurrences = 0;
             for (Integer key : diceHashMap.keySet())
             {
-                if (diceHashMap.get(key) == 2) // FIXME: 15.07.16 
+                if (diceHashMap.get(key) == 2) // FIXME: 15.07.16
                 {
                     numberOfDicesWithTwoOccurrences++;
                 }

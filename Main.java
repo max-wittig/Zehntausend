@@ -295,6 +295,7 @@ public class Main extends Application
                 settings.setScoreStreet(Integer.parseInt(streetTextField.getText()));
                 game = new Game(settings);
                 updateUI();
+                clearScoreList();
                 settingsStage.close();
             }
         });
@@ -326,8 +327,7 @@ public class Main extends Application
             {
                 game = new Game(settings);
                 updateUI();
-                observableList.clear();
-                addPlayersToListView();
+                clearScoreList();
             }
         });
         MenuItem settingsItem = new MenuItem("Settings");
@@ -378,6 +378,12 @@ public class Main extends Application
 
         menuBar.getMenus().addAll(gameMenu, aboutMenu);
         root.setTop(menuBar);
+    }
+
+    private void clearScoreList()
+    {
+        observableList.clear();
+        addPlayersToListView();
     }
 
     private void addPlayersToListView()

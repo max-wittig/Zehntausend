@@ -26,7 +26,6 @@ public class Roll
             if (toRemove.getDiceNumber() == number)
             {
                 getDrawnDices().remove(toRemove);
-                System.out.println("Removed: " + toRemove.getDiceNumber());
                 break;
             }
         }
