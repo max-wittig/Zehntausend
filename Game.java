@@ -28,7 +28,6 @@ class Game
             players.add(player);
         }
     }
-
     //resets dices currently in roll to zero, so that the player cannot continue
     //if he doesn't draw any dices
     public boolean minScoreReached()

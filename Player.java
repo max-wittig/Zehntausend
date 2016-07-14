@@ -15,6 +15,7 @@ public class Player
 
     public Player(int playerNumber, Settings settings)
     {
+        playerName = "Player " + (playerNumber + 1);
         turnArrayList = new ArrayList<>();
         remainingDices = new ArrayList<>();
         this.settings = settings;

@@ -199,7 +199,7 @@ public class Scoring
             int numberOfDicesWithTwoOccurrences = 0;
             for (Integer key : diceHashMap.keySet())
             {
-                if (diceHashMap.get(key) >= 2)
+                if (diceHashMap.get(key) == 2) // FIXME: 15.07.16 
                 {
                     numberOfDicesWithTwoOccurrences++;
                 }

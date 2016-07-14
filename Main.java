@@ -13,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class Main extends Application
     private JsonHelper jsonHelper;
     private Settings settings;
     private VBox centerVBox;
-    private ObservableList<String> observableList;
+    private ObservableList<HBox> observableList;
 
     public Main()
     {
@@ -58,7 +59,6 @@ public class Main extends Application
         currentPlayerLabel.setText("Current Player: " + (game.getCurrentPlayer().getPlayerNumber() + 1));
         scoreLabel.setText("Score: " + (game.getCurrentPlayer().getScore() + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getLastTurn().getRoundArrayList(), game.getSettings())));
         scoreInRoundLabel.setText("Score in Round: " + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getLastTurn().getRoundArrayList(), game.getSettings()));
-        System.out.println(Scoring.getScoreFromAllDices(game.getCurrentPlayer().getTurnArrayList(), game.getSettings()));
     }
 
     private void createDrawnDiceButtons()
@@ -326,6 +326,8 @@ public class Main extends Application
             {
                 game = new Game(settings);
                 updateUI();
+                observableList.clear();
+                addPlayersToListView();
             }
         });
         MenuItem settingsItem = new MenuItem("Settings");
@@ -380,28 +382,39 @@ public class Main extends Application
 
     private void addPlayersToListView()
     {
-        StringBuilder stringBuilder = new StringBuilder();
+        HBox hBox = new HBox();
+        hBox.setPrefWidth(settings.getWidth() - 20);
         for (Player player : game.getPlayers())
         {
-            stringBuilder.append("Player " + (player.getPlayerNumber() + 1) + "\t");
+            Label label = new Label(player.getPlayerName());
+            label.setAlignment(Pos.CENTER);
+            label.setPrefWidth(hBox.getPrefWidth() / game.getPlayers().size());
+            hBox.getChildren().add(label);
+            HBox.setHgrow(label, Priority.ALWAYS);
         }
-        observableList.add(stringBuilder.toString());
+
+        observableList.add(hBox);
     }
 
     private void addScoreOfPlayersToListView()
     {
-        StringBuilder stringBuilder = new StringBuilder();
+        HBox hBox = new HBox();
+        hBox.setPrefWidth(settings.getWidth() - 20);
         for (Player player : game.getPlayers())
         {
-            stringBuilder.append(player.getScore() + "\t");
+            Label label = new Label("" + player.getScore());
+            label.setAlignment(Pos.CENTER);
+            label.setPrefWidth(hBox.getPrefWidth() / game.getPlayers().size());
+            hBox.getChildren().add(label);
+            HBox.setHgrow(label, Priority.ALWAYS);
         }
-        observableList.add(stringBuilder.toString());
+        observableList.add(hBox);
     }
 
     private void initListView()
     {
         observableList = FXCollections.observableArrayList();
-        ListView<String> listView = new ListView<>(observableList);
+        ListView<HBox> listView = new ListView<>(observableList);
         listView.setMaxHeight(settings.getHeight() / 3);
         root.setBottom(listView);
     }
@@ -498,8 +511,8 @@ public class Main extends Application
     {
         game = new Game(settings);
         initUI(primaryStage);
-        //game.getCurrentPlayer().rollDice();
         addPlayersToListView();
+        //game.getCurrentPlayer().rollDice();
         updateUI();
     }
 }
