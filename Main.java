@@ -1,6 +1,8 @@
 package com.spaghettic0der;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -33,6 +35,8 @@ public class Main extends Application
     private Scene mainScene;
     private JsonHelper jsonHelper;
     private Settings settings;
+    private VBox centerVBox;
+    private ObservableList<String> observableList;
 
     public Main()
     {
@@ -40,7 +44,7 @@ public class Main extends Application
         settings = new Settings();
     }
 
-    public static void main(String[] args)
+    public static void main(String[] args) throws Exception
     {
         Application.launch(args);
     }
@@ -374,11 +378,40 @@ public class Main extends Application
         root.setTop(menuBar);
     }
 
+    private void addPlayersToListView()
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Player player : game.getPlayers())
+        {
+            stringBuilder.append(player.getPlayerNumber() + "\t");
+        }
+        observableList.add(stringBuilder.toString());
+    }
+
+    private void addScoreOfPlayersToListView()
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Player player : game.getPlayers())
+        {
+            stringBuilder.append(player.getScore() + "\t");
+        }
+        observableList.add(stringBuilder.toString());
+    }
+
+    private void initListView()
+    {
+        observableList = FXCollections.observableArrayList();
+        ListView<String> listView = new ListView<>(observableList);
+        listView.setMaxHeight(settings.getHeight() / 3);
+        listView.setStyle("-fx-alignment: CENTER");
+        root.setBottom(listView);
+    }
+
     private void initUI(Stage primaryStage)
     {
         root = new BorderPane();
-        VBox vBox = new VBox();
-        root.setCenter(vBox);
+        centerVBox = new VBox();
+        root.setCenter(centerVBox);
         initMenu(primaryStage);
         remainingDiceHBox = new HBox();
         remainingDiceHBox.setMinHeight(diceButtonSize);
@@ -420,6 +453,8 @@ public class Main extends Application
                 {
                     game.nextPlayer();
                     updateUI();
+                    if (game.getCurrentPlayerNumber() == 0)
+                        addScoreOfPlayersToListView();
                 }
                 else
                 {
@@ -438,19 +473,23 @@ public class Main extends Application
         VBox buttonBox = new VBox(rollButton, nextButton);
         buttonBox.setPadding(new Insets(0, 0, 20, 0));
         buttonBox.setAlignment(Pos.CENTER);
-        vBox.getChildren().add(buttonBox);
+        centerVBox.getChildren().add(buttonBox);
         createRemainingDiceButtons();
-        vBox.getChildren().add(remainingDiceHBox);
-        vBox.getChildren().add(drawnDiceHBox);
+        centerVBox.getChildren().add(remainingDiceHBox);
+        centerVBox.getChildren().add(drawnDiceHBox);
         VBox.setMargin(drawnDiceHBox, new Insets(5, 0, 20, 0));
 
-        vBox.getChildren().add(currentPlayerLabel);
-        vBox.getChildren().add(scoreLabel);
-        vBox.getChildren().add(scoreInRoundLabel);
+        centerVBox.getChildren().add(currentPlayerLabel);
+        centerVBox.getChildren().add(scoreLabel);
+        centerVBox.getChildren().add(scoreInRoundLabel);
 
-        vBox.setAlignment(Pos.CENTER);
+        centerVBox.setAlignment(Pos.CENTER);
         mainScene = new Scene(root, game.getSettings().getWidth(), game.getSettings().getHeight());
         primaryStage.setScene(mainScene);
+        primaryStage.setMinWidth(settings.getMinWidth());
+        primaryStage.setMinHeight(settings.getMinHeight());
+        primaryStage.setResizable(false);
+        initListView();
         primaryStage.show();
 
     }
@@ -461,6 +500,7 @@ public class Main extends Application
         game = new Game(settings);
         initUI(primaryStage);
         game.getCurrentPlayer().rollDice();
+        addPlayersToListView();
         updateUI();
     }
 }

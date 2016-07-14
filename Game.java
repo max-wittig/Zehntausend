@@ -147,4 +147,14 @@ class Game
     {
         this.settings = settings;
     }
+
+    public ArrayList<Player> getPlayers()
+    {
+        return players;
+    }
+
+    public int getCurrentPlayerNumber()
+    {
+        return currentPlayerNumber;
+    }
 }

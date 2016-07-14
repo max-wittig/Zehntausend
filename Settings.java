@@ -3,8 +3,11 @@ package com.spaghettic0der;
 
 public class Settings
 {
-    private int width = 640;
-    private int height = 480;
+    //oracle bug workaround
+    private int minWidth = 800;
+    private int minHeight = 800;
+    private int width = 800;
+    private int height = 800;
 
     private int totalDiceNumber = 6;
     private int totalPlayers = 3;
@@ -22,7 +25,17 @@ public class Settings
     private boolean sixDicesInARowEnabled = true;
     private int scoreSixDicesInARow = minScoreRequiredToWin; //can be ajusted
 
-    private boolean diceImageShown = true;
+    private boolean diceImageShown = false;
+
+    public int getMinWidth()
+    {
+        return minWidth;
+    }
+
+    public int getMinHeight()
+    {
+        return minHeight;
+    }
 
     public boolean isDiceImageShown()
     {
