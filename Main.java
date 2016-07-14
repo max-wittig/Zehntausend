@@ -383,7 +383,7 @@ public class Main extends Application
         StringBuilder stringBuilder = new StringBuilder();
         for (Player player : game.getPlayers())
         {
-            stringBuilder.append(player.getPlayerNumber() + "\t");
+            stringBuilder.append("Player " + (player.getPlayerNumber() + 1) + "\t");
         }
         observableList.add(stringBuilder.toString());
     }
@@ -403,7 +403,6 @@ public class Main extends Application
         observableList = FXCollections.observableArrayList();
         ListView<String> listView = new ListView<>(observableList);
         listView.setMaxHeight(settings.getHeight() / 3);
-        listView.setStyle("-fx-alignment: CENTER");
         root.setBottom(listView);
     }
 
@@ -499,7 +498,7 @@ public class Main extends Application
     {
         game = new Game(settings);
         initUI(primaryStage);
-        game.getCurrentPlayer().rollDice();
+        //game.getCurrentPlayer().rollDice();
         addPlayersToListView();
         updateUI();
     }

@@ -107,10 +107,6 @@ class Game
         {
             getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getLastTurn().getRoundArrayList(), settings));
         }
-        else
-        {
-            getCurrentPlayer().getLastTurn().getLastRound().setValid(false);
-        }
 
         if (winScoreReached())
         {

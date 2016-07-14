@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Round
 {
     private ArrayList<Roll> rollArrayList;
-    private boolean isValid = true;
 
     public Round()
     {
@@ -19,12 +18,14 @@ public class Round
 
     public boolean isValid()
     {
-        return isValid;
-    }
-
-    public void setValid(boolean valid)
-    {
-        isValid = valid;
+        for (Roll currentRoll : rollArrayList)
+        {
+            if (currentRoll.getDrawnDices().isEmpty())
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     public Roll getLastRoll()
