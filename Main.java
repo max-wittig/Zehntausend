@@ -16,6 +16,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Main extends Application
 {
@@ -56,8 +57,8 @@ public class Main extends Application
         createRemainingDiceButtons();
         createDrawnDiceButtons();
         currentPlayerLabel.setText("Current Player: " + (game.getCurrentPlayer().getPlayerNumber() + 1));
-        scoreLabel.setText("Score: " + (game.getCurrentPlayer().getScore() + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getCurrentTurn().getRoundArrayList(), game.getSettings())));
-        scoreInRoundLabel.setText("Score in Round: " + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getCurrentTurn().getRoundArrayList(), game.getSettings()));
+        scoreLabel.setText("Score: " + (game.getCurrentPlayer().getScore() + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getCurrentTurn().getRoundArrayList(), false, game.getSettings())));
+        scoreInRoundLabel.setText("Score in Round: " + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getCurrentTurn().getRoundArrayList(), false, game.getSettings()));
     }
 
     private void createDrawnDiceButtons()
@@ -346,7 +347,7 @@ public class Main extends Application
             {
                 game = jsonHelper.loadGameState();
                 updateUI();
-                //rebuildListView();
+                rebuildListView();
             }
         });
         MenuItem saveItem = new MenuItem("Save");
@@ -406,24 +407,43 @@ public class Main extends Application
     {
         observableList.clear();
         addPlayersToListView();
+
         for (int i = 0; i < game.getLongestTurnArrayList().size(); i++)
         {
             createEmptyLabelsInListView();
         }
-        for (int i = 0; i < observableList.size() - 1; i++)
+
+        HashMap<Integer, Integer> playerScoreHashMap = new HashMap<>();
+        for (int i = 1; i < observableList.size(); i++)
         {
-            for (Player currentPlayer : game.getPlayers())
+            HBox currentHBox = observableList.get(i);
+            for (int j = 0; j < currentHBox.getChildren().size(); j++)
             {
-                int score = 0;
-                score += Scoring.getScoreFromAllDicesInRound(currentPlayer.getTurnArrayList().get(i).getRoundArrayList(), settings);
-                HBox currentHBox = observableList.get(i);
-                Label label = (Label) currentHBox.getChildren().get(currentPlayer.getPlayerNumber());
-                label.setText("" + score);
+                if (playerScoreHashMap.get(j) == null)
+                {
+                    playerScoreHashMap.put(j, 0);
+                }
+
+                ArrayList<Turn> turnArrayList = game.getPlayers().get(j).getTurnArrayList();
+                if (turnArrayList != null && turnArrayList.size() > i)
+                {
+                    Turn currentTurn = turnArrayList.get(i - 1);
+                    if (currentTurn != null)
+                    {
+                        ArrayList<Round> roundArrayList = currentTurn.getRoundArrayList();
+                        if (roundArrayList != null)
+                        {
+                            playerScoreHashMap.put(j, playerScoreHashMap.get(j) + Scoring.getScoreFromAllDicesInRound(roundArrayList, true, settings));
+
+                            Label label = (Label) currentHBox.getChildren().get(j);
+                            if (label != null)
+                                label.setText("" + playerScoreHashMap.get(j));
+                        }
+                    }
+                }
             }
+
         }
-        HBox hBox = observableList.get(observableList.size() - 1);
-        Label label = (Label) hBox.getChildren().get(game.getPreviousPlayer().getPlayerNumber());
-        label.setText("" + game.getPreviousPlayer().getScore());
     }
 
     private void applyScoreToPlayersInListView()
@@ -438,6 +458,7 @@ public class Main extends Application
     {
         if (observableList.size() > 1)
         {
+            System.out.println(game.getPreviousPlayer().getTurnArrayList().size() + " - " + observableList.size());
             if (game.getPreviousPlayer().getTurnArrayList().size() > observableList.size())
             {
                 createEmptyLabelsInListView();

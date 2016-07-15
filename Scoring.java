@@ -56,15 +56,20 @@ public class Scoring
     }
 
 
-    public static int getScoreFromAllDicesInRound(ArrayList<Round> roundArrayList, Settings settings)
+    public static int getScoreFromAllDicesInRound(ArrayList<Round> roundArrayList, boolean validCheck, Settings settings)
     {
         int sum = 0;
         for (Round currentRound : roundArrayList)
         {
-            for (Roll currentRoll : currentRound.getRollArrayList())
+            if (currentRound.isValid() || !validCheck)
             {
-                sum += getScoreFromDicesInRoll(currentRoll.getDrawnDices(), settings);
+                for (Roll currentRoll : currentRound.getRollArrayList())
+                {
+                    sum += getScoreFromDicesInRoll(currentRoll.getDrawnDices(), settings);
+                }
+
             }
+
         }
         return sum;
     }

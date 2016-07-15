@@ -32,7 +32,7 @@ class Game
     //if he doesn't draw any dices
     public boolean minScoreReached()
     {
-        if (Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getCurrentTurn().getRoundArrayList(), settings) >= settings.getMinScoreRequiredToSaveInRound())
+        if (Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getCurrentTurn().getRoundArrayList(), true, settings) >= settings.getMinScoreRequiredToSaveInRound())
         {
             return true;
         }
@@ -44,7 +44,7 @@ class Game
 
     public boolean winScoreReached()
     {
-        if (getCurrentPlayer().getScore() + Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getCurrentTurn().getRoundArrayList(), settings) >= settings.getMinScoreRequiredToWin() && isValidState(State.WIN))
+        if (getCurrentPlayer().getScore() + Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getCurrentTurn().getRoundArrayList(), true, settings) >= settings.getMinScoreRequiredToWin() && isValidState(State.WIN))
             return true;
         else
             return false;
@@ -114,7 +114,7 @@ class Game
         int numberOfDicesInLastRoll = getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().size();
         if (numberOfDicesInLastRoll > 0 && !winScoreReached() && minScoreReached())
         {
-            getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getCurrentTurn().getRoundArrayList(), settings));
+            getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getCurrentTurn().getRoundArrayList(), true, settings));
         }
 
         if (winScoreReached())
