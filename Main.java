@@ -13,7 +13,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -402,13 +401,43 @@ public class Main extends Application
         observableList.add(hBox);
     }
 
-    private void addScoreOfPlayersToListView()
+    private void applyScoreToPlayersInListView()
+    {
+        HBox hBox = observableList.get(observableList.size() - 1);
+        Label label = (Label) hBox.getChildren().get(game.getPreviousPlayer().getPlayerNumber());
+        label.setText("" + game.getPreviousPlayer().getScore());
+    }
+
+    //always updates previous player, because we don't know the score of the current player
+    private void updateScoreOfPlayersInListView()
+    {
+        if (observableList.size() > 1)
+        {
+            if (game.getPreviousPlayer().getTurnArrayList().size() > observableList.size())
+            {
+                createEmptyLabelsInListView();
+                applyScoreToPlayersInListView();
+            }
+            else
+            {
+                applyScoreToPlayersInListView();
+            }
+        }
+        else
+        {
+            createEmptyLabelsInListView();
+            applyScoreToPlayersInListView();
+        }
+    }
+
+    //creates empty labels for each player
+    private void createEmptyLabelsInListView()
     {
         HBox hBox = new HBox();
         hBox.setPrefWidth(settings.getWidth() - 20);
-        for (Player player : game.getPlayers())
+        for (int i = 0; i < settings.getTotalPlayers(); i++)
         {
-            Label label = new Label("" + player.getScore());
+            Label label = new Label("");
             label.setAlignment(Pos.CENTER);
             label.setPrefWidth(hBox.getPrefWidth() / game.getPlayers().size());
             hBox.getChildren().add(label);
@@ -469,10 +498,11 @@ public class Main extends Application
             {
                 if (game.isValidState(State.NEXT))
                 {
+
                     game.nextPlayer();
+                    updateScoreOfPlayersInListView();
                     updateUI();
-                    if (game.getCurrentPlayerNumber() == 0)
-                        addScoreOfPlayersToListView();
+
                 }
                 else
                 {

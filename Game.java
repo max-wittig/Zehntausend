@@ -97,6 +97,16 @@ class Game
         alert.show();
     }
 
+    public Player getPreviousPlayer()
+    {
+        if (currentPlayerNumber > 0)
+            return players.get(currentPlayerNumber - 1);
+        else
+        {
+            return players.get(settings.getTotalPlayers() - 1);
+        }
+    }
+
     //cycles through players
     public void nextPlayer()
     {
