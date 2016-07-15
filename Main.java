@@ -56,13 +56,13 @@ public class Main extends Application
         createRemainingDiceButtons();
         createDrawnDiceButtons();
         currentPlayerLabel.setText("Current Player: " + (game.getCurrentPlayer().getPlayerNumber() + 1));
-        scoreLabel.setText("Score: " + (game.getCurrentPlayer().getScore() + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getLastTurn().getRoundArrayList(), game.getSettings())));
-        scoreInRoundLabel.setText("Score in Round: " + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getLastTurn().getRoundArrayList(), game.getSettings()));
+        scoreLabel.setText("Score: " + (game.getCurrentPlayer().getScore() + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getCurrentTurn().getRoundArrayList(), game.getSettings())));
+        scoreInRoundLabel.setText("Score in Round: " + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getCurrentTurn().getRoundArrayList(), game.getSettings()));
     }
 
     private void createDrawnDiceButtons()
     {
-        final ArrayList<Dice> dices = game.getCurrentPlayer().getLastTurn().getCurrentRound().getDrawnDices();
+        final ArrayList<Dice> dices = game.getCurrentPlayer().getCurrentTurn().getCurrentRound().getDrawnDices();
 
         for (int i = 0; i < dices.size(); i++)
         {
@@ -82,7 +82,7 @@ public class Main extends Application
             }
 
             //checks if dices are in last roll -> if so you can still move them back --> yellowgreen color
-            if (game.getCurrentPlayer().getLastTurn().getCurrentRound().getCurrentRoll().getDrawnDices().contains(dices.get(i)))
+            if (game.getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().contains(dices.get(i)))
             {
                 diceButton.setStyle("-fx-background-color: yellowgreen; -fx-border-color: gray");
             }
@@ -151,18 +151,18 @@ public class Main extends Application
     {
         ArrayList<Dice> remainingDices = game.getCurrentPlayer().getRemainingDices();
         remainingDices.remove(dice);
-        game.getCurrentPlayer().getLastTurn().getCurrentRound().getCurrentRoll().getDrawnDices().add(dice);
+        game.getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().add(dice);
         updateUI();
     }
 
     private void moveToRemainingDices(Dice dice)
     {
-        ArrayList<Dice> drawnDices = game.getCurrentPlayer().getLastTurn().getCurrentRound().getCurrentRoll().getDrawnDices();
+        ArrayList<Dice> drawnDices = game.getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices();
         if (drawnDices.size() > 0)
         {
             if (drawnDices.contains(dice))
             {
-                game.getCurrentPlayer().getLastTurn().getCurrentRound().getCurrentRoll().removeDiceWithNumber(dice.getDiceNumber());
+                game.getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().removeDiceWithNumber(dice.getDiceNumber());
                 game.getCurrentPlayer().getRemainingDices().add(dice);
                 updateUI();
             }
@@ -573,7 +573,6 @@ public class Main extends Application
         game = new Game(settings);
         initUI(primaryStage);
         addPlayersToListView();
-        game.getCurrentPlayer().nextTurn();
         updateUI();
     }
 }

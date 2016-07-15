@@ -32,7 +32,7 @@ class Game
     //if he doesn't draw any dices
     public boolean minScoreReached()
     {
-        if (Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getLastTurn().getRoundArrayList(), settings) >= settings.getMinScoreRequiredToSaveInRound())
+        if (Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getCurrentTurn().getRoundArrayList(), settings) >= settings.getMinScoreRequiredToSaveInRound())
         {
             return true;
         }
@@ -44,7 +44,7 @@ class Game
 
     public boolean winScoreReached()
     {
-        if (getCurrentPlayer().getScore() + Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getLastTurn().getRoundArrayList(), settings) >= settings.getMinScoreRequiredToWin() && isValidState(State.WIN))
+        if (getCurrentPlayer().getScore() + Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getCurrentTurn().getRoundArrayList(), settings) >= settings.getMinScoreRequiredToWin() && isValidState(State.WIN))
             return true;
         else
             return false;
@@ -58,10 +58,10 @@ class Game
     {
         //in case scoreInRound < 300 -> State.Next is just not gonna save this round for the player. No additional points
         //but we still need to check so we allow State.Next to go into the method
-        if (getCurrentPlayer().getLastTurn().getCurrentRound().getCurrentRoll().getDrawnDices().size() > 0 || state == State.NEXT)
+        if (getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().size() > 0 || state == State.NEXT)
         {
             ArrayList<Dice> dicesSinceLastRoll = new ArrayList<>();
-            for (Dice currentDice : getCurrentPlayer().getLastTurn().getCurrentRound().getCurrentRoll().getDrawnDices())
+            for (Dice currentDice : getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices())
             {
                 dicesSinceLastRoll.add(currentDice);
             }
@@ -111,10 +111,10 @@ class Game
     public void nextPlayer()
     {
         //always clear --> if not fullfiled score is gone!
-        int numberOfDicesInLastRoll = getCurrentPlayer().getLastTurn().getCurrentRound().getCurrentRoll().getDrawnDices().size();
+        int numberOfDicesInLastRoll = getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().size();
         if (numberOfDicesInLastRoll > 0 && !winScoreReached() && minScoreReached())
         {
-            getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getLastTurn().getRoundArrayList(), settings));
+            getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getCurrentTurn().getRoundArrayList(), settings));
         }
 
         if (winScoreReached())
@@ -125,7 +125,7 @@ class Game
         {
             getCurrentPlayer().initDice();
             getCurrentPlayer().nextTurn();
-            getCurrentPlayer().getLastTurn().nextRound();
+            getCurrentPlayer().getCurrentTurn().nextRound();
 
             if (currentPlayerNumber < settings.getTotalPlayers() - 1)
             {

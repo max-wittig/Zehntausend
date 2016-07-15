@@ -21,6 +21,7 @@ public class Player
         this.settings = settings;
         initDice();
         this.playerNumber = playerNumber;
+        nextTurn();
     }
 
     public void initDice()
@@ -35,19 +36,9 @@ public class Player
     }
 
 
-    public Turn getLastTurn()
+    public Turn getCurrentTurn()
     {
-        Turn turn;
-        if (turnArrayList.size() > 0)
-        {
-            turn = turnArrayList.get(turnArrayList.size() - 1);
-        }
-        else
-        {
-            turn = new Turn();
-            turnArrayList.add(turn);
-        }
-        return turn;
+        return turnArrayList.get(turnArrayList.size() - 1);
     }
 
     public void rollDice()
@@ -58,14 +49,13 @@ public class Player
             {
                 remainingDices.get(i).roll();
             }
-            getLastTurn().getCurrentRound().nextRoll();
+            getCurrentTurn().getCurrentRound().nextRoll();
         }
         else
         {
-            getLastTurn().nextRound();
-            getLastTurn().getCurrentRound().nextRoll();
+            getCurrentTurn().nextRound();
             initDice();
-            //getLastTurn().getCurrentRound().addToRound(roll);
+            //getCurrentTurn().getCurrentRound().addToRound(roll);
             //clears dices on board and re_init them again
             //incase you finish the roll
         }
