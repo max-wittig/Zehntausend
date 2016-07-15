@@ -10,6 +10,7 @@ public class Turn
     public Turn()
     {
         roundArrayList = new ArrayList<>();
+        nextRound();
     }
 
     public ArrayList<Round> getRoundArrayList()
@@ -35,19 +36,9 @@ public class Turn
         return dices;
     }
 
-    public Round getLastRound()
+    public Round getCurrentRound()
     {
-        Round round;
-        if (roundArrayList.size() > 0)
-        {
-            round = roundArrayList.get(roundArrayList.size() - 1);
-        }
-        else
-        {
-            round = new Round();
-            roundArrayList.add(round);
-        }
-        return round;
+        return roundArrayList.get(roundArrayList.size() - 1);
     }
 
     //starts new round

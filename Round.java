@@ -9,6 +9,7 @@ public class Round
     public Round()
     {
         rollArrayList = new ArrayList<>();
+        nextRoll();
     }
 
     public ArrayList<Roll> getRollArrayList()
@@ -28,19 +29,9 @@ public class Round
         return true;
     }
 
-    public Roll getLastRoll()
+    public Roll getCurrentRoll()
     {
-        Roll roll;
-        if (rollArrayList.size() > 0)
-        {
-            roll = rollArrayList.get(rollArrayList.size() - 1);
-        }
-        else
-        {
-            roll = new Roll();
-            rollArrayList.add(roll);
-        }
-        return roll;
+        return rollArrayList.get(rollArrayList.size() - 1);
     }
 
     public ArrayList<Dice> getDrawnDices()

@@ -58,10 +58,10 @@ class Game
     {
         //in case scoreInRound < 300 -> State.Next is just not gonna save this round for the player. No additional points
         //but we still need to check so we allow State.Next to go into the method
-        if (getCurrentPlayer().getLastTurn().getLastRound().getLastRoll().getDrawnDices().size() > 0 || state == State.NEXT)
+        if (getCurrentPlayer().getLastTurn().getCurrentRound().getCurrentRoll().getDrawnDices().size() > 0 || state == State.NEXT)
         {
             ArrayList<Dice> dicesSinceLastRoll = new ArrayList<>();
-            for (Dice currentDice : getCurrentPlayer().getLastTurn().getLastRound().getLastRoll().getDrawnDices())
+            for (Dice currentDice : getCurrentPlayer().getLastTurn().getCurrentRound().getCurrentRoll().getDrawnDices())
             {
                 dicesSinceLastRoll.add(currentDice);
             }
@@ -111,7 +111,7 @@ class Game
     public void nextPlayer()
     {
         //always clear --> if not fullfiled score is gone!
-        int numberOfDicesInLastRoll = getCurrentPlayer().getLastTurn().getLastRound().getLastRoll().getDrawnDices().size();
+        int numberOfDicesInLastRoll = getCurrentPlayer().getLastTurn().getCurrentRound().getCurrentRoll().getDrawnDices().size();
         if (numberOfDicesInLastRoll > 0 && !winScoreReached() && minScoreReached())
         {
             getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getLastTurn().getRoundArrayList(), settings));
@@ -136,6 +136,21 @@ class Game
                 currentPlayerNumber = 0;
             }
         }
+    }
+
+    public ArrayList<Turn> getLongestTurnArrayList()
+    {
+        int length = 0;
+        ArrayList<Turn> turnArrayList = null;
+        for (Player currentPlayer : players)
+        {
+            if (currentPlayer.getTurnArrayList().size() > length)
+            {
+                length = currentPlayer.getTurnArrayList().size();
+                turnArrayList = currentPlayer.getTurnArrayList();
+            }
+        }
+        return turnArrayList;
     }
 
     public Player getCurrentPlayer()

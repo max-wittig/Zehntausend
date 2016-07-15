@@ -58,14 +58,14 @@ public class Player
             {
                 remainingDices.get(i).roll();
             }
-            getLastTurn().getLastRound().nextRoll();
+            getLastTurn().getCurrentRound().nextRoll();
         }
         else
         {
             getLastTurn().nextRound();
-            getLastTurn().getLastRound().nextRoll();
+            getLastTurn().getCurrentRound().nextRoll();
             initDice();
-            //getLastTurn().getLastRound().addToRound(roll);
+            //getLastTurn().getCurrentRound().addToRound(roll);
             //clears dices on board and re_init them again
             //incase you finish the roll
         }
@@ -100,7 +100,6 @@ public class Player
 
     public void addToScore(int number)
     {
-        // TODO: 12.07.16 check if this is bad //if(number <= 300)
         score += number;
     }
 

@@ -62,7 +62,7 @@ public class Main extends Application
 
     private void createDrawnDiceButtons()
     {
-        final ArrayList<Dice> dices = game.getCurrentPlayer().getLastTurn().getLastRound().getDrawnDices();
+        final ArrayList<Dice> dices = game.getCurrentPlayer().getLastTurn().getCurrentRound().getDrawnDices();
 
         for (int i = 0; i < dices.size(); i++)
         {
@@ -82,7 +82,7 @@ public class Main extends Application
             }
 
             //checks if dices are in last roll -> if so you can still move them back --> yellowgreen color
-            if (game.getCurrentPlayer().getLastTurn().getLastRound().getLastRoll().getDrawnDices().contains(dices.get(i)))
+            if (game.getCurrentPlayer().getLastTurn().getCurrentRound().getCurrentRoll().getDrawnDices().contains(dices.get(i)))
             {
                 diceButton.setStyle("-fx-background-color: yellowgreen; -fx-border-color: gray");
             }
@@ -117,7 +117,7 @@ public class Main extends Application
     private void createRemainingDiceButtons()
     {
         final ArrayList<Dice> dices = game.getCurrentPlayer().getRemainingDices();
-        for(int i=0; i < game.getCurrentPlayer().getRemainingDices().size(); i++)
+        for (int i = 0; i < game.getCurrentPlayer().getRemainingDices().size(); i++)
         {
             Dice currentDice = dices.get(i);
             Button diceButton = new Button();
@@ -151,18 +151,18 @@ public class Main extends Application
     {
         ArrayList<Dice> remainingDices = game.getCurrentPlayer().getRemainingDices();
         remainingDices.remove(dice);
-        game.getCurrentPlayer().getLastTurn().getLastRound().getLastRoll().getDrawnDices().add(dice);
+        game.getCurrentPlayer().getLastTurn().getCurrentRound().getCurrentRoll().getDrawnDices().add(dice);
         updateUI();
     }
 
     private void moveToRemainingDices(Dice dice)
     {
-        ArrayList<Dice> drawnDices = game.getCurrentPlayer().getLastTurn().getLastRound().getLastRoll().getDrawnDices();
+        ArrayList<Dice> drawnDices = game.getCurrentPlayer().getLastTurn().getCurrentRound().getCurrentRoll().getDrawnDices();
         if (drawnDices.size() > 0)
         {
             if (drawnDices.contains(dice))
             {
-                game.getCurrentPlayer().getLastTurn().getLastRound().getLastRoll().removeDiceWithNumber(dice.getDiceNumber());
+                game.getCurrentPlayer().getLastTurn().getCurrentRound().getCurrentRoll().removeDiceWithNumber(dice.getDiceNumber());
                 game.getCurrentPlayer().getRemainingDices().add(dice);
                 updateUI();
             }
@@ -346,6 +346,7 @@ public class Main extends Application
             {
                 game = jsonHelper.loadGameState();
                 updateUI();
+                //rebuildListView();
             }
         });
         MenuItem saveItem = new MenuItem("Save");
@@ -399,6 +400,30 @@ public class Main extends Application
         }
 
         observableList.add(hBox);
+    }
+
+    private void rebuildListView()
+    {
+        observableList.clear();
+        addPlayersToListView();
+        for (int i = 0; i < game.getLongestTurnArrayList().size(); i++)
+        {
+            createEmptyLabelsInListView();
+        }
+        for (int i = 0; i < observableList.size() - 1; i++)
+        {
+            for (Player currentPlayer : game.getPlayers())
+            {
+                int score = 0;
+                score += Scoring.getScoreFromAllDicesInRound(currentPlayer.getTurnArrayList().get(i).getRoundArrayList(), settings);
+                HBox currentHBox = observableList.get(i);
+                Label label = (Label) currentHBox.getChildren().get(currentPlayer.getPlayerNumber());
+                label.setText("" + score);
+            }
+        }
+        HBox hBox = observableList.get(observableList.size() - 1);
+        Label label = (Label) hBox.getChildren().get(game.getPreviousPlayer().getPlayerNumber());
+        label.setText("" + game.getPreviousPlayer().getScore());
     }
 
     private void applyScoreToPlayersInListView()
@@ -548,7 +573,7 @@ public class Main extends Application
         game = new Game(settings);
         initUI(primaryStage);
         addPlayersToListView();
-        //game.getCurrentPlayer().rollDice();
+        game.getCurrentPlayer().nextTurn();
         updateUI();
     }
 }
