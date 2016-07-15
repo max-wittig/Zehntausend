@@ -408,7 +408,7 @@ public class Main extends Application
         observableList.clear();
         addPlayersToListView();
 
-        for (int i = 0; i < game.getLongestTurnArrayList().size(); i++)
+        for (int i = 0; i < game.getLongestTurnArrayList().size() - 1; i++)
         {
             createEmptyLabelsInListView();
         }
