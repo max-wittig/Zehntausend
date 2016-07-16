@@ -164,7 +164,6 @@ public class Main extends Application
             if (drawnDices.contains(dice))
             {
                 game.getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().removeDice(dice);
-                System.out.println("removed" + dice.getDiceNumber());
                 game.getCurrentPlayer().getRemainingDices().add(dice);
                 updateUI();
             }
@@ -459,7 +458,6 @@ public class Main extends Application
     {
         if (observableList.size() > 1)
         {
-            System.out.println(game.getPreviousPlayer().getTurnArrayList().size() + " - " + observableList.size());
             if (game.getPreviousPlayer().getTurnArrayList().size() > observableList.size())
             {
                 createEmptyLabelsInListView();
