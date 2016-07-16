@@ -239,18 +239,19 @@ public class Main extends Application
 
         //street
         HBox streetHBox = new HBox();
-        ToggleButton streetToggleButton = new ToggleButton("Street");
-        streetToggleButton.setSelected(game.getSettings().isStreetEnabled());
+        streetHBox.setPrefWidth(settings.getWidth());
+        CheckBox streetCheckBox = new CheckBox("Street");
+        streetCheckBox.setSelected(game.getSettings().isStreetEnabled());
 
         TextField streetTextField = new TextField("" + settings.getScoreStreet());
-        streetHBox.getChildren().addAll(streetToggleButton, streetTextField);
+        streetHBox.getChildren().addAll(streetCheckBox, streetTextField);
         vBox.getChildren().add(streetHBox);
-        HBox.setMargin(streetToggleButton, new Insets(0, 20, 0, 20));
+        HBox.setMargin(streetCheckBox, new Insets(0, 20, 0, 20));
         HBox.setMargin(streetTextField, new Insets(0, 20, 0, 20));
         HBox.setHgrow(streetTextField, Priority.ALWAYS);
-        VBox.setMargin(minScoreHBox, new Insets(20, 20, 20, 20));
+        VBox.setMargin(streetHBox, new Insets(20, 20, 20, 20));
 
-        if (!streetToggleButton.isSelected())
+        if (!streetCheckBox.isSelected())
         {
             streetTextField.setDisable(true);
         }
@@ -260,18 +261,58 @@ public class Main extends Application
         }
 
 
-        streetToggleButton.setOnAction(new EventHandler<ActionEvent>()
+        streetCheckBox.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
             public void handle(ActionEvent event)
             {
-                if (!streetToggleButton.isSelected())
+                if (!streetCheckBox.isSelected())
                 {
                     streetTextField.setDisable(true);
                 }
                 else
                 {
                     streetTextField.setDisable(false);
+                }
+            }
+        });
+
+        //Three x two
+        HBox threeXTwoHBox = new HBox();
+        threeXTwoHBox.setPrefWidth(settings.getWidth());
+        CheckBox threeXTwoCheckBox = new CheckBox("Three Times Two");
+        threeXTwoCheckBox.setSelected(game.getSettings().isThreeXTwoEnabled());
+
+        TextField threeXTwoTextField = new TextField("" + settings.getScoreThreeXTwo());
+        threeXTwoHBox.getChildren().addAll(threeXTwoCheckBox, threeXTwoTextField);
+        vBox.getChildren().add(threeXTwoHBox);
+        HBox.setMargin(threeXTwoCheckBox, new Insets(0, 20, 0, 20));
+        HBox.setMargin(threeXTwoTextField, new Insets(0, 20, 0, 20));
+        HBox.setHgrow(threeXTwoTextField, Priority.ALWAYS);
+        VBox.setMargin(threeXTwoHBox, new Insets(20, 20, 20, 20));
+
+        if (!threeXTwoCheckBox.isSelected())
+        {
+            threeXTwoTextField.setDisable(true);
+        }
+        else
+        {
+            threeXTwoTextField.setDisable(false);
+        }
+
+
+        threeXTwoCheckBox.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                if (!threeXTwoCheckBox.isSelected())
+                {
+                    threeXTwoTextField.setDisable(true);
+                }
+                else
+                {
+                    threeXTwoTextField.setDisable(false);
                 }
             }
         });
@@ -291,8 +332,11 @@ public class Main extends Application
                 settings.setTotalDiceNumber((int) diceSlider.getValue());
                 settings.setMinScoreRequiredToWin(Integer.parseInt(winScoreTextField.getText()));
 
-                settings.setStreetEnabled(streetToggleButton.isSelected());
+                settings.setStreetEnabled(streetCheckBox.isSelected());
                 settings.setScoreStreet(Integer.parseInt(streetTextField.getText()));
+
+                settings.setThreeXTwoEnabled(threeXTwoCheckBox.isSelected());
+                settings.setScoreThreeXTwo(Integer.parseInt(threeXTwoTextField.getText()));
                 game = new Game(settings);
                 updateUI();
                 clearScoreList();
