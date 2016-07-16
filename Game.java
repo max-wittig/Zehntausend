@@ -125,7 +125,6 @@ class Game
         {
             getCurrentPlayer().initDice();
             getCurrentPlayer().nextTurn();
-            getCurrentPlayer().getCurrentTurn().nextRound();
 
             if (currentPlayerNumber < settings.getTotalPlayers() - 1)
             {
