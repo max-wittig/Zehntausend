@@ -30,4 +30,9 @@ public class Roll
             }
         }
     }
+
+    public void removeDice(Dice dice)
+    {
+        drawnDices.remove(dice);
+    }
 }

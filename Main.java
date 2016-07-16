@@ -163,7 +163,8 @@ public class Main extends Application
         {
             if (drawnDices.contains(dice))
             {
-                game.getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().removeDiceWithNumber(dice.getDiceNumber());
+                game.getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().removeDice(dice);
+                System.out.println("removed" + dice.getDiceNumber());
                 game.getCurrentPlayer().getRemainingDices().add(dice);
                 updateUI();
             }
