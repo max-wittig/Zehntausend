@@ -1,4 +1,4 @@
-package com.spaghettic0der;
+package com.spaghettic0der.zehntausend;
 
 
 public class Settings

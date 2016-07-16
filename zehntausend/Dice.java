@@ -1,4 +1,4 @@
-package com.spaghettic0der;
+package com.spaghettic0der.zehntausend;
 
 
 import java.util.Random;

@@ -1,4 +1,4 @@
-package com.spaghettic0der;
+package com.spaghettic0der.zehntausend;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
