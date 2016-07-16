@@ -5,7 +5,7 @@ import javafx.scene.control.Alert;
 
 import java.util.*;
 
-class Game
+public class Game
 {
     //contains all player objects
     private ArrayList<Player> players;
@@ -89,14 +89,6 @@ class Game
         }
     }
 
-    public void showWinAlert()
-    {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("You won!");
-        alert.setContentText("Congrats Player " + (getCurrentPlayer().getPlayerNumber() + 1));
-        alert.show();
-    }
-
     public Player getPreviousPlayer()
     {
         if (currentPlayerNumber > 0)
@@ -119,7 +111,7 @@ class Game
 
         if (winScoreReached())
         {
-            showWinAlert();
+            Main.showWinAlert(currentPlayerNumber + 1);
         }
         else
         {

@@ -50,6 +50,14 @@ public class Main extends Application
         Application.launch(args);
     }
 
+    public static void showWinAlert(int currentPlayerNumber)
+    {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("You won!");
+        alert.setContentText("Congrats Player " + (currentPlayerNumber));
+        alert.show();
+    }
+
     private void updateUI()
     {
         remainingDiceHBox.getChildren().clear();
