@@ -104,20 +104,13 @@ public class Game
                 {
                     Main.showWinAlert(currentPlayerNumber + 1);
                     getCurrentPlayer().setWinRank(getNumberOfWinners() + 1);
-                    setNextPlayerNumber();
+                }
+            }
 
-                }
-                else
-                {
-                    setNextPlayerNumber();
-                }
-            }
-            else
-            {
-                getCurrentPlayer().initDice();
-                getCurrentPlayer().nextTurn();
-                setNextPlayerNumber();
-            }
+            getCurrentPlayer().initDice();
+            getCurrentPlayer().nextTurn();
+            setNextPlayerNumber();
+
         }
         else
         {
