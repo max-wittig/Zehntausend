@@ -16,7 +16,7 @@ public class Settings
     private int scoreStreet = 1500;
 
     private int minScoreRequiredToSaveInRound = 300;
-    private int minScoreRequiredToWin = 5000;
+    private int minScoreRequiredToWin = 300;
 
 
     private boolean threeXTwoEnabled = true; //2x3 -> 2,2,4,4,6,6 --> 1000 points

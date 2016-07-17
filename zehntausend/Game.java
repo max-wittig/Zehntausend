@@ -1,8 +1,5 @@
 package com.spaghettic0der.zehntausend;
 
-
-import javafx.scene.control.Alert;
-
 import java.util.*;
 
 public class Game
@@ -12,6 +9,7 @@ public class Game
     //shows which players turn it is currently
     private int currentPlayerNumber = 0;
     private Settings settings;
+    private boolean isGameOver = false;
 
     public Game(Settings settings)
     {
@@ -42,15 +40,6 @@ public class Game
         }
     }
 
-    public boolean winScoreReached()
-    {
-        if (getCurrentPlayer().getScore() + Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getCurrentTurn().getRoundArrayList(), true, settings) >= settings.getMinScoreRequiredToWin() && isValidState(State.WIN))
-            return true;
-        else
-            return false;
-    }
-
-
     /* returns boolean, based on rules if game is valid
     * is called when roll is called
     * */
@@ -60,11 +49,7 @@ public class Game
         //but we still need to check so we allow State.Next to go into the method
         if (getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().size() > 0 || state == State.NEXT)
         {
-            ArrayList<Dice> dicesSinceLastRoll = new ArrayList<>();
-            for (Dice currentDice : getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices())
-            {
-                dicesSinceLastRoll.add(currentDice);
-            }
+            ArrayList<Dice> dicesSinceLastRoll = getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices();
 
             if (!Scoring.containsDiceNumber(2, dicesSinceLastRoll) && !Scoring.containsDiceNumber(3, dicesSinceLastRoll)
                     && !Scoring.containsDiceNumber(4, dicesSinceLastRoll) && !Scoring.containsDiceNumber(6, dicesSinceLastRoll))
@@ -92,7 +77,9 @@ public class Game
     public Player getPreviousPlayer()
     {
         if (currentPlayerNumber > 0)
+        {
             return players.get(currentPlayerNumber - 1);
+        }
         else
         {
             return players.get(settings.getTotalPlayers() - 1);
@@ -102,30 +89,102 @@ public class Game
     //cycles through players
     public void nextPlayer()
     {
-        //always clear --> if not fullfiled score is gone!
-        int numberOfDicesInLastRoll = getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().size();
-        if (numberOfDicesInLastRoll > 0 && !winScoreReached() && minScoreReached())
+        if (!isGameOver)
         {
-            getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getCurrentTurn().getRoundArrayList(), true, settings));
-        }
-
-        if (winScoreReached())
-        {
-            Main.showWinAlert(currentPlayerNumber + 1);
-        }
-        else
-        {
-            getCurrentPlayer().initDice();
-            getCurrentPlayer().nextTurn();
-
-            if (currentPlayerNumber < settings.getTotalPlayers() - 1)
+            //always clear --> if not fullfiled score is gone!
+            int numberOfDicesInLastRoll = getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().size();
+            if (numberOfDicesInLastRoll > 0 && minScoreReached())
             {
-                currentPlayerNumber++;
+                getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getCurrentTurn().getRoundArrayList(), true, settings));
+            }
+
+            if (getCurrentPlayer().hasWon())
+            {
+                if (getCurrentPlayer().getWinRank() == -1)
+                {
+                    Main.showWinAlert(currentPlayerNumber + 1);
+                    getCurrentPlayer().setWinRank(getNumberOfWinners() + 1);
+                    setNextPlayerNumber();
+
+                }
+                else
+                {
+                    setNextPlayerNumber();
+                }
             }
             else
             {
-                currentPlayerNumber = 0;
+                getCurrentPlayer().initDice();
+                getCurrentPlayer().nextTurn();
+                setNextPlayerNumber();
             }
+        }
+        else
+        {
+            Main.showGameOverDialog(getWinners());
+        }
+    }
+
+    private void setNextPlayerNumber()
+    {
+        //search from currentPlayerNumber to end of array
+        for (int i = currentPlayerNumber + 1; i < players.size(); i++)
+        {
+            if (players.get(i).getWinRank() == -1)
+            {
+                currentPlayerNumber = players.get(i).getPlayerNumber();
+                return;
+            }
+        }
+
+        //if nothing found search from beginning to end again
+        for (Player currentPlayer : players)
+        {
+            if (currentPlayer.getWinRank() == -1)
+            {
+                currentPlayerNumber = currentPlayer.getPlayerNumber();
+                return;
+            }
+        }
+
+        //if still nothing set game to over!
+        isGameOver = true;
+        Main.showGameOverDialog(getWinners());
+
+    }
+
+    private int getNumberOfWinners()
+    {
+        int numberOfWinners = 0;
+        for (Player player : players)
+        {
+            if (player.getWinRank() != -1)
+            {
+                numberOfWinners++;
+            }
+        }
+        return numberOfWinners;
+    }
+
+    private HashMap<Integer, Player> getWinners()
+    {
+        HashMap<Integer, Player> winPlayersSorted = new HashMap<>();
+        for (Player currentPlayer : players)
+        {
+            winPlayersSorted.put(currentPlayer.getWinRank(), currentPlayer);
+        }
+        return winPlayersSorted;
+    }
+
+    private void increasePlayerNumber()
+    {
+        if (currentPlayerNumber < settings.getTotalPlayers() - 1)
+        {
+            currentPlayerNumber++;
+        }
+        else
+        {
+            currentPlayerNumber = 0;
         }
     }
 

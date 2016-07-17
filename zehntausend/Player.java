@@ -12,6 +12,7 @@ public class Player
     private String playerName = null;
     private ArrayList<Turn> turnArrayList;
     private Settings settings;
+    private int winRank = -1;
 
     public Player(int playerNumber, Settings settings)
     {
@@ -61,6 +62,18 @@ public class Player
         }
     }
 
+    public boolean hasWon()
+    {
+        if (score >= settings.getMinScoreRequiredToWin())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public ArrayList<Dice> getRemainingDices()
     {
         return remainingDices;
@@ -101,5 +114,15 @@ public class Player
     public ArrayList<Turn> getTurnArrayList()
     {
         return turnArrayList;
+    }
+
+    public int getWinRank()
+    {
+        return winRank;
+    }
+
+    public void setWinRank(int winRank)
+    {
+        this.winRank = winRank;
     }
 }

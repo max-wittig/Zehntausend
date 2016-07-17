@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.StringJoiner;
 
 public class Main extends Application
 {
@@ -55,6 +56,24 @@ public class Main extends Application
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText("You won!");
         alert.setContentText("Congrats Player " + (currentPlayerNumber));
+        alert.show();
+    }
+
+    public static void showGameOverDialog(HashMap<Integer, Player> winnersHashMap)
+    {
+        System.out.println(winnersHashMap.toString());
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText("Game over!");
+        StringBuilder winStringBuilder = new StringBuilder();
+        for (Integer key : winnersHashMap.keySet())
+        {
+            if (winnersHashMap.get(key) != null)
+            {
+                winStringBuilder.append(key + " : " + winnersHashMap.get(key).getPlayerName() + "\n");
+            }
+        }
+
+        alert.setContentText(winStringBuilder.toString());
         alert.show();
     }
 
@@ -115,7 +134,6 @@ public class Main extends Application
 
     private void setDiceImage(Button diceButton, String diceImageLocation)
     {
-
         Image image = new Image(getClass().getResourceAsStream(diceImageLocation));
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(diceButtonSize / 2);
@@ -595,11 +613,9 @@ public class Main extends Application
             {
                 if (game.isValidState(State.NEXT))
                 {
-
                     game.nextPlayer();
                     updateScoreOfPlayersInListView();
                     updateUI();
-
                 }
                 else
                 {
