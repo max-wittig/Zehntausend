@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.StringJoiner;
 
 public class Main extends Application
 {
@@ -25,7 +24,7 @@ public class Main extends Application
     private final int textButtonHeight = 50;
     private final int diceButtonSize = 50;
     private final int buttonFontSize = 20;
-    private final String versionNumber = "0.0.6";
+    private final String versionNumber = "1.0.0";
     private Game game;
     private BorderPane root;
     private HBox remainingDiceHBox;
@@ -59,21 +58,11 @@ public class Main extends Application
         alert.show();
     }
 
-    public static void showGameOverDialog(HashMap<Integer, Player> winnersHashMap)
+    public static void showGameOverDialog(String winString)
     {
-        System.out.println(winnersHashMap.toString());
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText("Game over!");
-        StringBuilder winStringBuilder = new StringBuilder();
-        for (Integer key : winnersHashMap.keySet())
-        {
-            if (winnersHashMap.get(key) != null)
-            {
-                winStringBuilder.append(key + " : " + winnersHashMap.get(key).getPlayerName() + "\n");
-            }
-        }
-
-        alert.setContentText(winStringBuilder.toString());
+        alert.setContentText(winString);
         alert.show();
     }
 

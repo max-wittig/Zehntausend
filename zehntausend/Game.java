@@ -121,7 +121,7 @@ public class Game
         }
         else
         {
-            Main.showGameOverDialog(getWinners());
+            Main.showGameOverDialog(getWinString());
         }
     }
 
@@ -149,8 +149,26 @@ public class Game
 
         //if still nothing set game to over!
         isGameOver = true;
-        Main.showGameOverDialog(getWinners());
+        Main.showGameOverDialog(getWinString());
 
+    }
+
+    //gets a string which contains all winners in order
+    // 1 : Player 3
+    // 2 : Player 1
+    // 3 : Player 2
+    private String getWinString()
+    {
+        HashMap<Integer, Player> winnersHashMap = getWinners();
+        StringBuilder winStringBuilder = new StringBuilder();
+        for (Integer key : winnersHashMap.keySet())
+        {
+            if (winnersHashMap.get(key) != null)
+            {
+                winStringBuilder.append(key + " : " + winnersHashMap.get(key).getPlayerName() + "\n");
+            }
+        }
+        return winStringBuilder.toString();
     }
 
     private int getNumberOfWinners()
@@ -166,6 +184,7 @@ public class Game
         return numberOfWinners;
     }
 
+    //returns rank of player -> player object in Hashmap
     private HashMap<Integer, Player> getWinners()
     {
         HashMap<Integer, Player> winPlayersSorted = new HashMap<>();
@@ -174,18 +193,6 @@ public class Game
             winPlayersSorted.put(currentPlayer.getWinRank(), currentPlayer);
         }
         return winPlayersSorted;
-    }
-
-    private void increasePlayerNumber()
-    {
-        if (currentPlayerNumber < settings.getTotalPlayers() - 1)
-        {
-            currentPlayerNumber++;
-        }
-        else
-        {
-            currentPlayerNumber = 0;
-        }
     }
 
     public ArrayList<Turn> getLongestTurnArrayList()
