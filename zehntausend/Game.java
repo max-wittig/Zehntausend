@@ -45,47 +45,44 @@ public class Game
     * */
     public boolean isValidState(State state)
     {
-        //in case scoreInRound < 300 -> State.Next is just not gonna save this round for the player. No additional points
-        //but we still need to check so we allow State.Next to go into the method
-        if (getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().size() > 0 || state == State.NEXT)
+        if (!isGameOver)
         {
-            ArrayList<Dice> dicesSinceLastRoll = getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices();
-
-            if (!Scoring.containsDiceNumber(2, dicesSinceLastRoll) && !Scoring.containsDiceNumber(3, dicesSinceLastRoll)
-                    && !Scoring.containsDiceNumber(4, dicesSinceLastRoll) && !Scoring.containsDiceNumber(6, dicesSinceLastRoll))
+            //in case scoreInRound < 300 -> State.Next is just not gonna save this round for the player. No additional points
+            //but we still need to check so we allow State.Next to go into the method
+            if (getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().size() > 0 || state == State.NEXT)
             {
-                //only 1 or 5
-                return true;
+                ArrayList<Dice> dicesSinceLastRoll = getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices();
+
+                if (!Scoring.containsDiceNumber(2, dicesSinceLastRoll) && !Scoring.containsDiceNumber(3, dicesSinceLastRoll)
+                        && !Scoring.containsDiceNumber(4, dicesSinceLastRoll) && !Scoring.containsDiceNumber(6, dicesSinceLastRoll))
+                {
+                    //only 1 or 5
+                    return true;
+                }
+                else
+                {
+                    //checks if there are any multiplications of dice (3 times 2 == 200, 3 times 3 == 300 etc...)
+                    //if so gameState is valid
+                    boolean valid = (Scoring.containsMultiple(dicesSinceLastRoll)
+                            || Scoring.isStreet(dicesSinceLastRoll, settings.isStreetEnabled())
+                            || Scoring.isSixDicesInARow(dicesSinceLastRoll, settings.isSixDicesInARowEnabled(), settings.getTotalDiceNumber())
+                            || Scoring.isThreeTimesTwo(dicesSinceLastRoll, settings.isThreeXTwoEnabled()));
+                    return valid;
+                }
             }
             else
             {
-                //checks if there are any multiplications of dice (3 times 2 == 200, 3 times 3 == 300 etc...)
-                //if so gameState is valid
-                boolean valid = (Scoring.containsMultiple(dicesSinceLastRoll)
-                        || Scoring.isStreet(dicesSinceLastRoll, settings.isStreetEnabled())
-                        || Scoring.isSixDicesInARow(dicesSinceLastRoll, settings.isSixDicesInARowEnabled(), settings.getTotalDiceNumber())
-                        || Scoring.isThreeTimesTwo(dicesSinceLastRoll, settings.isThreeXTwoEnabled()));
-                return valid;
+                return false;
             }
         }
         else
         {
+            //game over
             return false;
         }
     }
 
-    public Player getPreviousPlayer()
-    {
-        if (currentPlayerNumber > 0)
-        {
-            return players.get(currentPlayerNumber - 1);
-        }
-        else
-        {
-            return players.get(settings.getTotalPlayers() - 1);
-        }
-    }
-
+    //saves score to player.addToScore
     public void saveScore()
     {
         //always clear --> if not fullfiled score is gone!
@@ -96,7 +93,7 @@ public class Game
         }
     }
 
-    //cycles through players
+    //cycles through players, but doesn't save the score --> has to be done with saveScore();
     public void nextPlayer()
     {
         if (!isGameOver)
@@ -105,21 +102,35 @@ public class Game
             {
                 if (getCurrentPlayer().getWinRank() == -1)
                 {
-                    Main.showWinAlert(getCurrentPlayer().getPlayerName());
+                    //only show a dialog box to the first winner
+                    if (getNumberOfWinners() < 1)
+                        Main.showWinAlert(getCurrentPlayer().getPlayerName());
+
+                    if (settings.isGameOverAfterFirstPlayerWon())
+                    {
+                        isGameOver = true;
+                    }
                     getCurrentPlayer().setWinRank(getNumberOfWinners() + 1);
                 }
             }
+
+            //re-roll dices for next turn
             getCurrentPlayer().initDice();
+
+            //set next turn
             getCurrentPlayer().nextTurn();
             setNextPlayerNumber();
 
         }
         else
         {
-            Main.showGameOverDialog(getWinString());
+            if (!settings.isGameOverAfterFirstPlayerWon())
+                Main.showGameOverDialog(getWinString());
         }
     }
 
+    //sets next player number automatically and returns, when it found next player
+    //with winRank = -1 which means the player is still in the game and hasn't won
     private void setNextPlayerNumber()
     {
         //search from currentPlayerNumber to end of array
@@ -160,7 +171,7 @@ public class Game
         {
             if (winnersHashMap.get(key) != null)
             {
-                winStringBuilder.append(key + " : " + winnersHashMap.get(key).getPlayerName() + "\n");
+                winStringBuilder.append(key + ". place : " + winnersHashMap.get(key).getPlayerName() + "\n");
             }
         }
         return winStringBuilder.toString();
@@ -190,6 +201,7 @@ public class Game
         return winPlayersSorted;
     }
 
+    //needed for preparing the listView --> fill with empty cells on load
     public ArrayList<Turn> getLongestTurnArrayList()
     {
         int length = 0;

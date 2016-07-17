@@ -9,8 +9,11 @@ public class Settings
     private int width = 800;
     private int height = 800;
 
+    //general settings
     private int totalDiceNumber = 6;
     private int totalPlayers = 3;
+    private boolean diceImageShown = false;
+    private boolean gameOverAfterFirstPlayerWon = false;
 
     private boolean streetEnabled = true;
     private int scoreStreet = 1500;
@@ -18,14 +21,11 @@ public class Settings
     private int minScoreRequiredToSaveInRound = 300;
     private int minScoreRequiredToWin = 300;
 
-
     private boolean threeXTwoEnabled = true; //2x3 -> 2,2,4,4,6,6 --> 1000 points
     private int scoreThreeXTwo = 1000;
 
     private boolean sixDicesInARowEnabled = true;
     private int scoreSixDicesInARow = minScoreRequiredToWin; //can be ajusted
-
-    private boolean diceImageShown = false;
 
     public int getMinWidth()
     {
@@ -165,5 +165,15 @@ public class Settings
     public void setScoreSixDicesInARow(int scoreSixDicesInARow)
     {
         this.scoreSixDicesInARow = scoreSixDicesInARow;
+    }
+
+    public boolean isGameOverAfterFirstPlayerWon()
+    {
+        return gameOverAfterFirstPlayerWon;
+    }
+
+    public void setGameOverAfterFirstPlayerWon(boolean gameOverAfterFirstPlayerWon)
+    {
+        this.gameOverAfterFirstPlayerWon = gameOverAfterFirstPlayerWon;
     }
 }
