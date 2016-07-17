@@ -50,11 +50,11 @@ public class Main extends Application
         Application.launch(args);
     }
 
-    public static void showWinAlert(int currentPlayerNumber)
+    public static void showWinAlert(String playerName)
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText("You won!");
-        alert.setContentText("Congrats Player " + (currentPlayerNumber));
+        alert.setContentText("Congrats " + playerName);
         alert.show();
     }
 
@@ -508,16 +508,16 @@ public class Main extends Application
     private void applyScoreToPlayersInListView()
     {
         HBox hBox = observableList.get(observableList.size() - 1);
-        Label label = (Label) hBox.getChildren().get(game.getPreviousPlayer().getPlayerNumber());
-        label.setText("" + game.getPreviousPlayer().getScore());
+        Label label = (Label) hBox.getChildren().get(game.getCurrentPlayer().getPlayerNumber());
+        label.setText("" + game.getCurrentPlayer().getScore());
     }
 
-    //always updates previous player, because we don't know the score of the current player
+    //always updates current player score --> after that we switch player
     private void updateScoreOfPlayersInListView()
     {
         if (observableList.size() > 1)
         {
-            if (game.getPreviousPlayer().getTurnArrayList().size() > observableList.size())
+            if (game.getCurrentPlayer().getTurnArrayList().size() >= observableList.size())
             {
                 createEmptyLabelsInListView();
                 applyScoreToPlayersInListView();
@@ -602,8 +602,9 @@ public class Main extends Application
             {
                 if (game.isValidState(State.NEXT))
                 {
-                    game.nextPlayer();
+                    game.saveScore();
                     updateScoreOfPlayersInListView();
+                    game.nextPlayer();
                     updateUI();
                 }
                 else

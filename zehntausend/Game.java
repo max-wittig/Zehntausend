@@ -86,27 +86,29 @@ public class Game
         }
     }
 
+    public void saveScore()
+    {
+        //always clear --> if not fullfiled score is gone!
+        int numberOfDicesInLastRoll = getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().size();
+        if (numberOfDicesInLastRoll > 0 && minScoreReached())
+        {
+            getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getCurrentTurn().getRoundArrayList(), true, settings));
+        }
+    }
+
     //cycles through players
     public void nextPlayer()
     {
         if (!isGameOver)
         {
-            //always clear --> if not fullfiled score is gone!
-            int numberOfDicesInLastRoll = getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().size();
-            if (numberOfDicesInLastRoll > 0 && minScoreReached())
-            {
-                getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getCurrentTurn().getRoundArrayList(), true, settings));
-            }
-
             if (getCurrentPlayer().hasWon())
             {
                 if (getCurrentPlayer().getWinRank() == -1)
                 {
-                    Main.showWinAlert(currentPlayerNumber + 1);
+                    Main.showWinAlert(getCurrentPlayer().getPlayerName());
                     getCurrentPlayer().setWinRank(getNumberOfWinners() + 1);
                 }
             }
-
             getCurrentPlayer().initDice();
             getCurrentPlayer().nextTurn();
             setNextPlayerNumber();
