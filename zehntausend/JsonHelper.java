@@ -4,6 +4,7 @@ package com.spaghettic0der.zehntausend;
 import com.google.gson.Gson;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -17,12 +18,37 @@ public class JsonHelper
         gson = new Gson();
     }
 
-    public void saveGameState(Game game)
+    public void saveSettings(Settings settings)
     {
-        String json = gson.toJson(game);
+        save(settings, "settings.json");
+    }
+
+    public Settings loadSettings()
+    {
+        return gson.fromJson(loadJSON("settings.json"), Settings.class);
+    }
+
+    private String loadJSON(String filename)
+    {
         try
         {
-            File file = new File("game.json");
+            String json = new String(Files.readAllBytes(Paths.get(filename)));
+            return json;
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
+    private void save(Object object, String filename)
+    {
+        String json = gson.toJson(object);
+        try
+        {
+            File file = new File(filename);
             BufferedWriter out = new BufferedWriter(new FileWriter(file));
             out.write(json);
             out.close();
@@ -31,23 +57,16 @@ public class JsonHelper
         {
             System.out.println(e);
         }
+    }
 
+    public void saveGame(Game game)
+    {
+        save(game, "game.json");
     }
 
     public Game loadGameState()
     {
-        try
-        {
-            String json = new String(Files.readAllBytes(Paths.get("game.json")));
-            Game game = gson.fromJson(json, Game.class);
-            return game;
-        }
-        catch (Exception e)
-        {
-            System.out.println(e);
-        }
-
-        return null;
+        return gson.fromJson(loadJSON("game.json"), Game.class);
 
     }
 }

@@ -415,7 +415,7 @@ public class Main extends Application
             @Override
             public void handle(ActionEvent event)
             {
-                jsonHelper.saveGameState(game);
+                jsonHelper.saveGame(game);
             }
         });
         gameMenu.getItems().addAll(newGameItem, settingsItem, loadItem, saveItem);
