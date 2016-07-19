@@ -19,21 +19,37 @@ public class Scoring
         return false;
     }
 
-    public static boolean isStreet(ArrayList<Dice> dices, boolean streetEnabled)
+    public static boolean isStreet(ArrayList<Dice> dices, boolean streetEnabled, int totalNumberDice)
     {
         if (streetEnabled)
         {
-            if (containsDiceNumber(1, dices) && containsDiceNumber(2, dices) &&
-                    containsDiceNumber(3, dices) && containsDiceNumber(4, dices) &&
-                    containsDiceNumber(5, dices) && containsDiceNumber(6, dices))
+            int oneCountInDices = 0;
+            HashMap<Integer, Integer> diceHashMap = getDiceHashMap(dices);
+            if (diceHashMap != null)
             {
-                return true;
+                if (!diceHashMap.isEmpty())
+                {
+                    for (int diceNumber = 1; diceNumber <= totalNumberDice; diceNumber++)
+                    {
+                        if (diceHashMap.get(diceNumber) != null)
+                        {
+                            if (diceHashMap.get(diceNumber) != 1)
+                            {
+                                return false;
+                            }
+                            else
+                            {
+                                oneCountInDices++;
+                            }
+                        }
+                    }
+                    System.out.println(oneCountInDices);
+                    if (oneCountInDices == totalNumberDice)
+                    {
+                        return true;
+                    }
+                }
             }
-
-        }
-        else
-        {
-            return false;
         }
         return false;
     }
@@ -172,7 +188,7 @@ public class Scoring
         HashMap<Integer, Integer> diceHashMap = getDiceHashMap(dices);
         int score = 0;
 
-        if (isStreet(dices, settings.isStreetEnabled()))
+        if (isStreet(dices, settings.isStreetEnabled(), settings.getTotalDiceNumber()))
         {
             return settings.getScoreStreet();
         }

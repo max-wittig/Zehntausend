@@ -754,6 +754,6 @@ public class Main extends Application
         game = new Game(globalSettings);
         initUI(primaryStage);
         addPlayersToListView();
-        updateUI();
+        //updateUI();
     }
 }

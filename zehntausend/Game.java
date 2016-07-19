@@ -64,7 +64,7 @@ public class Game
                     //checks if there are any multiplications of dice (3 times 2 == 200, 3 times 3 == 300 etc...)
                     //if so gameState is valid
                     boolean valid = (Scoring.containsMultiple(dicesSinceLastRoll)
-                            || Scoring.isStreet(dicesSinceLastRoll, settings.isStreetEnabled())
+                            || Scoring.isStreet(dicesSinceLastRoll, settings.isStreetEnabled(), settings.getTotalDiceNumber())
                             || Scoring.isSixDicesInARow(dicesSinceLastRoll, settings.isSixDicesInARowEnabled(), settings.getTotalDiceNumber())
                             || Scoring.isThreeTimesTwo(dicesSinceLastRoll, settings.isThreeXTwoEnabled())
                             || Scoring.isFullHouse(dicesSinceLastRoll, settings.isFullHouseEnabled(), settings.getTotalDiceNumber())

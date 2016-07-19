@@ -35,24 +35,29 @@ public class Player
             remainingDices.add(dice);
         }
 
-        /*---------------------------------DEBUG CODE
+        //---------------------------------DEBUG CODE
+        /*
         remainingDices.clear();
 
         Dice dice = new Dice();
-        dice.setDiceNumber(3);
+        dice.setDiceNumber(1);
         remainingDices.add(dice);
         Dice dice2 = new Dice();
-        dice2.setDiceNumber(3);
+        dice2.setDiceNumber(2);
         remainingDices.add(dice2);
         Dice dice3 = new Dice();
         dice3.setDiceNumber(3);
         remainingDices.add(dice3);
         Dice dice4 = new Dice();
-        dice4.setDiceNumber(2);
+        dice4.setDiceNumber(4);
         remainingDices.add(dice4);
         Dice dice5 = new Dice();
-        dice5.setDiceNumber(2);
-        remainingDices.add(dice5);*/
+        dice5.setDiceNumber(5);
+        remainingDices.add(dice5);
+
+        Dice dice6 = new Dice();
+        dice6.setDiceNumber(6);
+        remainingDices.add(dice6);*/
     }
 
 
