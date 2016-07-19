@@ -38,6 +38,8 @@ public class JsonHelper
         catch (Exception e)
         {
             System.out.println(e);
+            Settings settings = new Settings();
+            saveSettings(settings);
         }
 
         return null;
