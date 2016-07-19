@@ -35,14 +35,16 @@ public class Main extends Application
     private Stage settingsStage;
     private Scene mainScene;
     private JsonHelper jsonHelper;
-    private Settings settings;
+    private Settings globalSettings;
     private VBox centerVBox;
     private ObservableList<HBox> observableList;
 
     public Main()
     {
         jsonHelper = new JsonHelper();
-        settings = new Settings();
+        globalSettings = jsonHelper.loadSettings();
+        if (globalSettings == null)
+            globalSettings = new Settings();
     }
 
     public static void main(String[] args) throws Exception
@@ -88,7 +90,7 @@ public class Main extends Application
             diceButton.setPrefWidth(diceButtonSize);
             diceButton.setPrefHeight(diceButtonSize);
             diceButton.setFont(new Font(buttonFontSize));
-            if (settings.isDiceImageShown())
+            if (globalSettings.isDiceImageShown())
             {
                 String diceImageLocation = "res/" + dices.get(i).getDiceNumber() + ".png";
                 setDiceImage(diceButton, diceImageLocation);
@@ -142,7 +144,7 @@ public class Main extends Application
             diceButton.setStyle("-fx-background-color: greenyellow; -fx-border-color: gray");
             diceButton.setFont(new Font(buttonFontSize));
             diceButton.setId("" + i);
-            if (settings.isDiceImageShown())
+            if (globalSettings.isDiceImageShown())
             {
                 String diceImageLocation = "res/" + dices.get(i).getDiceNumber() + ".png";
                 setDiceImage(diceButton, diceImageLocation);
@@ -195,174 +197,197 @@ public class Main extends Application
 
     private void initSettingsStage(Stage primaryStage)
     {
-        Settings settings = game.getSettings();
+        ArrayList<Settings> settingsArrayList = new ArrayList<>();
+        Settings gameSettings = game.getSettings();
+        gameSettings.setSettingsName("Game Settings");
+        globalSettings.setSettingsName("Global Settings");
+
+        if (gameSettings != globalSettings)
+            settingsArrayList.add(gameSettings);
+
+        settingsArrayList.add(globalSettings);
         BorderPane borderPane = new BorderPane();
-        Scene settingsScene = new Scene(borderPane, settings.getWidth(), settings.getHeight());
-        VBox vBox = new VBox();
+        Scene settingsScene = new Scene(borderPane, globalSettings.getWidth(), globalSettings.getHeight());
+        Accordion accordion = new Accordion();
 
-        //player count
-        HBox playerHBox = new HBox();
-        Label playerLabel = new Label("Players:");
-        Slider playerSlider = new Slider(2, 6, settings.getTotalPlayers());
-        playerSlider.setMajorTickUnit(1);
-        playerSlider.setMinorTickCount(0);
-        playerSlider.setSnapToTicks(true);
-        playerSlider.setShowTickLabels(true);
-        playerHBox.getChildren().addAll(playerLabel, playerSlider);
-        HBox.setHgrow(playerSlider, Priority.ALWAYS);
-        HBox.setMargin(playerLabel, new Insets(0, 20, 0, 0));
-        VBox.setMargin(playerHBox, new Insets(20, 20, 20, 20));
-        vBox.getChildren().add(playerHBox);
-
-        //dice count
-        HBox diceHBox = new HBox();
-        Label diceLabel = new Label("Dices:");
-        Slider diceSlider = new Slider(4, 10, settings.getTotalDiceNumber());
-        diceSlider.setMajorTickUnit(1);
-        diceSlider.setMinorTickCount(0);
-        diceSlider.setSnapToTicks(true);
-        diceSlider.setShowTickLabels(true);
-        diceHBox.getChildren().addAll(diceLabel, diceSlider);
-        HBox.setHgrow(diceSlider, Priority.ALWAYS);
-        HBox.setMargin(diceLabel, new Insets(0, 20, 0, 0));
-        VBox.setMargin(diceHBox, new Insets(20, 20, 20, 20));
-        vBox.getChildren().add(diceHBox);
-
-        //win score
-        HBox winScoreHBox = new HBox();
-        Label winScoreLabel = new Label("Win Score:");
-        TextField winScoreTextField = new TextField("" + settings.getMinScoreRequiredToWin());
-        winScoreHBox.getChildren().addAll(winScoreLabel, winScoreTextField);
-        HBox.setHgrow(winScoreTextField, Priority.ALWAYS);
-        HBox.setMargin(winScoreTextField, new Insets(-3, 0, 0, 0));
-        HBox.setMargin(winScoreLabel, new Insets(0, 20, 0, 0));
-        VBox.setMargin(winScoreHBox, new Insets(20, 20, 20, 20));
-        vBox.getChildren().add(winScoreHBox);
-
-        //minsave Score
-        HBox minScoreHBox = new HBox();
-        Label minScoreLabel = new Label("Min Score to save:");
-        TextField minScoreTextField = new TextField("" + settings.getMinScoreRequiredToSaveInRound());
-        minScoreHBox.getChildren().addAll(minScoreLabel, minScoreTextField);
-        HBox.setHgrow(minScoreTextField, Priority.ALWAYS);
-        HBox.setMargin(minScoreTextField, new Insets(-3, 0, 0, 0));
-        HBox.setMargin(minScoreLabel, new Insets(0, 20, 0, 0));
-        VBox.setMargin(minScoreHBox, new Insets(20, 20, 20, 20));
-        vBox.getChildren().add(minScoreHBox);
-
-        //rules
-
-        //street
-        HBox streetHBox = new HBox();
-        streetHBox.setPrefWidth(settings.getWidth());
-        CheckBox streetCheckBox = new CheckBox("Street");
-        streetCheckBox.setSelected(game.getSettings().isStreetEnabled());
-
-        TextField streetTextField = new TextField("" + settings.getScoreStreet());
-        streetHBox.getChildren().addAll(streetCheckBox, streetTextField);
-        vBox.getChildren().add(streetHBox);
-        HBox.setMargin(streetCheckBox, new Insets(0, 20, 0, 20));
-        HBox.setMargin(streetTextField, new Insets(0, 20, 0, 20));
-        HBox.setHgrow(streetTextField, Priority.ALWAYS);
-        VBox.setMargin(streetHBox, new Insets(20, 20, 20, 20));
-
-        if (!streetCheckBox.isSelected())
+        for (Settings currentSettings : settingsArrayList)
         {
-            streetTextField.setDisable(true);
-        }
-        else
-        {
-            streetTextField.setDisable(false);
-        }
-
-
-        streetCheckBox.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
+            TitledPane titledPane = new TitledPane();
+            titledPane.setText(currentSettings.getSettingsName());
+            boolean isGlobal = (currentSettings.getSettingsName().equals(globalSettings.getSettingsName()));
+            if (isGlobal)
             {
-                if (!streetCheckBox.isSelected())
-                {
-                    streetTextField.setDisable(true);
-                }
-                else
-                {
-                    streetTextField.setDisable(false);
-                }
+                accordion.setExpandedPane(titledPane);
             }
-        });
+            VBox vBox = new VBox();
+            //player count
+            HBox playerHBox = new HBox();
+            Label playerLabel = new Label("Players:");
+            Slider playerSlider = new Slider(2, 6, currentSettings.getTotalPlayers());
+            playerSlider.setMajorTickUnit(1);
+            playerSlider.setMinorTickCount(0);
+            playerSlider.setSnapToTicks(true);
+            playerSlider.setShowTickLabels(true);
+            playerHBox.getChildren().addAll(playerLabel, playerSlider);
+            HBox.setHgrow(playerSlider, Priority.ALWAYS);
+            HBox.setMargin(playerLabel, new Insets(0, 20, 0, 0));
+            VBox.setMargin(playerHBox, new Insets(20, 20, 20, 20));
+            vBox.getChildren().add(playerHBox);
 
-        //Three x two
-        HBox threeXTwoHBox = new HBox();
-        threeXTwoHBox.setPrefWidth(settings.getWidth());
-        CheckBox threeXTwoCheckBox = new CheckBox("Three Times Two");
-        threeXTwoCheckBox.setSelected(game.getSettings().isThreeXTwoEnabled());
+            //dice count
+            HBox diceHBox = new HBox();
+            Label diceLabel = new Label("Dices:");
+            Slider diceSlider = new Slider(4, 10, currentSettings.getTotalDiceNumber());
+            diceSlider.setMajorTickUnit(1);
+            diceSlider.setMinorTickCount(0);
+            diceSlider.setSnapToTicks(true);
+            diceSlider.setShowTickLabels(true);
+            diceHBox.getChildren().addAll(diceLabel, diceSlider);
+            HBox.setHgrow(diceSlider, Priority.ALWAYS);
+            HBox.setMargin(diceLabel, new Insets(0, 20, 0, 0));
+            VBox.setMargin(diceHBox, new Insets(20, 20, 20, 20));
+            vBox.getChildren().add(diceHBox);
 
-        TextField threeXTwoTextField = new TextField("" + settings.getScoreThreeXTwo());
-        threeXTwoHBox.getChildren().addAll(threeXTwoCheckBox, threeXTwoTextField);
-        vBox.getChildren().add(threeXTwoHBox);
-        HBox.setMargin(threeXTwoCheckBox, new Insets(0, 20, 0, 20));
-        HBox.setMargin(threeXTwoTextField, new Insets(0, 20, 0, 20));
-        HBox.setHgrow(threeXTwoTextField, Priority.ALWAYS);
-        VBox.setMargin(threeXTwoHBox, new Insets(20, 20, 20, 20));
+            //win score
+            HBox winScoreHBox = new HBox();
+            Label winScoreLabel = new Label("Win Score:");
+            TextField winScoreTextField = new TextField("" + currentSettings.getMinScoreRequiredToWin());
+            winScoreHBox.getChildren().addAll(winScoreLabel, winScoreTextField);
+            HBox.setHgrow(winScoreTextField, Priority.ALWAYS);
+            HBox.setMargin(winScoreTextField, new Insets(-3, 0, 0, 0));
+            HBox.setMargin(winScoreLabel, new Insets(0, 20, 0, 0));
+            VBox.setMargin(winScoreHBox, new Insets(20, 20, 20, 20));
+            vBox.getChildren().add(winScoreHBox);
 
-        if (!threeXTwoCheckBox.isSelected())
-        {
-            threeXTwoTextField.setDisable(true);
-        }
-        else
-        {
-            threeXTwoTextField.setDisable(false);
-        }
+            //minsave Score
+            HBox minScoreHBox = new HBox();
+            Label minScoreLabel = new Label("Min Score to save:");
+            TextField minScoreTextField = new TextField("" + currentSettings.getMinScoreRequiredToSaveInRound());
+            minScoreHBox.getChildren().addAll(minScoreLabel, minScoreTextField);
+            HBox.setHgrow(minScoreTextField, Priority.ALWAYS);
+            HBox.setMargin(minScoreTextField, new Insets(-3, 0, 0, 0));
+            HBox.setMargin(minScoreLabel, new Insets(0, 20, 0, 0));
+            VBox.setMargin(minScoreHBox, new Insets(20, 20, 20, 20));
+            vBox.getChildren().add(minScoreHBox);
 
+            //rules
 
-        threeXTwoCheckBox.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
+            //street
+            HBox streetHBox = new HBox();
+            streetHBox.setPrefWidth(currentSettings.getWidth());
+            CheckBox streetCheckBox = new CheckBox();
+            streetCheckBox.setText("Street");
+            streetCheckBox.setSelected(currentSettings.isStreetEnabled());
+
+            TextField streetTextField = new TextField("" + currentSettings.getScoreStreet());
+            streetHBox.getChildren().addAll(streetCheckBox, streetTextField);
+            vBox.getChildren().add(streetHBox);
+            HBox.setMargin(streetCheckBox, new Insets(0, 20, 0, 20));
+            HBox.setMargin(streetTextField, new Insets(0, 20, 0, 20));
+            HBox.setHgrow(streetTextField, Priority.ALWAYS);
+            VBox.setMargin(streetHBox, new Insets(20, 20, 20, 20));
+
+            if (!streetCheckBox.isSelected())
             {
-                if (!threeXTwoCheckBox.isSelected())
-                {
-                    threeXTwoTextField.setDisable(true);
-                }
-                else
-                {
-                    threeXTwoTextField.setDisable(false);
-                }
+                streetTextField.setDisable(true);
             }
-        });
-
-
-        //save and cancel button
-        HBox buttonHBox = new HBox();
-        buttonHBox.setAlignment(Pos.CENTER);
-        Button saveSettingsButton = new Button("Save");
-        saveSettingsButton.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
+            else
             {
-                Settings settings = game.getSettings();
-                settings.setTotalPlayers((int) playerSlider.getValue());
-                settings.setTotalDiceNumber((int) diceSlider.getValue());
-                settings.setMinScoreRequiredToWin(Integer.parseInt(winScoreTextField.getText()));
-
-                settings.setStreetEnabled(streetCheckBox.isSelected());
-                settings.setScoreStreet(Integer.parseInt(streetTextField.getText()));
-
-                settings.setThreeXTwoEnabled(threeXTwoCheckBox.isSelected());
-                settings.setScoreThreeXTwo(Integer.parseInt(threeXTwoTextField.getText()));
-                game = new Game(settings);
-                updateUI();
-                clearScoreList();
-                settingsStage.close();
+                streetTextField.setDisable(false);
             }
-        });
-        Button cancelSettingsButton = new Button("Cancel");
-        buttonHBox.getChildren().addAll(cancelSettingsButton, saveSettingsButton);
-        vBox.getChildren().add(buttonHBox);
 
-        borderPane.setCenter(vBox);
+
+            streetCheckBox.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                public void handle(ActionEvent event)
+                {
+                    if (!streetCheckBox.isSelected())
+                    {
+                        streetTextField.setDisable(true);
+                    }
+                    else
+                    {
+                        streetTextField.setDisable(false);
+                    }
+                }
+            });
+
+            //Three x two
+            HBox threeXTwoHBox = new HBox();
+            threeXTwoHBox.setPrefWidth(currentSettings.getWidth());
+            CheckBox threeXTwoCheckBox = new CheckBox("Three Times Two");
+            threeXTwoCheckBox.setSelected(currentSettings.isThreeXTwoEnabled());
+
+            TextField threeXTwoTextField = new TextField("" + currentSettings.getScoreThreeXTwo());
+            threeXTwoHBox.getChildren().addAll(threeXTwoCheckBox, threeXTwoTextField);
+            vBox.getChildren().add(threeXTwoHBox);
+            HBox.setMargin(threeXTwoCheckBox, new Insets(0, 20, 0, 20));
+            HBox.setMargin(threeXTwoTextField, new Insets(0, 20, 0, 20));
+            HBox.setHgrow(threeXTwoTextField, Priority.ALWAYS);
+            VBox.setMargin(threeXTwoHBox, new Insets(20, 20, 20, 20));
+
+            if (!threeXTwoCheckBox.isSelected())
+            {
+                threeXTwoTextField.setDisable(true);
+            }
+            else
+            {
+                threeXTwoTextField.setDisable(false);
+            }
+
+
+            threeXTwoCheckBox.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                public void handle(ActionEvent event)
+                {
+                    if (!threeXTwoCheckBox.isSelected())
+                    {
+                        threeXTwoTextField.setDisable(true);
+                    }
+                    else
+                    {
+                        threeXTwoTextField.setDisable(false);
+                    }
+                }
+            });
+
+            //save and cancel button
+            HBox buttonHBox = new HBox();
+            buttonHBox.setAlignment(Pos.CENTER);
+            Button saveSettingsButton = new Button("Save");
+            saveSettingsButton.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                public void handle(ActionEvent event)
+                {
+                    currentSettings.setTotalPlayers((int) playerSlider.getValue());
+                    currentSettings.setTotalDiceNumber((int) diceSlider.getValue());
+                    currentSettings.setMinScoreRequiredToWin(Integer.parseInt(winScoreTextField.getText()));
+
+                    currentSettings.setStreetEnabled(streetCheckBox.isSelected());
+                    currentSettings.setScoreStreet(Integer.parseInt(streetTextField.getText()));
+
+                    currentSettings.setThreeXTwoEnabled(threeXTwoCheckBox.isSelected());
+                    currentSettings.setScoreThreeXTwo(Integer.parseInt(threeXTwoTextField.getText()));
+                    jsonHelper.saveSettings(globalSettings);
+                    game = new Game(globalSettings);
+                    updateUI();
+                    clearScoreList();
+                    settingsStage.close();
+                }
+            });
+
+            Button cancelSettingsButton = new Button("Cancel");
+            buttonHBox.getChildren().addAll(cancelSettingsButton, saveSettingsButton);
+
+            titledPane.setContent(vBox);
+            accordion.getPanes().add(titledPane);
+
+        }
+        borderPane.setCenter(accordion);
+
 
         settingsStage = new Stage();
         settingsStage.initOwner(primaryStage);
@@ -384,7 +409,7 @@ public class Main extends Application
             @Override
             public void handle(ActionEvent event)
             {
-                game = new Game(settings);
+                game = new Game(globalSettings);
                 updateUI();
                 clearScoreList();
             }
@@ -449,7 +474,7 @@ public class Main extends Application
     private void addPlayersToListView()
     {
         HBox hBox = new HBox();
-        hBox.setPrefWidth(settings.getWidth() - 20);
+        hBox.setPrefWidth(globalSettings.getWidth() - 20);
         for (Player player : game.getPlayers())
         {
             Label label = new Label(player.getPlayerName());
@@ -492,7 +517,7 @@ public class Main extends Application
                         ArrayList<Round> roundArrayList = currentTurn.getRoundArrayList();
                         if (roundArrayList != null)
                         {
-                            playerScoreHashMap.put(j, playerScoreHashMap.get(j) + Scoring.getScoreFromAllDicesInRound(roundArrayList, true, settings));
+                            playerScoreHashMap.put(j, playerScoreHashMap.get(j) + Scoring.getScoreFromAllDicesInRound(roundArrayList, true, globalSettings));
 
                             Label label = (Label) currentHBox.getChildren().get(j);
                             if (label != null)
@@ -538,8 +563,8 @@ public class Main extends Application
     private void createEmptyLabelsInListView()
     {
         HBox hBox = new HBox();
-        hBox.setPrefWidth(settings.getWidth() - 20);
-        for (int i = 0; i < settings.getTotalPlayers(); i++)
+        hBox.setPrefWidth(globalSettings.getWidth() - 20);
+        for (int i = 0; i < globalSettings.getTotalPlayers(); i++)
         {
             Label label = new Label("");
             label.setAlignment(Pos.CENTER);
@@ -554,7 +579,7 @@ public class Main extends Application
     {
         observableList = FXCollections.observableArrayList();
         ListView<HBox> listView = new ListView<>(observableList);
-        listView.setMaxHeight(settings.getHeight() / 3);
+        listView.setMaxHeight(globalSettings.getHeight() / 3);
         root.setBottom(listView);
     }
 
@@ -637,8 +662,8 @@ public class Main extends Application
         centerVBox.setAlignment(Pos.CENTER);
         mainScene = new Scene(root, game.getSettings().getWidth(), game.getSettings().getHeight());
         primaryStage.setScene(mainScene);
-        primaryStage.setMinWidth(settings.getMinWidth());
-        primaryStage.setMinHeight(settings.getMinHeight());
+        primaryStage.setMinWidth(globalSettings.getMinWidth());
+        primaryStage.setMinHeight(globalSettings.getMinHeight());
         primaryStage.setResizable(false);
         initListView();
         primaryStage.show();
@@ -648,7 +673,7 @@ public class Main extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-        game = new Game(settings);
+        game = new Game(globalSettings);
         initUI(primaryStage);
         addPlayersToListView();
         updateUI();

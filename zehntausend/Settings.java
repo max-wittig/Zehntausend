@@ -3,6 +3,7 @@ package com.spaghettic0der.zehntausend;
 
 public class Settings
 {
+    private String settingsName = "";
     //oracle bug workaround
     private int minWidth = 800;
     private int minHeight = 800;
@@ -175,5 +176,15 @@ public class Settings
     public void setGameOverAfterFirstPlayerWon(boolean gameOverAfterFirstPlayerWon)
     {
         this.gameOverAfterFirstPlayerWon = gameOverAfterFirstPlayerWon;
+    }
+
+    public String getSettingsName()
+    {
+        return settingsName;
+    }
+
+    public void setSettingsName(String settingsName)
+    {
+        this.settingsName = settingsName;
     }
 }
