@@ -371,17 +371,21 @@ public class Main extends Application
 
                     currentSettings.setThreeXTwoEnabled(threeXTwoCheckBox.isSelected());
                     currentSettings.setScoreThreeXTwo(Integer.parseInt(threeXTwoTextField.getText()));
-                    jsonHelper.saveSettings(globalSettings);
-                    game = new Game(globalSettings);
-                    updateUI();
-                    clearScoreList();
+
+                    if (isGlobal)
+                    {
+                        jsonHelper.saveSettings(globalSettings);
+                        game = new Game(globalSettings);
+                        updateUI();
+                        clearScoreList();
+                    }
                     settingsStage.close();
                 }
             });
 
             Button cancelSettingsButton = new Button("Cancel");
             buttonHBox.getChildren().addAll(cancelSettingsButton, saveSettingsButton);
-
+            vBox.getChildren().add(buttonHBox);
             titledPane.setContent(vBox);
             accordion.getPanes().add(titledPane);
 
