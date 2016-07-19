@@ -368,7 +368,7 @@ public class Main extends Application
                     currentSettings.setTotalPlayers((int) playerSlider.getValue());
                     currentSettings.setTotalDiceNumber((int) diceSlider.getValue());
                     currentSettings.setMinScoreRequiredToWin(Integer.parseInt(winScoreTextField.getText()));
-
+                    currentSettings.setMinScoreRequiredToSaveInRound(Integer.parseInt(minScoreTextField.getText()));
                     currentSettings.setStreetEnabled(streetCheckBox.isSelected());
                     currentSettings.setScoreStreet(Integer.parseInt(streetTextField.getText()));
 
@@ -418,7 +418,7 @@ public class Main extends Application
     {
         game = new Game(settings);
         updateUI();
-        clearScoreList();
+        clearScoreListAddPlayers();
     }
 
     private void initMenu(Stage primaryStage)
@@ -488,7 +488,7 @@ public class Main extends Application
         root.setTop(menuBar);
     }
 
-    private void clearScoreList()
+    private void clearScoreListAddPlayers()
     {
         observableList.clear();
         addPlayersToListView();
@@ -512,8 +512,7 @@ public class Main extends Application
 
     private void rebuildListView()
     {
-        observableList.clear();
-        addPlayersToListView();
+        clearScoreListAddPlayers();
 
         for (int i = 0; i < game.getLongestTurnArrayList().size() - 1; i++)
         {
