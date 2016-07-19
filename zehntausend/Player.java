@@ -34,6 +34,25 @@ public class Player
             dice.roll();
             remainingDices.add(dice);
         }
+
+        //---------------------------------DEBUG CODE
+        remainingDices.clear();
+
+        Dice dice = new Dice();
+        dice.setDiceNumber(3);
+        remainingDices.add(dice);
+        Dice dice2 = new Dice();
+        dice2.setDiceNumber(3);
+        remainingDices.add(dice2);
+        Dice dice3 = new Dice();
+        dice3.setDiceNumber(3);
+        remainingDices.add(dice3);
+        Dice dice4 = new Dice();
+        dice4.setDiceNumber(2);
+        remainingDices.add(dice4);
+        Dice dice5 = new Dice();
+        dice5.setDiceNumber(2);
+        remainingDices.add(dice5);
     }
 
 
@@ -78,7 +97,6 @@ public class Player
     {
         return remainingDices;
     }
-
 
     public void nextTurn()
     {

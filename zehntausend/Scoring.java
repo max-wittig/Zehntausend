@@ -19,23 +19,6 @@ public class Scoring
         return false;
     }
 
-    //don't use doesn't work
-    /*
-    public static boolean containsDiceNumbers(ArrayList<Integer> numbers, ArrayList<Dice> dices)
-    {
-        for (int number : numbers)
-        {
-            for (Dice currentDice : dices)
-            {
-                if (currentDice.getDiceNumber() == number)
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-*/
     public static boolean isStreet(ArrayList<Dice> dices, boolean streetEnabled)
     {
         if (streetEnabled)
@@ -51,6 +34,63 @@ public class Scoring
         else
         {
             return false;
+        }
+        return false;
+    }
+
+    public static int getScoreFullHouse(ArrayList<Dice> dicesFromRoll)
+    {
+        int score = 0;
+        HashMap<Integer, Integer> diceHashMap = getDiceHashMap(dicesFromRoll);
+        for (Integer key : diceHashMap.keySet())
+        {
+            int diceNumber = key;
+            int occurrenceOfNumber = diceHashMap.get(key);
+
+            if (occurrenceOfNumber == 2)
+            {
+                occurrenceOfNumber++;
+            }
+
+            if (occurrenceOfNumber == 3)
+            {
+                int sum = diceNumber * 100;
+                for (int i = 1; i < occurrenceOfNumber - 2; i++)
+                {
+                    sum *= 2;
+                }
+                score += sum;
+            }
+        }
+        return score;
+    }
+
+    public static boolean isFullHouse(ArrayList<Dice> dicesFromRoll, boolean fullHouseEnabled, int totalNumberOfDice)
+    {
+        if (fullHouseEnabled && totalNumberOfDice == 5)
+        {
+            HashMap<Integer, Integer> diceHashMap = getDiceHashMap(dicesFromRoll);
+            int numberOfDicesWithThreeOccurrences = 0;
+            int numberOfDicesWithTwoOccurrences = 0;
+            for (Integer key : diceHashMap.keySet())
+            {
+                int diceNumber = key;
+                int occurrenceOfNumber = diceHashMap.get(key);
+
+                if (occurrenceOfNumber == 2)
+                {
+                    numberOfDicesWithTwoOccurrences++;
+                }
+                else if (occurrenceOfNumber == 3)
+                {
+                    numberOfDicesWithThreeOccurrences++;
+                }
+            }
+
+            if (numberOfDicesWithThreeOccurrences + numberOfDicesWithTwoOccurrences == 2)
+            {
+                return true;
+            }
         }
         return false;
     }
@@ -119,7 +159,7 @@ public class Scoring
         {
             int diceNumber = currentDice.getDiceNumber();
             //diceHashMap.putIfAbsent(diceNumber, 0);
-            if (diceHashMap.get(diceNumber) == null) //it's so complicated, because android javafx
+            if (diceHashMap.get(diceNumber) == null) //because android javafx
                 diceHashMap.put(diceNumber, 0);      // doesn't support putIfAbsend
             diceHashMap.put(diceNumber, diceHashMap.get(diceNumber) + 1);
         }
@@ -147,6 +187,11 @@ public class Scoring
             return settings.getScoreSixDicesInARow();
         }
 
+        if (isFullHouse(dices, settings.isFullHouseEnabled(), settings.getTotalDiceNumber()))
+        {
+            return getScoreFullHouse(dices);
+        }
+
         //normal cases
         //key is number [1,2,3,4,5,6]
         //diceHashMap.get(key) is occurrence of number
@@ -154,7 +199,7 @@ public class Scoring
         {
             int diceNumber = key;
             int occurrence = diceHashMap.get(key);
-            if (diceHashMap.get(key) > 2)
+            if (occurrence > 2)
             {
                 //3 times 1 == 1000, 4 times 1 == 2000 etc...
                 if (diceNumber == 1)

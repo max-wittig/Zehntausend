@@ -11,7 +11,7 @@ public class Settings
     private int height = 800;
 
     //general settings
-    private int totalDiceNumber = 6;
+    private int totalDiceNumber = 5;
     private int totalPlayers = 3;
     private boolean diceImageShown = false;
     private boolean gameOverAfterFirstPlayerWon = false;
@@ -27,6 +27,8 @@ public class Settings
 
     private boolean sixDicesInARowEnabled = true;
     private int scoreSixDicesInARow = 10000; //can be ajusted
+
+    private boolean fullHouseEnabled = true; // only works with 5 dices
 
     public int getMinWidth()
     {
@@ -186,5 +188,15 @@ public class Settings
     public void setSettingsName(String settingsName)
     {
         this.settingsName = settingsName;
+    }
+
+    public boolean isFullHouseEnabled()
+    {
+        return fullHouseEnabled;
+    }
+
+    public void setFullHouseEnabled(boolean fullHouseEnabled)
+    {
+        this.fullHouseEnabled = fullHouseEnabled;
     }
 }

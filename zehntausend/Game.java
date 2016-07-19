@@ -66,7 +66,11 @@ public class Game
                     boolean valid = (Scoring.containsMultiple(dicesSinceLastRoll)
                             || Scoring.isStreet(dicesSinceLastRoll, settings.isStreetEnabled())
                             || Scoring.isSixDicesInARow(dicesSinceLastRoll, settings.isSixDicesInARowEnabled(), settings.getTotalDiceNumber())
-                            || Scoring.isThreeTimesTwo(dicesSinceLastRoll, settings.isThreeXTwoEnabled()));
+                            || Scoring.isThreeTimesTwo(dicesSinceLastRoll, settings.isThreeXTwoEnabled())
+                            || Scoring.isFullHouse(dicesSinceLastRoll, settings.isFullHouseEnabled(), settings.getTotalDiceNumber())
+                    );
+
+
                     return valid;
                 }
             }
