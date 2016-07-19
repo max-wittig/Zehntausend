@@ -35,7 +35,7 @@ public class Player
             remainingDices.add(dice);
         }
 
-        //---------------------------------DEBUG CODE
+        /*---------------------------------DEBUG CODE
         remainingDices.clear();
 
         Dice dice = new Dice();
@@ -52,7 +52,7 @@ public class Player
         remainingDices.add(dice4);
         Dice dice5 = new Dice();
         dice5.setDiceNumber(2);
-        remainingDices.add(dice5);
+        remainingDices.add(dice5);*/
     }
 
 

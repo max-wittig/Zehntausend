@@ -87,7 +87,7 @@ public class Scoring
                 }
             }
 
-            if (numberOfDicesWithThreeOccurrences + numberOfDicesWithTwoOccurrences == 2)
+            if (numberOfDicesWithThreeOccurrences == 1 && numberOfDicesWithTwoOccurrences == 1)
             {
                 return true;
             }
