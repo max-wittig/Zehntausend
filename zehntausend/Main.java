@@ -212,6 +212,7 @@ public class Main extends Application
         BorderPane borderPane = new BorderPane();
         Scene settingsScene = new Scene(borderPane, globalSettings.getWidth(), globalSettings.getHeight());
         Accordion accordion = new Accordion();
+        int minWidth = 200;
 
         for (Settings currentSettings : settingsArrayList)
         {
@@ -226,6 +227,7 @@ public class Main extends Application
             //player count
             HBox playerHBox = new HBox();
             Label playerLabel = new Label("Players:");
+            playerLabel.setMinWidth(minWidth);
             Slider playerSlider = new Slider(2, 6, currentSettings.getTotalPlayers());
             if (!isGlobal)
             {
@@ -237,13 +239,14 @@ public class Main extends Application
             playerSlider.setShowTickLabels(true);
             playerHBox.getChildren().addAll(playerLabel, playerSlider);
             HBox.setHgrow(playerSlider, Priority.ALWAYS);
-            HBox.setMargin(playerLabel, new Insets(0, 20, 0, 0));
-            VBox.setMargin(playerHBox, new Insets(20, 20, 20, 20));
+            HBox.setMargin(playerLabel, new Insets(0, 20, 0, 20));
+            VBox.setMargin(playerHBox, new Insets(20, 40, 20, 20));
             vBox.getChildren().add(playerHBox);
 
             //dice count
             HBox diceHBox = new HBox();
             Label diceLabel = new Label("Dices:");
+            diceLabel.setMinWidth(minWidth);
             Slider diceSlider = new Slider(4, 10, currentSettings.getTotalDiceNumber());
             diceSlider.setMajorTickUnit(1);
             diceSlider.setMinorTickCount(0);
@@ -251,30 +254,32 @@ public class Main extends Application
             diceSlider.setShowTickLabels(true);
             diceHBox.getChildren().addAll(diceLabel, diceSlider);
             HBox.setHgrow(diceSlider, Priority.ALWAYS);
-            HBox.setMargin(diceLabel, new Insets(0, 20, 0, 0));
-            VBox.setMargin(diceHBox, new Insets(20, 20, 20, 20));
+            HBox.setMargin(diceLabel, new Insets(0, 20, 0, 20));
+            VBox.setMargin(diceHBox, new Insets(20, 40, 20, 20));
             vBox.getChildren().add(diceHBox);
 
             //win score
             HBox winScoreHBox = new HBox();
             Label winScoreLabel = new Label("Win Score:");
+            winScoreLabel.setMinWidth(minWidth);
             TextField winScoreTextField = new TextField("" + currentSettings.getMinScoreRequiredToWin());
             winScoreHBox.getChildren().addAll(winScoreLabel, winScoreTextField);
             HBox.setHgrow(winScoreTextField, Priority.ALWAYS);
             HBox.setMargin(winScoreTextField, new Insets(-3, 0, 0, 0));
-            HBox.setMargin(winScoreLabel, new Insets(0, 20, 0, 0));
-            VBox.setMargin(winScoreHBox, new Insets(20, 20, 20, 20));
+            HBox.setMargin(winScoreLabel, new Insets(0, 20, 0, 20));
+            VBox.setMargin(winScoreHBox, new Insets(20, 40, 20, 20));
             vBox.getChildren().add(winScoreHBox);
 
             //minsave Score
             HBox minScoreHBox = new HBox();
             Label minScoreLabel = new Label("Min Score to save:");
+            minScoreLabel.setMinWidth(minWidth);
             TextField minScoreTextField = new TextField("" + currentSettings.getMinScoreRequiredToSaveInRound());
             minScoreHBox.getChildren().addAll(minScoreLabel, minScoreTextField);
             HBox.setHgrow(minScoreTextField, Priority.ALWAYS);
             HBox.setMargin(minScoreTextField, new Insets(-3, 0, 0, 0));
-            HBox.setMargin(minScoreLabel, new Insets(0, 20, 0, 0));
-            VBox.setMargin(minScoreHBox, new Insets(20, 20, 20, 20));
+            HBox.setMargin(minScoreLabel, new Insets(0, 20, 0, 20));
+            VBox.setMargin(minScoreHBox, new Insets(20, 40, 20, 20));
             vBox.getChildren().add(minScoreHBox);
 
             //rules
@@ -283,6 +288,7 @@ public class Main extends Application
             HBox streetHBox = new HBox();
             streetHBox.setPrefWidth(currentSettings.getWidth());
             CheckBox streetCheckBox = new CheckBox();
+            streetCheckBox.setMinWidth(minWidth - 20);
             streetCheckBox.setText("Street");
             streetCheckBox.setSelected(currentSettings.isStreetEnabled());
 
@@ -324,6 +330,7 @@ public class Main extends Application
             HBox threeXTwoHBox = new HBox();
             threeXTwoHBox.setPrefWidth(currentSettings.getWidth());
             CheckBox threeXTwoCheckBox = new CheckBox("Three Times Two");
+            threeXTwoCheckBox.setMinWidth(minWidth - 20);
             threeXTwoCheckBox.setSelected(currentSettings.isThreeXTwoEnabled());
 
             TextField threeXTwoTextField = new TextField("" + currentSettings.getScoreThreeXTwo());
@@ -343,7 +350,6 @@ public class Main extends Application
                 threeXTwoTextField.setDisable(false);
             }
 
-
             threeXTwoCheckBox.setOnAction(new EventHandler<ActionEvent>()
             {
                 @Override
@@ -360,6 +366,47 @@ public class Main extends Application
                 }
             });
 
+            //six dices in a row
+            HBox sixDicesInARowHBox = new HBox();
+            sixDicesInARowHBox.setPrefWidth(currentSettings.getWidth());
+            CheckBox sixDicesInARowCheckBox = new CheckBox("Six Dices in a Row");
+            sixDicesInARowCheckBox.setMinWidth(minWidth - 20);
+            sixDicesInARowCheckBox.setSelected(currentSettings.isSixDicesInARowEnabled());
+
+            TextField sixDicesInARowTextField = new TextField("" + currentSettings.getScoreSixDicesInARow());
+            sixDicesInARowHBox.getChildren().addAll(sixDicesInARowCheckBox, sixDicesInARowTextField);
+            vBox.getChildren().add(sixDicesInARowHBox);
+            HBox.setMargin(sixDicesInARowCheckBox, new Insets(0, 20, 0, 20));
+            HBox.setMargin(sixDicesInARowTextField, new Insets(0, 20, 0, 20));
+            HBox.setHgrow(sixDicesInARowTextField, Priority.ALWAYS);
+            VBox.setMargin(sixDicesInARowHBox, new Insets(20, 20, 20, 20));
+
+            if (!sixDicesInARowCheckBox.isSelected())
+            {
+                sixDicesInARowTextField.setDisable(true);
+            }
+            else
+            {
+                sixDicesInARowTextField.setDisable(false);
+            }
+
+            sixDicesInARowCheckBox.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                public void handle(ActionEvent event)
+                {
+                    if (!sixDicesInARowCheckBox.isSelected())
+                    {
+                        sixDicesInARowTextField.setDisable(true);
+                    }
+                    else
+                    {
+                        sixDicesInARowTextField.setDisable(false);
+                    }
+                }
+            });
+
+
             //save and cancel button
             HBox buttonHBox = new HBox();
             buttonHBox.setAlignment(Pos.CENTER);
@@ -371,10 +418,15 @@ public class Main extends Application
                 {
                     currentSettings.setTotalPlayers((int) playerSlider.getValue());
                     currentSettings.setTotalDiceNumber((int) diceSlider.getValue());
+
                     currentSettings.setMinScoreRequiredToWin(Integer.parseInt(winScoreTextField.getText()));
                     currentSettings.setMinScoreRequiredToSaveInRound(Integer.parseInt(minScoreTextField.getText()));
+
                     currentSettings.setStreetEnabled(streetCheckBox.isSelected());
                     currentSettings.setScoreStreet(Integer.parseInt(streetTextField.getText()));
+
+                    currentSettings.setScoreSixDicesInARow(Integer.parseInt(sixDicesInARowTextField.getText()));
+                    currentSettings.setSixDicesInARowEnabled(sixDicesInARowCheckBox.isSelected());
 
                     currentSettings.setThreeXTwoEnabled(threeXTwoCheckBox.isSelected());
                     currentSettings.setScoreThreeXTwo(Integer.parseInt(threeXTwoTextField.getText()));

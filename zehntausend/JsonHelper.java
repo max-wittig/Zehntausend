@@ -40,6 +40,7 @@ public class JsonHelper
             System.out.println(e);
             Settings settings = new Settings();
             saveSettings(settings);
+            System.out.println("Wrote default settings to disk");
         }
 
         return null;

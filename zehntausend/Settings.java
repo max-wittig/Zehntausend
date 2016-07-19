@@ -20,13 +20,13 @@ public class Settings
     private int scoreStreet = 1500;
 
     private int minScoreRequiredToSaveInRound = 300;
-    private int minScoreRequiredToWin = 300;
+    private int minScoreRequiredToWin = 5000;
 
     private boolean threeXTwoEnabled = true; //2x3 -> 2,2,4,4,6,6 --> 1000 points
     private int scoreThreeXTwo = 1000;
 
     private boolean sixDicesInARowEnabled = true;
-    private int scoreSixDicesInARow = minScoreRequiredToWin; //can be ajusted
+    private int scoreSixDicesInARow = 10000; //can be ajusted
 
     public int getMinWidth()
     {
