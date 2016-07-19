@@ -227,6 +227,10 @@ public class Main extends Application
             HBox playerHBox = new HBox();
             Label playerLabel = new Label("Players:");
             Slider playerSlider = new Slider(2, 6, currentSettings.getTotalPlayers());
+            if (!isGlobal)
+            {
+                playerSlider.setDisable(true);
+            }
             playerSlider.setMajorTickUnit(1);
             playerSlider.setMinorTickCount(0);
             playerSlider.setSnapToTicks(true);
@@ -586,7 +590,7 @@ public class Main extends Application
     {
         HBox hBox = new HBox();
         hBox.setPrefWidth(globalSettings.getWidth() - 20);
-        for (int i = 0; i < game.getSettings().getTotalPlayers(); i++)
+        for (int i = 0; i < game.getPlayers().size(); i++)
         {
             Label label = new Label("");
             label.setAlignment(Pos.CENTER);
