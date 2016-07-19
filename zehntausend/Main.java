@@ -199,11 +199,14 @@ public class Main extends Application
     {
         ArrayList<Settings> settingsArrayList = new ArrayList<>();
         Settings gameSettings = game.getSettings();
-        gameSettings.setSettingsName("Game Settings");
+
         globalSettings.setSettingsName("Global Settings");
 
         if (gameSettings != globalSettings)
+        {
+            gameSettings.setSettingsName("Game Settings");
             settingsArrayList.add(gameSettings);
+        }
 
         settingsArrayList.add(globalSettings);
         BorderPane borderPane = new BorderPane();
@@ -375,16 +378,27 @@ public class Main extends Application
                     if (isGlobal)
                     {
                         jsonHelper.saveSettings(globalSettings);
-                        game = new Game(globalSettings);
-                        updateUI();
-                        clearScoreList();
+                        nextGame(globalSettings);
+                    }
+                    else
+                    {
+                        game.setSettings(currentSettings);
                     }
                     settingsStage.close();
                 }
             });
 
             Button cancelSettingsButton = new Button("Cancel");
+            cancelSettingsButton.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                public void handle(ActionEvent event)
+                {
+                    settingsStage.close();
+                }
+            });
             buttonHBox.getChildren().addAll(cancelSettingsButton, saveSettingsButton);
+            HBox.setMargin(cancelSettingsButton, new Insets(20, 20, 20, 20));
             vBox.getChildren().add(buttonHBox);
             titledPane.setContent(vBox);
             accordion.getPanes().add(titledPane);
@@ -400,6 +414,13 @@ public class Main extends Application
         settingsStage.showAndWait();
     }
 
+    private void nextGame(Settings settings)
+    {
+        game = new Game(settings);
+        updateUI();
+        clearScoreList();
+    }
+
     private void initMenu(Stage primaryStage)
     {
         MenuBar menuBar = new MenuBar();
@@ -413,9 +434,7 @@ public class Main extends Application
             @Override
             public void handle(ActionEvent event)
             {
-                game = new Game(globalSettings);
-                updateUI();
-                clearScoreList();
+                nextGame(globalSettings);
             }
         });
         MenuItem settingsItem = new MenuItem("Settings");

@@ -229,6 +229,10 @@ public class Game
 
     public void setSettings(Settings settings)
     {
+        for (Player player : players)
+        {
+            player.setSettings(settings);
+        }
         this.settings = settings;
     }
 

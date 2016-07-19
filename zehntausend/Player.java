@@ -125,4 +125,9 @@ public class Player
     {
         this.winRank = winRank;
     }
+
+    public void setSettings(Settings settings)
+    {
+        this.settings = settings;
+    }
 }
