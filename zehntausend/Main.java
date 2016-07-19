@@ -524,7 +524,7 @@ public class Main extends Application
         for (int i = 1; i < observableList.size(); i++)
         {
             HBox currentHBox = observableList.get(i);
-            for (int j = 0; j < currentHBox.getChildren().size(); j++)
+            for (int j = 0; j < game.getPlayers().size(); j++)
             {
                 if (playerScoreHashMap.get(j) == null)
                 {
@@ -587,7 +587,7 @@ public class Main extends Application
     {
         HBox hBox = new HBox();
         hBox.setPrefWidth(globalSettings.getWidth() - 20);
-        for (int i = 0; i < globalSettings.getTotalPlayers(); i++)
+        for (int i = 0; i < game.getSettings().getTotalPlayers(); i++)
         {
             Label label = new Label("");
             label.setAlignment(Pos.CENTER);
