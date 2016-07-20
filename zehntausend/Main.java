@@ -1,6 +1,8 @@
 package com.spaghettic0der.zehntausend;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -90,7 +93,7 @@ public class Main extends Application
             diceButton.setPrefWidth(diceButtonSize);
             diceButton.setPrefHeight(diceButtonSize);
             diceButton.setFont(new Font(buttonFontSize));
-            if (globalSettings.isDiceImageShown())
+            if (game.getSettings().isDiceImageShown())
             {
                 String diceImageLocation = "res/" + dices.get(i).getDiceNumber() + ".png";
                 setDiceImage(diceButton, diceImageLocation);
@@ -144,7 +147,7 @@ public class Main extends Application
             diceButton.setStyle("-fx-background-color: greenyellow; -fx-border-color: gray");
             diceButton.setFont(new Font(buttonFontSize));
             diceButton.setId("" + i);
-            if (globalSettings.isDiceImageShown())
+            if (game.getSettings().isDiceImageShown())
             {
                 String diceImageLocation = "res/" + dices.get(i).getDiceNumber() + ".png";
                 setDiceImage(diceButton, diceImageLocation);
@@ -406,6 +409,40 @@ public class Main extends Application
                 }
             });
 
+            //full house
+            HBox fullHouseHBox = new HBox();
+            CheckBox fullHouseCheckBox = new CheckBox("Full House");
+            fullHouseCheckBox.setSelected(currentSettings.isFullHouseEnabled());
+            fullHouseCheckBox.setDisable(diceSlider.getValue() != 5);
+            diceSlider.valueProperty().addListener(new ChangeListener<Number>()
+            {
+                @Override
+                public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
+                {
+                    fullHouseCheckBox.setDisable(diceSlider.getValue() != 5);
+                }
+            });
+
+            fullHouseHBox.getChildren().add(fullHouseCheckBox);
+            vBox.getChildren().add(fullHouseHBox);
+            VBox.setMargin(fullHouseHBox, new Insets(20, 20, 20, 40));
+
+
+            //game over after first player won
+            HBox gameOverAfterFirstPlayerWonHBox = new HBox();
+            CheckBox gameOverAfterFirstPlayerWonCheckBox = new CheckBox("Game over after first player won");
+            gameOverAfterFirstPlayerWonCheckBox.setSelected(currentSettings.isGameOverAfterFirstPlayerWon());
+            gameOverAfterFirstPlayerWonHBox.getChildren().add(gameOverAfterFirstPlayerWonCheckBox);
+            vBox.getChildren().add(gameOverAfterFirstPlayerWonHBox);
+            VBox.setMargin(gameOverAfterFirstPlayerWonHBox, new Insets(20, 20, 20, 40));
+
+            //dice image shown
+            HBox diceImagesShownHBox = new HBox();
+            CheckBox diceImagesShownCheckBox = new CheckBox("Show dice images");
+            diceImagesShownCheckBox.setSelected(currentSettings.isDiceImageShown());
+            diceImagesShownHBox.getChildren().add(diceImagesShownCheckBox);
+            vBox.getChildren().add(diceImagesShownHBox);
+            VBox.setMargin(diceImagesShownHBox, new Insets(20, 20, 20, 40));
 
             //save and cancel button
             HBox buttonHBox = new HBox();
@@ -430,6 +467,12 @@ public class Main extends Application
 
                     currentSettings.setThreeXTwoEnabled(threeXTwoCheckBox.isSelected());
                     currentSettings.setScoreThreeXTwo(Integer.parseInt(threeXTwoTextField.getText()));
+
+                    currentSettings.setFullHouseEnabled(fullHouseCheckBox.isSelected());
+
+                    currentSettings.setGameOverAfterFirstPlayerWon(gameOverAfterFirstPlayerWonCheckBox.isSelected());
+
+                    currentSettings.setDiceImageShown(diceImagesShownCheckBox.isSelected());
 
                     if (isGlobal)
                     {
@@ -564,6 +607,11 @@ public class Main extends Application
         }
 
         observableList.add(hBox);
+    }
+
+    private void addWinLabel()
+    {
+        
     }
 
     private void rebuildListView()

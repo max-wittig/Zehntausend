@@ -43,7 +43,6 @@ public class Scoring
                             }
                         }
                     }
-                    System.out.println(oneCountInDices);
                     if (oneCountInDices == totalNumberDice)
                     {
                         return true;
