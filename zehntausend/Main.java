@@ -609,11 +609,6 @@ public class Main extends Application
         observableList.add(hBox);
     }
 
-    private void addWinLabel()
-    {
-        
-    }
-
     private void rebuildListView()
     {
         clearScoreListAddPlayers();

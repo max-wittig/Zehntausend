@@ -108,13 +108,23 @@ public class Game
                 {
                     //only show a dialog box to the first winner
                     if (getNumberOfWinners() < 1)
-                        Main.showWinAlert(getCurrentPlayer().getPlayerName());
+                    {
+                        if (settings.isGameOverAfterFirstPlayerWon())
+                        {
+                            Main.showGameOverDialog("Winner: " + getCurrentPlayer().getPlayerName());
+                        }
+                        else
+                        {
+                            Main.showWinAlert(getCurrentPlayer().getPlayerName());
+                        }
+                    }
 
+                    getCurrentPlayer().setWinRank(getNumberOfWinners() + 1);
                     if (settings.isGameOverAfterFirstPlayerWon())
                     {
                         isGameOver = true;
+                        return;
                     }
-                    getCurrentPlayer().setWinRank(getNumberOfWinners() + 1);
                 }
             }
 
