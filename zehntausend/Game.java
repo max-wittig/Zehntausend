@@ -106,7 +106,6 @@ public class Game
             {
                 if (getCurrentPlayer().getWinRank() == -1)
                 {
-                    //only show a dialog box to the first winner
                     if (getNumberOfWinners() < 1)
                     {
                         if (settings.isGameOverAfterFirstPlayerWon())

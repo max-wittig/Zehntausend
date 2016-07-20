@@ -655,7 +655,14 @@ public class Main extends Application
     {
         HBox hBox = observableList.get(observableList.size() - 1);
         Label label = (Label) hBox.getChildren().get(game.getCurrentPlayer().getPlayerNumber());
-        label.setText("" + game.getCurrentPlayer().getScore());
+        if (game.getCurrentPlayer().hasWon())
+        {
+            label.setText("Won with " + game.getCurrentPlayer().getScore());
+        }
+        else
+        {
+            label.setText("" + game.getCurrentPlayer().getScore());
+        }
     }
 
     //always updates current player score --> after that we switch player
