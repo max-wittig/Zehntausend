@@ -642,7 +642,18 @@ public class Main extends Application
 
                             Label label = (Label) currentHBox.getChildren().get(j);
                             if (label != null)
+                            {
                                 label.setText("" + playerScoreHashMap.get(j));
+                                if (playerScoreHashMap.get(j) >= game.getSettings().getMinScoreRequiredToWin())
+                                {
+                                    label.setText("Won with " + game.getCurrentPlayer().getScore());
+                                    label.setStyle("-fx-underline: true");
+                                }
+                                else
+                                {
+                                    label.setText("" + game.getCurrentPlayer().getScore());
+                                }
+                            }
                         }
                     }
                 }
@@ -658,6 +669,7 @@ public class Main extends Application
         if (game.getCurrentPlayer().hasWon())
         {
             label.setText("Won with " + game.getCurrentPlayer().getScore());
+            label.setStyle("-fx-underline: true");
         }
         else
         {
