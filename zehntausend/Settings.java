@@ -30,6 +30,9 @@ public class Settings
 
     private boolean fullHouseEnabled = true; // only works with 5 dices
 
+    private boolean pyramidEnabled = true;
+    private int scorePyramid = 1000;
+
     public int getMinWidth()
     {
         return minWidth;
@@ -198,5 +201,25 @@ public class Settings
     public void setFullHouseEnabled(boolean fullHouseEnabled)
     {
         this.fullHouseEnabled = fullHouseEnabled;
+    }
+
+    public boolean isPyramidEnabled()
+    {
+        return pyramidEnabled;
+    }
+
+    public void setPyramidEnabled(boolean pyramidEnabled)
+    {
+        this.pyramidEnabled = pyramidEnabled;
+    }
+
+    public int getScorePyramid()
+    {
+        return scorePyramid;
+    }
+
+    public void setScorePyramid(int scorePyramid)
+    {
+        this.scorePyramid = scorePyramid;
     }
 }

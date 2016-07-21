@@ -409,6 +409,48 @@ public class Main extends Application
                 }
             });
 
+            //pyramid
+            //six dices in a row
+            HBox pyramidHBox = new HBox();
+            pyramidHBox.setPrefWidth(currentSettings.getWidth());
+            CheckBox pyramidCheckBox = new CheckBox("Pyramid");
+            pyramidCheckBox.setMinWidth(minWidth - 20);
+            pyramidCheckBox.setSelected(currentSettings.isPyramidEnabled());
+
+            TextField pyramidTextField = new TextField("" + currentSettings.getScorePyramid());
+            pyramidHBox.getChildren().addAll(pyramidCheckBox, pyramidTextField);
+            vBox.getChildren().add(pyramidHBox);
+            HBox.setMargin(pyramidCheckBox, new Insets(0, 20, 0, 20));
+            HBox.setMargin(pyramidTextField, new Insets(0, 20, 0, 20));
+            HBox.setHgrow(pyramidTextField, Priority.ALWAYS);
+            VBox.setMargin(pyramidHBox, new Insets(20, 20, 20, 20));
+
+            if (!pyramidCheckBox.isSelected())
+            {
+                pyramidTextField.setDisable(true);
+            }
+            else
+            {
+                pyramidTextField.setDisable(false);
+            }
+
+            pyramidCheckBox.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                public void handle(ActionEvent event)
+                {
+                    if (!pyramidCheckBox.isSelected())
+                    {
+                        pyramidTextField.setDisable(true);
+                    }
+                    else
+                    {
+                        pyramidTextField.setDisable(false);
+                    }
+                }
+            });
+
+
             //full house
             HBox fullHouseHBox = new HBox();
             CheckBox fullHouseCheckBox = new CheckBox("Full House");

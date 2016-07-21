@@ -166,6 +166,24 @@ public class Scoring
         return true;
     }
 
+    public static boolean isPyramid(ArrayList<Dice> dices, boolean pyramidEnabled)
+    {
+        if (pyramidEnabled)
+        {
+            HashMap<Integer, Integer> diceHashMap = getDiceHashMap(dices);
+            for (int i = 1; i <= diceHashMap.keySet().size() + 1; i++)
+            {
+                if (diceHashMap.get(i) != null && diceHashMap.get(i + 1) != null && diceHashMap.get(i + 2) != null)
+                {
+                    if (diceHashMap.get(i) == 1 && diceHashMap.get(i + 1) == 2 && diceHashMap.get(i + 2) == 3)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
     private static HashMap<Integer, Integer> getDiceHashMap(ArrayList<Dice> dices)
     {
@@ -205,6 +223,11 @@ public class Scoring
         if (isFullHouse(dices, settings.isFullHouseEnabled(), settings.getTotalDiceNumber()))
         {
             return getScoreFullHouse(dices);
+        }
+
+        if (isPyramid(dices, settings.isPyramidEnabled()))
+        {
+            return settings.getScorePyramid();
         }
 
         //normal cases

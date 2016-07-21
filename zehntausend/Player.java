@@ -35,29 +35,19 @@ public class Player
             remainingDices.add(dice);
         }
 
-        //---------------------------------DEBUG CODE
-        /*
+        addDebugDices(new int[]{1, 2, 2, 3, 3, 3});
+
+    }
+
+    private void addDebugDices(int[] diceNumbers)
+    {
         remainingDices.clear();
-
-        Dice dice = new Dice();
-        dice.setDiceNumber(1);
-        remainingDices.add(dice);
-        Dice dice2 = new Dice();
-        dice2.setDiceNumber(2);
-        remainingDices.add(dice2);
-        Dice dice3 = new Dice();
-        dice3.setDiceNumber(3);
-        remainingDices.add(dice3);
-        Dice dice4 = new Dice();
-        dice4.setDiceNumber(4);
-        remainingDices.add(dice4);
-        Dice dice5 = new Dice();
-        dice5.setDiceNumber(5);
-        remainingDices.add(dice5);
-
-        Dice dice6 = new Dice();
-        dice6.setDiceNumber(6);
-        remainingDices.add(dice6);*/
+        for (Integer diceNumber : diceNumbers)
+        {
+            Dice dice = new Dice();
+            dice.setDiceNumber(diceNumber);
+            remainingDices.add(dice);
+        }
     }
 
 
