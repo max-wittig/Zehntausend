@@ -691,12 +691,12 @@ public class Main extends Application
                                 label.setText("" + playerScoreHashMap.get(j));
                                 if (playerScoreHashMap.get(j) >= game.getSettings().getMinScoreRequiredToWin())
                                 {
-                                    label.setText("Won with " + game.getCurrentPlayer().getScore());
+                                    label.setText("Won with " + playerScoreHashMap.get(j));
                                     label.setStyle("-fx-underline: true");
                                 }
                                 else
                                 {
-                                    label.setText("" + game.getCurrentPlayer().getScore());
+                                    label.setText("" + playerScoreHashMap.get(j));
                                 }
                             }
                         }
