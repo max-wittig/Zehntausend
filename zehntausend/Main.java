@@ -510,6 +510,9 @@ public class Main extends Application
                     currentSettings.setThreeXTwoEnabled(threeXTwoCheckBox.isSelected());
                     currentSettings.setScoreThreeXTwo(Integer.parseInt(threeXTwoTextField.getText()));
 
+                    currentSettings.setPyramidEnabled(pyramidCheckBox.isSelected());
+                    currentSettings.setScorePyramid(Integer.parseInt(pyramidTextField.getText()));
+                    
                     currentSettings.setFullHouseEnabled(fullHouseCheckBox.isSelected());
 
                     currentSettings.setGameOverAfterFirstPlayerWon(gameOverAfterFirstPlayerWonCheckBox.isSelected());
