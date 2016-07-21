@@ -11,7 +11,7 @@ public class Settings
     private int height = 800;
 
     //general settings
-    private int totalDiceNumber = 5;
+    private int totalDiceNumber = 6;
     private int totalPlayers = 3;
     private boolean diceImageShown = false;
     private boolean gameOverAfterFirstPlayerWon = false;

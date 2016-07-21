@@ -35,7 +35,7 @@ public class Player
             remainingDices.add(dice);
         }
 
-        addDebugDices(new int[]{1, 2, 2, 3, 3, 3});
+        //addDebugDices(new int[]{1, 2, 2, 3, 3, 3});
 
     }
 
