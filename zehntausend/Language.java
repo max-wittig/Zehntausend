@@ -3,7 +3,7 @@ package com.spaghettic0der.zehntausend;
 
 public class Language
 {
-    private String language = "English";
+    private String languageFile = "English";
     private String winAlertHeaderText = "You won!";
     private String winAlertContentText = "Congrats";
 
@@ -47,6 +47,7 @@ public class Language
     private String settings = "Settings";
     private String couldNotLoadSave = "Could not load save!";
     private String error = "Error!";
+    private String language = "Sprache";
 
     public String getError()
     {

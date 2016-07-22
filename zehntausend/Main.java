@@ -18,6 +18,10 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -685,6 +689,22 @@ public class Main extends Application
         });
         gameMenu.getItems().addAll(newGameItem, settingsItem, loadItem, saveItem);
 
+        Menu languageMenu = new Menu(language.getLanguage());
+        MenuItem deItem = new MenuItem("de");
+        MenuItem engItem = new MenuItem("eng");
+        languageMenu.getItems().addAll(deItem, engItem);
+        /*try
+        {
+            URL url = getClass().getResource("/language/");
+            File folder = new File(url.getFile());
+            System.out.println(folder);
+
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }*/
+
         Menu aboutMenu = new Menu(language.getAbout());
         MenuItem infoItem = new MenuItem(language.getZehntausend());
         infoItem.setOnAction(new EventHandler<ActionEvent>()
@@ -701,7 +721,7 @@ public class Main extends Application
 
         aboutMenu.getItems().add(infoItem);
 
-        menuBar.getMenus().addAll(gameMenu, aboutMenu);
+        menuBar.getMenus().addAll(gameMenu, languageMenu, aboutMenu);
         root.setTop(menuBar);
     }
 
