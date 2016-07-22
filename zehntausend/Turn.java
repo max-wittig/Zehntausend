@@ -49,4 +49,43 @@ public class Turn
         roundArrayList.add(round);
     }
 
+    public boolean isValid(Settings settings)
+    {
+        for (int i = 0; i < roundArrayList.size(); i++)
+        {
+            Round currentRound = roundArrayList.get(i);
+            Round nextRound = null;
+            if (i + 1 < roundArrayList.size())
+            {
+                nextRound = roundArrayList.get(i + 1);
+            }
+
+            if (currentRound.isValid() || currentRound == getCurrentRound())
+            {
+                for (Roll roll : currentRound.getRollArrayList())
+                {
+                    if (roll.getDrawnDices().size() >= settings.getTotalDiceNumber())
+                    {
+                        if (settings.isClearAllNeedsConfirmationInNextRound())
+                        {
+                            if (nextRound == null)
+                            {
+                                return false;
+                            }
+                            else
+                            {
+                                if (Scoring.getScoreFromDicesInRoll(nextRound.getDrawnDices(), settings) < settings.getMinScoreToConfirm())
+                                {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+        return true;
+    }
+
 }

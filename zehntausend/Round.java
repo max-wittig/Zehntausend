@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Round
 {
     private ArrayList<Roll> rollArrayList;
+    private boolean isConfirmingRound = false;
 
     public Round()
     {
@@ -55,4 +56,13 @@ public class Round
         rollArrayList.add(roll);
     }
 
+    public boolean isConfirmingRound()
+    {
+        return isConfirmingRound;
+    }
+
+    public void setConfirmingRound(boolean confirmingRound)
+    {
+        isConfirmingRound = confirmingRound;
+    }
 }

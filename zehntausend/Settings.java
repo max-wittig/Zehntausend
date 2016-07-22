@@ -33,6 +33,9 @@ public class Settings
     private boolean pyramidEnabled = true;
     private int scorePyramid = 1000;
 
+    private boolean clearAllNeedsConfirmationInNextRound = true;
+    private int minScoreToConfirm = 50;
+
     public int getMinWidth()
     {
         return minWidth;
@@ -221,5 +224,25 @@ public class Settings
     public void setScorePyramid(int scorePyramid)
     {
         this.scorePyramid = scorePyramid;
+    }
+
+    public boolean isClearAllNeedsConfirmationInNextRound()
+    {
+        return clearAllNeedsConfirmationInNextRound;
+    }
+
+    public void setClearAllNeedsConfirmationInNextRound(boolean clearAllNeedsConfirmationInNextRound)
+    {
+        this.clearAllNeedsConfirmationInNextRound = clearAllNeedsConfirmationInNextRound;
+    }
+
+    public int getMinScoreToConfirm()
+    {
+        return minScoreToConfirm;
+    }
+
+    public void setMinScoreToConfirm(int minScoreToConfirm)
+    {
+        this.minScoreToConfirm = minScoreToConfirm;
     }
 }

@@ -129,19 +129,22 @@ public class Scoring
         return sum;
     }
 
-    public static int getScoreFromAllDices(ArrayList<Turn> turnArrayList, Settings settings, boolean validCheck, Round activeRound)
+    public static int getScoreFromAllDices(ArrayList<Turn> turnArrayList, Settings settings, boolean turnValidCheck, boolean roundValidCheck, Round activeRound)
     {
         int sum = 0;
         for (Turn currentTurn : turnArrayList)
         {
-            for (Round currentRound : currentTurn.getRoundArrayList())
+            if (currentTurn.isValid(settings) || !turnValidCheck)
             {
-                //the current active round should not be validated, because it could be in later
-                if (currentRound.isValid() || !validCheck || currentRound == activeRound)
+                for (Round currentRound : currentTurn.getRoundArrayList())
                 {
-                    for (Roll currentRoll : currentRound.getRollArrayList())
+                    //the current active round should not be validated, because it could be in later
+                    if (currentRound.isValid() || !roundValidCheck || currentRound == activeRound)
                     {
-                        sum += getScoreFromDicesInRoll(currentRoll.getDrawnDices(), settings);
+                        for (Roll currentRoll : currentRound.getRollArrayList())
+                        {
+                            sum += getScoreFromDicesInRoll(currentRoll.getDrawnDices(), settings);
+                        }
                     }
                 }
             }
@@ -201,7 +204,7 @@ public class Scoring
     }
 
     //dices are all thrown in one roll
-    private static int getScoreFromDicesInRoll(ArrayList<Dice> dices, Settings settings)
+    public static int getScoreFromDicesInRoll(ArrayList<Dice> dices, Settings settings)
     {
         HashMap<Integer, Integer> diceHashMap = getDiceHashMap(dices);
         int score = 0;

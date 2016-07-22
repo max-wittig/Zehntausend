@@ -8,6 +8,7 @@ public class Roll
 {
 
     private ArrayList<Dice> drawnDices;
+    private boolean isConfirmingRoll = false;
 
     public Roll()
     {
@@ -34,5 +35,15 @@ public class Roll
     public void removeDice(Dice dice)
     {
         drawnDices.remove(dice);
+    }
+
+    public boolean isConfirmingRoll()
+    {
+        return isConfirmingRoll;
+    }
+
+    public void setConfirmingRoll(boolean confirmingRoll)
+    {
+        isConfirmingRoll = confirmingRoll;
     }
 }

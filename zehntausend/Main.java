@@ -42,6 +42,7 @@ public class Main extends Application
     private VBox centerVBox;
     private ObservableList<HBox> observableList;
     private Label testLabel;
+    private Label needsToBeConfirmedLabel;
 
     public Main()
     {
@@ -79,10 +80,17 @@ public class Main extends Application
         createRemainingDiceButtons();
         createDrawnDiceButtons();
         currentPlayerLabel.setText("Current Player: " + (game.getCurrentPlayer().getPlayerNumber() + 1));
-        scoreLabel.setText("Score: " + (game.getCurrentPlayer().getScore() + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getCurrentTurn().getRoundArrayList(), false, game.getSettings())));
+        scoreLabel.setText("Score: " + (Scoring.getScoreFromAllDices(game.getCurrentPlayer().getTurnArrayList(), game.getSettings(), false, true, game.getCurrentPlayer().getCurrentTurn().getCurrentRound())));
         scoreInRoundLabel.setText("Score in Round: " + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getCurrentTurn().getRoundArrayList(), false, game.getSettings()));
-        int score = Scoring.getScoreFromAllDices(game.getCurrentPlayer().getTurnArrayList(), game.getSettings(), true, game.getCurrentPlayer().getCurrentTurn().getCurrentRound());
-        testLabel.setText("TestScore: " + score);
+        if (!game.getCurrentPlayer().getCurrentTurn().isValid(game.getSettings()))
+        {
+            needsToBeConfirmedLabel.setText("Score needs to be confirmed");
+        }
+        else
+        {
+            needsToBeConfirmedLabel.setText("");
+        }
+
     }
 
     private void createDrawnDiceButtons()
@@ -831,6 +839,8 @@ public class Main extends Application
         currentPlayerLabel.setFont(new Font(buttonFontSize));
         scoreLabel = new Label("Score: 0");
         testLabel = new Label("Score Total: 0");
+        needsToBeConfirmedLabel = new Label();
+        needsToBeConfirmedLabel.setFont(new Font(buttonFontSize));
         scoreLabel.setFont(new Font(buttonFontSize));
         scoreInRoundLabel = new Label("Score in Round: 0");
         scoreInRoundLabel.setFont(new Font(buttonFontSize));
@@ -848,6 +858,7 @@ public class Main extends Application
         centerVBox.getChildren().add(scoreLabel);
         centerVBox.getChildren().add(scoreInRoundLabel);
         centerVBox.getChildren().add(testLabel);
+        centerVBox.getChildren().add(needsToBeConfirmedLabel);
 
         centerVBox.setAlignment(Pos.CENTER);
         mainScene = new Scene(root, game.getSettings().getWidth(), game.getSettings().getHeight());

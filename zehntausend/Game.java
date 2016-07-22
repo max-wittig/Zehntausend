@@ -70,6 +70,7 @@ public class Game
                             || Scoring.isThreeTimesTwo(dicesSinceLastRoll, settings.isThreeXTwoEnabled())
                             || Scoring.isFullHouse(dicesSinceLastRoll, settings.isFullHouseEnabled(), settings.getTotalDiceNumber())
                                     || Scoring.isPyramid(dicesSinceLastRoll, settings.isPyramidEnabled())
+
                     );
 
 
@@ -95,7 +96,8 @@ public class Game
         int numberOfDicesInLastRoll = getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().size();
         if (numberOfDicesInLastRoll > 0 && minScoreReached())
         {
-            getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getCurrentTurn().getRoundArrayList(), true, settings));
+            //getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getCurrentTurn().getRoundArrayList(), true, settings));
+            getCurrentPlayer().setScore(Scoring.getScoreFromAllDices(getCurrentPlayer().getTurnArrayList(), settings, true, true, getCurrentPlayer().getCurrentTurn().getCurrentRound()));
         }
     }
 
