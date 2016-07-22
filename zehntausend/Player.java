@@ -16,10 +16,10 @@ public class Player
 
     public Player(int playerNumber, Settings settings)
     {
-        playerName = "Player " + (playerNumber + 1);
+        this.settings = settings;
+        playerName = settings.getLanguage().getPlayer() + " " + (playerNumber + 1);
         turnArrayList = new ArrayList<>();
         remainingDices = new ArrayList<>();
-        this.settings = settings;
         initDice();
         this.playerNumber = playerNumber;
         nextTurn();

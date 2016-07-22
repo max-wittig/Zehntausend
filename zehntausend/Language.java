@@ -3,6 +3,7 @@ package com.spaghettic0der.zehntausend;
 
 public class Language
 {
+    private String language = "English";
     private String winAlertHeaderText = "You won!";
     private String winAlertContentText = "Congrats";
 
@@ -19,6 +20,7 @@ public class Language
     private String globalSettings = "Global Settings";
     private String gameSettings = "Game Settings";
     private String players = "Players";
+    private String player = "Player";
     private String dices = "Dices";
     private String winScore = "Win Score";
     private String minScoreToSave = "Min Score to save";
@@ -43,6 +45,16 @@ public class Language
     private String roll = "ROLL";
     private String next = "NEXT";
     private String settings = "Settings";
+
+    public String getLanguage()
+    {
+        return language;
+    }
+
+    public String getPlayer()
+    {
+        return player;
+    }
 
     public String getSettings()
     {

@@ -23,7 +23,7 @@ import java.util.HashMap;
 
 public class Main extends Application
 {
-    private final int textButtonWidth = 100;
+    private final int textButtonWidth = 150;
     private final int textButtonHeight = 50;
     private final int diceButtonSize = 50;
     private final int buttonFontSize = 20;
@@ -52,7 +52,10 @@ public class Main extends Application
         if (globalSettings == null)
             globalSettings = new Settings();
 
-        language = globalSettings.getLanguage();
+        language = jsonHelper.loadLanguage("language_" + globalSettings.getSelectedLanguage());
+        if (language == null)
+            language = globalSettings.getLanguage();
+        globalSettings.setLanguage(language);
     }
 
     public static void main(String[] args) throws Exception

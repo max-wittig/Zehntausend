@@ -70,6 +70,15 @@ public class JsonHelper
     public Game loadGameState()
     {
         return gson.fromJson(loadJSON("game.json"), Game.class);
+    }
 
+    public Language loadLanguage(String languageName)
+    {
+        return gson.fromJson(loadJSON(languageName + ".json"), Language.class);
+    }
+
+    public void saveLanguage(Language language)
+    {
+        saveJSON(language, "language.json");
     }
 }
