@@ -129,14 +129,15 @@ public class Scoring
         return sum;
     }
 
-    public static int getScoreFromAllDices(ArrayList<Turn> turnArrayList, Settings settings)
+    public static int getScoreFromAllDices(ArrayList<Turn> turnArrayList, Settings settings, boolean validCheck, Round activeRound)
     {
         int sum = 0;
         for (Turn currentTurn : turnArrayList)
         {
             for (Round currentRound : currentTurn.getRoundArrayList())
             {
-                if (currentRound.isValid())
+                //the current active round should not be validated, because it could be in later
+                if (currentRound.isValid() || !validCheck || currentRound == activeRound)
                 {
                     for (Roll currentRoll : currentRound.getRollArrayList())
                     {

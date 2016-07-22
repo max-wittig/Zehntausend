@@ -20,7 +20,7 @@ public class JsonHelper
 
     public void saveSettings(Settings settings)
     {
-        save(settings, "settings.json");
+        saveJSON(settings, "settings.json");
     }
 
     public Settings loadSettings()
@@ -46,7 +46,7 @@ public class JsonHelper
         return null;
     }
 
-    private void save(Object object, String filename)
+    private void saveJSON(Object object, String filename)
     {
         String json = gson.toJson(object);
         try
@@ -64,7 +64,7 @@ public class JsonHelper
 
     public void saveGame(Game game)
     {
-        save(game, "game.json");
+        saveJSON(game, "game.json");
     }
 
     public Game loadGameState()
