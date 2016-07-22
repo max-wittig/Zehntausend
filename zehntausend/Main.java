@@ -23,6 +23,7 @@ import java.util.HashMap;
 
 public class Main extends Application
 {
+    public static Language language;
     private final int textButtonWidth = 150;
     private final int textButtonHeight = 50;
     private final int diceButtonSize = 50;
@@ -43,7 +44,6 @@ public class Main extends Application
     private ObservableList<HBox> observableList;
     private Label testLabel;
     private Label needsToBeConfirmedLabel;
-    private Language language;
 
     public Main()
     {
@@ -54,8 +54,7 @@ public class Main extends Application
 
         language = jsonHelper.loadLanguage("language_" + globalSettings.getSelectedLanguage());
         if (language == null)
-            language = globalSettings.getLanguage();
-        globalSettings.setLanguage(language);
+            language = new Language();
     }
 
     public static void main(String[] args) throws Exception

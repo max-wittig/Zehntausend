@@ -17,7 +17,7 @@ public class Player
     public Player(int playerNumber, Settings settings)
     {
         this.settings = settings;
-        playerName = settings.getLanguage().getPlayer() + " " + (playerNumber + 1);
+        playerName = Main.language.getPlayer() + " " + (playerNumber + 1);
         turnArrayList = new ArrayList<>();
         remainingDices = new ArrayList<>();
         initDice();

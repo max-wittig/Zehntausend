@@ -4,7 +4,6 @@ package com.spaghettic0der.zehntausend;
 public class Settings
 {
     private String settingsName = "";
-    private Language language;
     //oracle bug workaround
     private int minWidth = 800;
     private int minHeight = 800;
@@ -254,13 +253,4 @@ public class Settings
         this.minScoreToConfirm = minScoreToConfirm;
     }
 
-    public Language getLanguage()
-    {
-        return language;
-    }
-
-    public void setLanguage(Language language)
-    {
-        this.language = language;
-    }
 }

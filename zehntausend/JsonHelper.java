@@ -25,7 +25,15 @@ public class JsonHelper
 
     public Settings loadSettings()
     {
-        return gson.fromJson(loadJSON("settings.json"), Settings.class);
+        Settings settings = gson.fromJson(loadJSON("settings.json"), Settings.class);
+        if (settings == null)
+        {
+            settings = new Settings();
+            saveSettings(settings);
+            System.out.println("Wrote default settings to disk");
+            return settings;
+        }
+        return settings;
     }
 
     private String loadJSON(String filename)
@@ -38,9 +46,6 @@ public class JsonHelper
         catch (Exception e)
         {
             System.out.println(e);
-            Settings settings = new Settings();
-            saveSettings(settings);
-            System.out.println("Wrote default settings to disk");
         }
 
         return null;
@@ -69,12 +74,23 @@ public class JsonHelper
 
     public Game loadGameState()
     {
-        return gson.fromJson(loadJSON("game.json"), Game.class);
+        try
+        {
+            return gson.fromJson(loadJSON("game.json"), Game.class);
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+
+
     }
 
     public Language loadLanguage(String languageName)
     {
-        return gson.fromJson(loadJSON(languageName + ".json"), Language.class);
+
+        Language language = gson.fromJson(loadJSON(languageName + ".json"), Language.class);
+        return language;
     }
 
     public void saveLanguage(Language language)

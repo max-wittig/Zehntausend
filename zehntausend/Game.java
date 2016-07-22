@@ -114,13 +114,13 @@ public class Game
                     {
                         if (settings.isGameOverAfterFirstPlayerWon())
                         {
-                            Main.showGameOverDialog(settings.getLanguage().getGameOverAlertHeader(),
-                                    settings.getLanguage().getGameOverAlertContent() + " " + getCurrentPlayer().getPlayerName());
+                            Main.showGameOverDialog(Main.language.getGameOverAlertHeader(),
+                                    Main.language.getGameOverAlertContent() + " " + getCurrentPlayer().getPlayerName());
                         }
                         else
                         {
-                            Main.showWinAlert(getCurrentPlayer().getPlayerName(), settings.getLanguage().getWinAlertHeaderText(),
-                                    settings.getLanguage().getWinAlertContentText());
+                            Main.showWinAlert(getCurrentPlayer().getPlayerName(), Main.language.getWinAlertHeaderText(),
+                                    Main.language.getWinAlertContentText());
                         }
                     }
 
@@ -144,7 +144,7 @@ public class Game
         else
         {
             if (!settings.isGameOverAfterFirstPlayerWon())
-                Main.showGameOverDialog(getSettings().getLanguage().getGameOverAlertHeader(), getWinString());
+                Main.showGameOverDialog(Main.language.getGameOverAlertHeader(), getWinString());
         }
     }
 
@@ -174,7 +174,7 @@ public class Game
 
         //if still nothing set game to over!
         isGameOver = true;
-        Main.showGameOverDialog(getSettings().getLanguage().getWinAlertHeaderText(), getWinString());
+        Main.showGameOverDialog(Main.language.getWinAlertHeaderText(), getWinString());
 
     }
 
@@ -190,7 +190,7 @@ public class Game
         {
             if (winnersHashMap.get(key) != null)
             {
-                winStringBuilder.append(key + ". " + getSettings().getLanguage().getGameOverPlace() + " : " + winnersHashMap.get(key).getPlayerName() + "\n");
+                winStringBuilder.append(key + ". " + Main.language.getGameOverPlace() + " : " + winnersHashMap.get(key).getPlayerName() + "\n");
             }
         }
         return winStringBuilder.toString();
