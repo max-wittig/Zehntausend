@@ -658,9 +658,20 @@ public class Main extends Application
             @Override
             public void handle(ActionEvent event)
             {
-                game = jsonHelper.loadGameState();
-                updateUI();
-                rebuildListView();
+                Game gameToLoad = jsonHelper.loadGameState();
+                if (gameToLoad != null)
+                {
+                    game = gameToLoad;
+                    updateUI();
+                    rebuildListView();
+                }
+                else
+                {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText(language.getError());
+                    alert.setContentText(language.getCouldNotLoadSave());
+                    alert.show();
+                }
             }
         });
         MenuItem saveItem = new MenuItem(language.getSave());

@@ -36,7 +36,7 @@ public class Settings
     private boolean clearAllNeedsConfirmationInNextRound = true;
     private int minScoreToConfirm = 50;
 
-    private String selectedLanguage = "eng";
+    private String selectedLanguage = "de";
 
     public String getSelectedLanguage()
     {

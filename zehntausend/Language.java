@@ -45,6 +45,18 @@ public class Language
     private String roll = "ROLL";
     private String next = "NEXT";
     private String settings = "Settings";
+    private String couldNotLoadSave = "Could not load save!";
+    private String error = "Error!";
+
+    public String getError()
+    {
+        return error;
+    }
+
+    public String getCouldNotLoadSave()
+    {
+        return couldNotLoadSave;
+    }
 
     public String getLanguage()
     {

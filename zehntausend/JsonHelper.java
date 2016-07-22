@@ -2,9 +2,12 @@ package com.spaghettic0der.zehntausend;
 
 
 import com.google.gson.Gson;
+import sun.misc.IOUtils;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -83,14 +86,30 @@ public class JsonHelper
             return null;
         }
 
-
     }
 
     public Language loadLanguage(String languageName)
     {
+        try
+        {
+            InputStream in = getClass().getResourceAsStream("/language/" + languageName + ".json");
 
-        Language language = gson.fromJson(loadJSON(languageName + ".json"), Language.class);
-        return language;
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
+            String file = "";
+            String line;
+            while ((line = bufferedReader.readLine()) != null)
+            {
+                file += line;
+            }
+            Language language = gson.fromJson(file, Language.class);
+            return language;
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+            return null;
+        }
+
     }
 
     public void saveLanguage(Language language)
