@@ -114,11 +114,13 @@ public class Game
                     {
                         if (settings.isGameOverAfterFirstPlayerWon())
                         {
-                            Main.showGameOverDialog("Winner: " + getCurrentPlayer().getPlayerName());
+                            Main.showGameOverDialog(settings.getLanguage().getGameOverAlertHeader(),
+                                    settings.getLanguage().getGameOverAlertContent() + " " + getCurrentPlayer().getPlayerName());
                         }
                         else
                         {
-                            Main.showWinAlert(getCurrentPlayer().getPlayerName());
+                            Main.showWinAlert(getCurrentPlayer().getPlayerName(), settings.getLanguage().getWinAlertHeaderText(),
+                                    settings.getLanguage().getWinAlertContentText());
                         }
                     }
 
@@ -142,7 +144,7 @@ public class Game
         else
         {
             if (!settings.isGameOverAfterFirstPlayerWon())
-                Main.showGameOverDialog(getWinString());
+                Main.showGameOverDialog(getSettings().getLanguage().getGameOverAlertHeader(), getWinString());
         }
     }
 
@@ -172,7 +174,7 @@ public class Game
 
         //if still nothing set game to over!
         isGameOver = true;
-        Main.showGameOverDialog(getWinString());
+        Main.showGameOverDialog(getSettings().getLanguage().getWinAlertHeaderText(), getWinString());
 
     }
 
@@ -188,7 +190,7 @@ public class Game
         {
             if (winnersHashMap.get(key) != null)
             {
-                winStringBuilder.append(key + ". place : " + winnersHashMap.get(key).getPlayerName() + "\n");
+                winStringBuilder.append(key + ". " + getSettings().getLanguage().getGameOverPlace() + " : " + winnersHashMap.get(key).getPlayerName() + "\n");
             }
         }
         return winStringBuilder.toString();

@@ -43,6 +43,7 @@ public class Main extends Application
     private ObservableList<HBox> observableList;
     private Label testLabel;
     private Label needsToBeConfirmedLabel;
+    private Language language;
 
     public Main()
     {
@@ -50,6 +51,8 @@ public class Main extends Application
         globalSettings = jsonHelper.loadSettings();
         if (globalSettings == null)
             globalSettings = new Settings();
+
+        language = globalSettings.getLanguage();
     }
 
     public static void main(String[] args) throws Exception
@@ -57,19 +60,19 @@ public class Main extends Application
         Application.launch(args);
     }
 
-    public static void showWinAlert(String playerName)
+    public static void showWinAlert(String playerName, String headerText, String contentText)
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("You won!");
-        alert.setContentText("Congrats " + playerName);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText + " " + playerName);
         alert.show();
     }
 
-    public static void showGameOverDialog(String winString)
+    public static void showGameOverDialog(String headerText, String contentText)
     {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setHeaderText("Game over!");
-        alert.setContentText(winString);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
         alert.show();
     }
 
@@ -79,12 +82,12 @@ public class Main extends Application
         drawnDiceHBox.getChildren().clear();
         createRemainingDiceButtons();
         createDrawnDiceButtons();
-        currentPlayerLabel.setText("Current Player: " + (game.getCurrentPlayer().getPlayerNumber() + 1));
-        scoreLabel.setText("Score: " + (Scoring.getScoreFromAllDices(game.getCurrentPlayer().getTurnArrayList(), game.getSettings(), false, true, game.getCurrentPlayer().getCurrentTurn().getCurrentRound())));
-        scoreInRoundLabel.setText("Score in Round: " + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getCurrentTurn().getRoundArrayList(), false, game.getSettings()));
+        currentPlayerLabel.setText(language.getCurrentPlayer() + ": " + (game.getCurrentPlayer().getPlayerNumber() + 1));
+        scoreLabel.setText(language.getScore() + ": " + (Scoring.getScoreFromAllDices(game.getCurrentPlayer().getTurnArrayList(), game.getSettings(), false, true, game.getCurrentPlayer().getCurrentTurn().getCurrentRound())));
+        scoreInRoundLabel.setText(language.getScoreInRound() + ": " + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getCurrentTurn().getRoundArrayList(), false, game.getSettings()));
         if (!game.getCurrentPlayer().getCurrentTurn().isValid(game.getSettings()))
         {
-            needsToBeConfirmedLabel.setText("Score needs to be confirmed");
+            needsToBeConfirmedLabel.setText(language.getScoreNeedsToBeConfirmed());
         }
         else
         {
@@ -204,8 +207,8 @@ public class Main extends Application
     private void showInvalidMoveAlert()
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("Invalid Move!");
-        alert.setContentText("That's not allowed");
+        alert.setHeaderText(language.getInvalidMove());
+        alert.setContentText(language.getThatsNotAllowed());
         alert.show();
     }
 
@@ -214,11 +217,11 @@ public class Main extends Application
         ArrayList<Settings> settingsArrayList = new ArrayList<>();
         Settings gameSettings = game.getSettings();
 
-        globalSettings.setSettingsName("Global Settings");
+        globalSettings.setSettingsName(language.getGlobalSettings());
 
         if (gameSettings != globalSettings)
         {
-            gameSettings.setSettingsName("Game Settings");
+            gameSettings.setSettingsName(language.getGameSettings());
             settingsArrayList.add(gameSettings);
         }
 
@@ -240,7 +243,7 @@ public class Main extends Application
             VBox vBox = new VBox();
             //player count
             HBox playerHBox = new HBox();
-            Label playerLabel = new Label("Players:");
+            Label playerLabel = new Label(language.getPlayers() + ":");
             playerLabel.setMinWidth(minWidth);
             Slider playerSlider = new Slider(2, 6, currentSettings.getTotalPlayers());
             if (!isGlobal)
@@ -259,7 +262,7 @@ public class Main extends Application
 
             //dice count
             HBox diceHBox = new HBox();
-            Label diceLabel = new Label("Dices:");
+            Label diceLabel = new Label(language.getDices() + ":");
             diceLabel.setMinWidth(minWidth);
             Slider diceSlider = new Slider(4, 10, currentSettings.getTotalDiceNumber());
             diceSlider.setMajorTickUnit(1);
@@ -274,24 +277,24 @@ public class Main extends Application
 
             //win score
             HBox winScoreHBox = new HBox();
-            Label winScoreLabel = new Label("Win Score:");
+            Label winScoreLabel = new Label(language.getWinScore());
             winScoreLabel.setMinWidth(minWidth);
             TextField winScoreTextField = new TextField("" + currentSettings.getMinScoreRequiredToWin());
             winScoreHBox.getChildren().addAll(winScoreLabel, winScoreTextField);
             HBox.setHgrow(winScoreTextField, Priority.ALWAYS);
-            HBox.setMargin(winScoreTextField, new Insets(-3, 0, 0, 0));
+            HBox.setMargin(winScoreTextField, new Insets(-4, 0, 0, 0));
             HBox.setMargin(winScoreLabel, new Insets(0, 20, 0, 20));
             VBox.setMargin(winScoreHBox, new Insets(20, 40, 20, 20));
             vBox.getChildren().add(winScoreHBox);
 
             //minsave Score
             HBox minScoreHBox = new HBox();
-            Label minScoreLabel = new Label("Min Score to save:");
+            Label minScoreLabel = new Label(language.getMinScoreToSave());
             minScoreLabel.setMinWidth(minWidth);
             TextField minScoreTextField = new TextField("" + currentSettings.getMinScoreRequiredToSaveInRound());
             minScoreHBox.getChildren().addAll(minScoreLabel, minScoreTextField);
             HBox.setHgrow(minScoreTextField, Priority.ALWAYS);
-            HBox.setMargin(minScoreTextField, new Insets(-3, 0, 0, 0));
+            HBox.setMargin(minScoreTextField, new Insets(-4, 0, 0, 0));
             HBox.setMargin(minScoreLabel, new Insets(0, 20, 0, 20));
             VBox.setMargin(minScoreHBox, new Insets(20, 40, 20, 20));
             vBox.getChildren().add(minScoreHBox);
@@ -303,14 +306,14 @@ public class Main extends Application
             streetHBox.setPrefWidth(currentSettings.getWidth());
             CheckBox streetCheckBox = new CheckBox();
             streetCheckBox.setMinWidth(minWidth - 20);
-            streetCheckBox.setText("Street");
+            streetCheckBox.setText(language.getStreet());
             streetCheckBox.setSelected(currentSettings.isStreetEnabled());
 
             TextField streetTextField = new TextField("" + currentSettings.getScoreStreet());
             streetHBox.getChildren().addAll(streetCheckBox, streetTextField);
             vBox.getChildren().add(streetHBox);
             HBox.setMargin(streetCheckBox, new Insets(0, 20, 0, 20));
-            HBox.setMargin(streetTextField, new Insets(0, 20, 0, 20));
+            HBox.setMargin(streetTextField, new Insets(-4, 20, 0, 20));
             HBox.setHgrow(streetTextField, Priority.ALWAYS);
             VBox.setMargin(streetHBox, new Insets(20, 20, 20, 20));
 
@@ -343,7 +346,7 @@ public class Main extends Application
             //Three x two
             HBox threeXTwoHBox = new HBox();
             threeXTwoHBox.setPrefWidth(currentSettings.getWidth());
-            CheckBox threeXTwoCheckBox = new CheckBox("Three Times Two");
+            CheckBox threeXTwoCheckBox = new CheckBox(language.getThreeTimesTwo());
             threeXTwoCheckBox.setMinWidth(minWidth - 20);
             threeXTwoCheckBox.setSelected(currentSettings.isThreeXTwoEnabled());
 
@@ -351,7 +354,7 @@ public class Main extends Application
             threeXTwoHBox.getChildren().addAll(threeXTwoCheckBox, threeXTwoTextField);
             vBox.getChildren().add(threeXTwoHBox);
             HBox.setMargin(threeXTwoCheckBox, new Insets(0, 20, 0, 20));
-            HBox.setMargin(threeXTwoTextField, new Insets(0, 20, 0, 20));
+            HBox.setMargin(threeXTwoTextField, new Insets(-4, 20, 0, 20));
             HBox.setHgrow(threeXTwoTextField, Priority.ALWAYS);
             VBox.setMargin(threeXTwoHBox, new Insets(20, 20, 20, 20));
 
@@ -383,7 +386,7 @@ public class Main extends Application
             //six dices in a row
             HBox sixDicesInARowHBox = new HBox();
             sixDicesInARowHBox.setPrefWidth(currentSettings.getWidth());
-            CheckBox sixDicesInARowCheckBox = new CheckBox("Six Dices in a Row");
+            CheckBox sixDicesInARowCheckBox = new CheckBox(language.getSixDicesInARow());
             sixDicesInARowCheckBox.setMinWidth(minWidth - 20);
             sixDicesInARowCheckBox.setSelected(currentSettings.isSixDicesInARowEnabled());
 
@@ -391,7 +394,7 @@ public class Main extends Application
             sixDicesInARowHBox.getChildren().addAll(sixDicesInARowCheckBox, sixDicesInARowTextField);
             vBox.getChildren().add(sixDicesInARowHBox);
             HBox.setMargin(sixDicesInARowCheckBox, new Insets(0, 20, 0, 20));
-            HBox.setMargin(sixDicesInARowTextField, new Insets(0, 20, 0, 20));
+            HBox.setMargin(sixDicesInARowTextField, new Insets(-4, 20, 0, 20));
             HBox.setHgrow(sixDicesInARowTextField, Priority.ALWAYS);
             VBox.setMargin(sixDicesInARowHBox, new Insets(20, 20, 20, 20));
 
@@ -424,7 +427,7 @@ public class Main extends Application
             //six dices in a row
             HBox pyramidHBox = new HBox();
             pyramidHBox.setPrefWidth(currentSettings.getWidth());
-            CheckBox pyramidCheckBox = new CheckBox("Pyramid");
+            CheckBox pyramidCheckBox = new CheckBox(language.getPyramid());
             pyramidCheckBox.setMinWidth(minWidth - 20);
             pyramidCheckBox.setSelected(currentSettings.isPyramidEnabled());
 
@@ -432,7 +435,7 @@ public class Main extends Application
             pyramidHBox.getChildren().addAll(pyramidCheckBox, pyramidTextField);
             vBox.getChildren().add(pyramidHBox);
             HBox.setMargin(pyramidCheckBox, new Insets(0, 20, 0, 20));
-            HBox.setMargin(pyramidTextField, new Insets(0, 20, 0, 20));
+            HBox.setMargin(pyramidTextField, new Insets(-4, 20, 0, 20));
             HBox.setHgrow(pyramidTextField, Priority.ALWAYS);
             VBox.setMargin(pyramidHBox, new Insets(20, 20, 20, 20));
 
@@ -461,10 +464,50 @@ public class Main extends Application
                 }
             });
 
+            //confirmation
+            HBox confirmationHBox = new HBox();
+            confirmationHBox.setPrefWidth(currentSettings.getWidth());
+            CheckBox confirmationCheckBox = new CheckBox();
+            confirmationCheckBox.setMinWidth(minWidth - 20);
+            confirmationCheckBox.setText(language.getConfirmationScore());
+            confirmationCheckBox.setSelected(currentSettings.isClearAllNeedsConfirmationInNextRound());
+
+            TextField confirmationTextField = new TextField("" + currentSettings.getMinScoreToConfirm());
+            confirmationHBox.getChildren().addAll(confirmationCheckBox, confirmationTextField);
+            vBox.getChildren().add(confirmationHBox);
+            HBox.setMargin(confirmationCheckBox, new Insets(0, 20, 0, 20));
+            HBox.setMargin(confirmationTextField, new Insets(-4, 20, 0, 20));
+            HBox.setHgrow(confirmationTextField, Priority.ALWAYS);
+            VBox.setMargin(confirmationHBox, new Insets(20, 20, 20, 20));
+
+            if (!confirmationCheckBox.isSelected())
+            {
+                confirmationTextField.setDisable(true);
+            }
+            else
+            {
+                confirmationTextField.setDisable(false);
+            }
+
+            confirmationCheckBox.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                public void handle(ActionEvent event)
+                {
+                    if (!confirmationCheckBox.isSelected())
+                    {
+                        confirmationTextField.setDisable(true);
+                    }
+                    else
+                    {
+                        confirmationTextField.setDisable(false);
+                    }
+                }
+            });
 
             //full house
             HBox fullHouseHBox = new HBox();
-            CheckBox fullHouseCheckBox = new CheckBox("Full House");
+            CheckBox fullHouseCheckBox = new CheckBox(language.getFullHouse());
             fullHouseCheckBox.setSelected(currentSettings.isFullHouseEnabled());
             fullHouseCheckBox.setDisable(diceSlider.getValue() != 5);
             diceSlider.valueProperty().addListener(new ChangeListener<Number>()
@@ -483,7 +526,7 @@ public class Main extends Application
 
             //game over after first player won
             HBox gameOverAfterFirstPlayerWonHBox = new HBox();
-            CheckBox gameOverAfterFirstPlayerWonCheckBox = new CheckBox("Game over after first player won");
+            CheckBox gameOverAfterFirstPlayerWonCheckBox = new CheckBox(language.getGameOverAfterFirstPlayerWon());
             gameOverAfterFirstPlayerWonCheckBox.setSelected(currentSettings.isGameOverAfterFirstPlayerWon());
             gameOverAfterFirstPlayerWonHBox.getChildren().add(gameOverAfterFirstPlayerWonCheckBox);
             vBox.getChildren().add(gameOverAfterFirstPlayerWonHBox);
@@ -491,7 +534,7 @@ public class Main extends Application
 
             //dice image shown
             HBox diceImagesShownHBox = new HBox();
-            CheckBox diceImagesShownCheckBox = new CheckBox("Show dice images");
+            CheckBox diceImagesShownCheckBox = new CheckBox(language.getShowDiceImages());
             diceImagesShownCheckBox.setSelected(currentSettings.isDiceImageShown());
             diceImagesShownHBox.getChildren().add(diceImagesShownCheckBox);
             vBox.getChildren().add(diceImagesShownHBox);
@@ -500,7 +543,7 @@ public class Main extends Application
             //save and cancel button
             HBox buttonHBox = new HBox();
             buttonHBox.setAlignment(Pos.CENTER);
-            Button saveSettingsButton = new Button("Save");
+            Button saveSettingsButton = new Button(language.getSave());
             saveSettingsButton.setOnAction(new EventHandler<ActionEvent>()
             {
                 @Override
@@ -523,7 +566,10 @@ public class Main extends Application
 
                     currentSettings.setPyramidEnabled(pyramidCheckBox.isSelected());
                     currentSettings.setScorePyramid(Integer.parseInt(pyramidTextField.getText()));
-                    
+
+                    currentSettings.setClearAllNeedsConfirmationInNextRound(confirmationCheckBox.isSelected());
+                    currentSettings.setMinScoreToConfirm(Integer.parseInt(confirmationTextField.getText()));
+
                     currentSettings.setFullHouseEnabled(fullHouseCheckBox.isSelected());
 
                     currentSettings.setGameOverAfterFirstPlayerWon(gameOverAfterFirstPlayerWonCheckBox.isSelected());
@@ -543,7 +589,7 @@ public class Main extends Application
                 }
             });
 
-            Button cancelSettingsButton = new Button("Cancel");
+            Button cancelSettingsButton = new Button(language.getCancel());
             cancelSettingsButton.setOnAction(new EventHandler<ActionEvent>()
             {
                 @Override
@@ -555,7 +601,10 @@ public class Main extends Application
             buttonHBox.getChildren().addAll(cancelSettingsButton, saveSettingsButton);
             HBox.setMargin(cancelSettingsButton, new Insets(20, 20, 20, 20));
             vBox.getChildren().add(buttonHBox);
-            titledPane.setContent(vBox);
+            ScrollPane scrollPane = new ScrollPane(vBox);
+            scrollPane.setFitToWidth(true);
+            scrollPane.setPannable(true);
+            titledPane.setContent(scrollPane);
             accordion.getPanes().add(titledPane);
 
         }
@@ -581,9 +630,9 @@ public class Main extends Application
         MenuBar menuBar = new MenuBar();
         menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
 
-        Menu gameMenu = new Menu("Game");
+        Menu gameMenu = new Menu(language.getGame());
 
-        MenuItem newGameItem = new MenuItem("New");
+        MenuItem newGameItem = new MenuItem(language.getNewString());
         newGameItem.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -592,7 +641,7 @@ public class Main extends Application
                 nextGame(globalSettings);
             }
         });
-        MenuItem settingsItem = new MenuItem("Settings");
+        MenuItem settingsItem = new MenuItem(language.getSettings());
         settingsItem.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -601,7 +650,7 @@ public class Main extends Application
                 initSettingsStage(primaryStage);
             }
         });
-        MenuItem loadItem = new MenuItem("Load");
+        MenuItem loadItem = new MenuItem(language.getLoad());
         loadItem.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -612,7 +661,7 @@ public class Main extends Application
                 rebuildListView();
             }
         });
-        MenuItem saveItem = new MenuItem("Save");
+        MenuItem saveItem = new MenuItem(language.getSave());
         saveItem.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -623,16 +672,16 @@ public class Main extends Application
         });
         gameMenu.getItems().addAll(newGameItem, settingsItem, loadItem, saveItem);
 
-        Menu aboutMenu = new Menu("About");
-        MenuItem infoItem = new MenuItem("Zehntausend");
+        Menu aboutMenu = new Menu(language.getAbout());
+        MenuItem infoItem = new MenuItem(language.getZehntausend());
         infoItem.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
             public void handle(ActionEvent event)
             {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText("About Zehntausend\nVersion: " + versionNumber);
-                alert.setContentText("Made by spaghettic0der in 2016\nMade possible with the help of Deadlocker");
+                alert.setHeaderText(language.getAbout() + " " + language.getZehntausend() + "\n" + language.getVersion() + ": " + versionNumber);
+                alert.setContentText(language.getAboutContentText());
                 alert.show();
             }
         });
@@ -702,7 +751,7 @@ public class Main extends Application
                                 label.setText("" + playerScoreHashMap.get(j));
                                 if (playerScoreHashMap.get(j) >= game.getSettings().getMinScoreRequiredToWin())
                                 {
-                                    label.setText("Won with " + playerScoreHashMap.get(j));
+                                    label.setText(language.getWonWith() + " " + playerScoreHashMap.get(j));
                                     label.setStyle("-fx-underline: true");
                                 }
                                 else
@@ -724,7 +773,7 @@ public class Main extends Application
         Label label = (Label) hBox.getChildren().get(game.getCurrentPlayer().getPlayerNumber());
         if (game.getCurrentPlayer().hasWon())
         {
-            label.setText("Won with " + game.getCurrentPlayer().getScore());
+            label.setText(language.getWonWith() + " " + game.getCurrentPlayer().getScore());
             label.setStyle("-fx-underline: true");
         }
         else
@@ -791,7 +840,7 @@ public class Main extends Application
         drawnDiceHBox = new HBox();
         drawnDiceHBox.setMinHeight(diceButtonSize);
         drawnDiceHBox.setAlignment(Pos.CENTER);
-        Button rollButton = new Button("ROLL");
+        Button rollButton = new Button(language.getRoll());
         rollButton.setPrefWidth(textButtonWidth);
         rollButton.setPrefHeight(textButtonHeight);
         rollButton.setFont(new Font(buttonFontSize));
@@ -811,7 +860,7 @@ public class Main extends Application
                 }
             }
         });
-        Button nextButton = new Button("NEXT");
+        Button nextButton = new Button(language.getNext());
 
         nextButton.setPrefHeight(textButtonHeight);
         nextButton.setPrefWidth(textButtonWidth);
@@ -835,14 +884,14 @@ public class Main extends Application
             }
         });
 
-        currentPlayerLabel = new Label("Current Player: 0");
+        currentPlayerLabel = new Label(language.getCurrentPlayer() + ": 0");
         currentPlayerLabel.setFont(new Font(buttonFontSize));
-        scoreLabel = new Label("Score: 0");
-        testLabel = new Label("Score Total: 0");
+        scoreLabel = new Label(language.getScore() + ": 0");
+        testLabel = new Label("");
         needsToBeConfirmedLabel = new Label();
         needsToBeConfirmedLabel.setFont(new Font(buttonFontSize));
         scoreLabel.setFont(new Font(buttonFontSize));
-        scoreInRoundLabel = new Label("Score in Round: 0");
+        scoreInRoundLabel = new Label(language.getScoreInRound() + ": 0");
         scoreInRoundLabel.setFont(new Font(buttonFontSize));
         VBox.setMargin(rollButton, new Insets(-50, 0, 10, 0));
         VBox buttonBox = new VBox(rollButton, nextButton);
