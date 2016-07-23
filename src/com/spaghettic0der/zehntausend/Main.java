@@ -1,6 +1,7 @@
 package com.spaghettic0der.zehntausend;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -18,10 +19,6 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -91,7 +88,7 @@ public class Main extends Application
         currentPlayerLabel.setText(language.getCurrentPlayer() + ": " + (game.getCurrentPlayer().getPlayerNumber() + 1));
         scoreLabel.setText(language.getScore() + ": " + (Scoring.getScoreFromAllDices(game.getCurrentPlayer().getTurnArrayList(), game.getSettings(), false, true, game.getCurrentPlayer().getCurrentTurn().getCurrentRound())));
         scoreInRoundLabel.setText(language.getScoreInRound() + ": " + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getCurrentTurn().getRoundArrayList(), false, game.getSettings()));
-        if (!game.getCurrentPlayer().getCurrentTurn().isValid(game.getSettings()))
+        if (!game.getCurrentPlayer().getCurrentTurn().isValid(game.getSettings()) && game.isValidState(State.ROLL))
         {
             needsToBeConfirmedLabel.setText(language.getScoreNeedsToBeConfirmed());
         }
@@ -610,6 +607,7 @@ public class Main extends Application
             ScrollPane scrollPane = new ScrollPane(vBox);
             scrollPane.setFitToWidth(true);
             scrollPane.setPannable(true);
+
             titledPane.setContent(scrollPane);
             accordion.getPanes().add(titledPane);
 
@@ -687,7 +685,18 @@ public class Main extends Application
                 jsonHelper.saveGame(game);
             }
         });
-        gameMenu.getItems().addAll(newGameItem, settingsItem, loadItem, saveItem);
+
+        MenuItem quitItem = new MenuItem(language.getQuit());
+        quitItem.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                Platform.exit();
+            }
+        });
+
+        gameMenu.getItems().addAll(newGameItem, settingsItem, loadItem, saveItem, quitItem);
 
         Menu languageMenu = new Menu(language.getLanguage());
         MenuItem deItem = new MenuItem("de");
