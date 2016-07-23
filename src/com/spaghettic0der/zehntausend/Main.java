@@ -45,9 +45,12 @@ public class Main extends Application
     private ObservableList<HBox> observableList;
     private Label testLabel;
     private Label needsToBeConfirmedLabel;
+    private ArrayList<Image> imageArrayList;
 
     public Main()
     {
+        imageArrayList = new ArrayList<>();
+
         jsonHelper = new JsonHelper();
         globalSettings = jsonHelper.loadSettings();
         if (globalSettings == null)
@@ -56,6 +59,8 @@ public class Main extends Application
         language = jsonHelper.loadLanguage("language_" + globalSettings.getSelectedLanguage());
         if (language == null)
             language = new Language();
+
+        initDiceImages();
     }
 
     public static void main(String[] args) throws Exception
@@ -77,6 +82,15 @@ public class Main extends Application
         alert.setHeaderText(headerText);
         alert.setContentText(contentText);
         alert.show();
+    }
+
+    private void initDiceImages()
+    {
+        for (int i = 1; i <= 6; i++)
+        {
+            Image image = new Image(getClass().getResourceAsStream("res/" + i + ".png"));
+            imageArrayList.add(image);
+        }
     }
 
     private void updateUI()
@@ -109,11 +123,12 @@ public class Main extends Application
             Button diceButton = new Button();
             diceButton.setPrefWidth(diceButtonSize);
             diceButton.setPrefHeight(diceButtonSize);
+            HBox.setMargin(diceButton, new Insets(0, 2, 0, 2));
             diceButton.setFont(new Font(buttonFontSize));
             if (game.getSettings().isDiceImageShown())
             {
                 String diceImageLocation = "res/" + dices.get(i).getDiceNumber() + ".png";
-                setDiceImage(diceButton, diceImageLocation);
+                setDiceImage(diceButton, currentDice.getDiceNumber());
             }
             else
             {
@@ -123,11 +138,11 @@ public class Main extends Application
             //checks if dices are in last roll -> if so you can still move them back --> yellowgreen color
             if (game.getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().contains(dices.get(i)))
             {
-                diceButton.setStyle("-fx-background-color: yellowgreen; -fx-border-color: gray");
+                diceButton.setStyle("-fx-background-color: #d3ffd5; -fx-border-color: black");
             }
             else
             {
-                diceButton.setStyle("-fx-background-color: #ff5f50; -fx-border-color: gray");
+                diceButton.setStyle("-fx-background-color: #ffe9e6; -fx-border-color: black");
             }
 
             diceButton.setId("" + i);
@@ -143,12 +158,11 @@ public class Main extends Application
         }
     }
 
-    private void setDiceImage(Button diceButton, String diceImageLocation)
+    private void setDiceImage(Button diceButton, int diceNumber)
     {
-        Image image = new Image(getClass().getResourceAsStream(diceImageLocation));
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(diceButtonSize / 2);
-        imageView.setFitHeight(diceButtonSize / 2);
+        ImageView imageView = new ImageView(imageArrayList.get(diceNumber - 1));
+        imageView.setFitWidth(diceButtonSize - 20);
+        imageView.setFitHeight(diceButtonSize - 20);
         diceButton.setGraphic(imageView);
     }
 
@@ -161,13 +175,14 @@ public class Main extends Application
             Button diceButton = new Button();
             diceButton.setPrefWidth(diceButtonSize);
             diceButton.setPrefHeight(diceButtonSize);
-            diceButton.setStyle("-fx-background-color: greenyellow; -fx-border-color: gray");
+            HBox.setMargin(diceButton, new Insets(0, 2, 0, 2));
+            diceButton.setStyle("-fx-background-color: aliceblue; -fx-border-color: black");
             diceButton.setFont(new Font(buttonFontSize));
             diceButton.setId("" + i);
             if (game.getSettings().isDiceImageShown())
             {
                 String diceImageLocation = "res/" + dices.get(i).getDiceNumber() + ".png";
-                setDiceImage(diceButton, diceImageLocation);
+                setDiceImage(diceButton, currentDice.getDiceNumber());
             }
             else
             {
