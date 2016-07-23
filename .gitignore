@@ -15,3 +15,7 @@ out/artifacts/Zehntausend_jar/settings.json
 /out/production/Zehntausend/com/spaghettic0der/zehntausend/Settings.class
 /out/production/Zehntausend/com/spaghettic0der/zehntausend/Turn.class
 /out/production/Zehntausend/com/spaghettic0der/zehntausend/Roll.class
+/out/production/Zehntausend/com/spaghettic0der/zehntausend/README.md
+game.json
+*.class
+.class
