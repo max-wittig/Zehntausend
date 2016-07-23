@@ -691,7 +691,24 @@ public class Main extends Application
 
         Menu languageMenu = new Menu(language.getLanguage());
         MenuItem deItem = new MenuItem("de");
+        deItem.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                globalSettings.setSelectedLanguage(deItem.getText());
+            }
+        });
         MenuItem engItem = new MenuItem("eng");
+        engItem.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                globalSettings.setSelectedLanguage(engItem.getText());
+                jsonHelper.saveSettings(globalSettings);
+            }
+        });
         languageMenu.getItems().addAll(deItem, engItem);
         /*try
         {

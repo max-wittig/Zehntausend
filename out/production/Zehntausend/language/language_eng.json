@@ -1,5 +1,6 @@
 {
-    "language": "English",
+    "languageFile": "English",
+    "language": "Language",
     "winAlertHeaderText": "You won!",
     "winAlertContentText": "Congrats",
     "gameOverAlertHeader": "Game over!",

@@ -26,17 +26,22 @@ public class Settings
     private int scoreThreeXTwo = 1000;
 
     private boolean sixDicesInARowEnabled = true;
-    private int scoreSixDicesInARow = 10000; //can be ajusted
+    private int scoreSixDicesInARow = 10000;
 
     private boolean fullHouseEnabled = true; // only works with 5 dices
 
     private boolean pyramidEnabled = true;
     private int scorePyramid = 1000;
 
-    private boolean clearAllNeedsConfirmationInNextRound = true;
+    private boolean clearAllNeedsConfirmationInNextRound = false;
     private int minScoreToConfirm = 50;
 
-    private String selectedLanguage = "de";
+    private String selectedLanguage = "eng";
+
+    public void setSelectedLanguage(String selectedLanguage)
+    {
+        this.selectedLanguage = selectedLanguage;
+    }
 
     public String getSelectedLanguage()
     {
