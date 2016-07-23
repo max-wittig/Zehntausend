@@ -1,3 +1,5 @@
 .idea
 *.iml
 out/artifacts/Zehntausend_jar/settings.json
+/settings.json
+.class

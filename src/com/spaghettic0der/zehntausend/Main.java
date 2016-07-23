@@ -697,6 +697,7 @@ public class Main extends Application
             public void handle(ActionEvent event)
             {
                 globalSettings.setSelectedLanguage(deItem.getText());
+                applySettings();
             }
         });
         MenuItem engItem = new MenuItem("eng");
@@ -706,7 +707,7 @@ public class Main extends Application
             public void handle(ActionEvent event)
             {
                 globalSettings.setSelectedLanguage(engItem.getText());
-                jsonHelper.saveSettings(globalSettings);
+                applySettings();
             }
         });
         languageMenu.getItems().addAll(deItem, engItem);
@@ -740,6 +741,15 @@ public class Main extends Application
 
         menuBar.getMenus().addAll(gameMenu, languageMenu, aboutMenu);
         root.setTop(menuBar);
+    }
+
+    private void applySettings()
+    {
+        jsonHelper.saveSettings(globalSettings);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("");
+        alert.setContentText(language.getApplicationNeedsToBeRestarted());
+        alert.show();
     }
 
     private void clearScoreListAddPlayers()

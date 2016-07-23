@@ -48,6 +48,18 @@ public class Language
     private String couldNotLoadSave = "Could not load save!";
     private String error = "Error!";
     private String language = "Sprache";
+    private String applicationNeedsToBeRestarted = "Application needs to be restarted for the changes to take effect!";
+    private String quit = "Quit!";
+
+    public String getQuit()
+    {
+        return quit;
+    }
+
+    public String getApplicationNeedsToBeRestarted()
+    {
+        return applicationNeedsToBeRestarted;
+    }
 
     public String getError()
     {

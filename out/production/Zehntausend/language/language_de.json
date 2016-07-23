@@ -41,5 +41,7 @@
     "next": "Nächster",
     "settings": "Einstellungen",
     "couldNotLoadSave": "Konnte Spielstand nicht laden!",
-    "error": "Fehler"
+    "error": "Fehler",
+    "applicationNeedsToBeRestarted" : "Anwendung muss neu gestartet werden, um die Änderungen zu übernehmen!",
+    "quit": "Beenden"
 }

@@ -41,5 +41,7 @@
     "next": "NEXT",
     "settings": "Settings",
     "couldNotLoadSave": "Could not load save file!",
-    "error": "Error!"
+    "error": "Error!",
+    "applicationNeedsToBeRestarted" : "Application needs to be restarted for the changes to take effect!",
+    "quit": "Quit"
 }
