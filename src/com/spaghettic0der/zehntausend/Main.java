@@ -800,11 +800,11 @@ public class Main extends Application
                     cheatWaiter.delete(0, cheatWaiter.length());
                     cheatMenu.setVisible(true);
                 }
-                else if (cheatWaiter.length() >= cheatWord.length())
+                else if (!cheatMenu.isVisible() && cheatWaiter.length() >= cheatWord.length())
                 {
                     cheatWaiter.delete(0, cheatWaiter.length());
                 }
-                else
+                else if (!cheatMenu.isVisible())
                 {
                     cheatWaiter.append(event.getText());
                 }
