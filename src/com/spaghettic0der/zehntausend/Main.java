@@ -7,6 +7,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,12 +16,15 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Optional;
 
 public class Main extends Application
 {
@@ -653,118 +657,173 @@ public class Main extends Application
 
         MenuItem newGameItem = new MenuItem(language.getNewString());
         newGameItem.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
             {
-                nextGame(globalSettings);
-            }
-        });
+                @Override
+                public void handle(ActionEvent event)
+                {
+                    nextGame(globalSettings);
+                }
+            });
         MenuItem settingsItem = new MenuItem(language.getSettings());
         settingsItem.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
             {
-                initSettingsStage(primaryStage);
-            }
-        });
+                @Override
+                public void handle(ActionEvent event)
+                {
+                    initSettingsStage(primaryStage);
+                }
+            });
         MenuItem loadItem = new MenuItem(language.getLoad());
         loadItem.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
             {
-                Game gameToLoad = jsonHelper.loadGameState();
-                if (gameToLoad != null)
+                @Override
+                public void handle(ActionEvent event)
                 {
-                    game = gameToLoad;
-                    updateUI();
-                    rebuildListView();
+                    Game gameToLoad = jsonHelper.loadGameState();
+                    if (gameToLoad != null)
+                    {
+                        game = gameToLoad;
+                        updateUI();
+                        rebuildListView();
+                    }
+                    else
+                    {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setHeaderText(language.getError());
+                        alert.setContentText(language.getCouldNotLoadSave());
+                        alert.show();
+                    }
                 }
-                else
-                {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setHeaderText(language.getError());
-                    alert.setContentText(language.getCouldNotLoadSave());
-                    alert.show();
-                }
-            }
-        });
+            });
         MenuItem saveItem = new MenuItem(language.getSave());
         saveItem.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
             public void handle(ActionEvent event)
-            {
-                jsonHelper.saveGame(game);
-            }
+                {
+                    jsonHelper.saveGame(game);
+                }
         });
 
         MenuItem quitItem = new MenuItem(language.getQuit());
         quitItem.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                public void handle(ActionEvent event)
+                {
+                    Platform.exit();
+                }
+            });
+        gameMenu.getItems().addAll(newGameItem, settingsItem, loadItem, saveItem, quitItem);
+
+        Menu cheatMenu = new Menu("Cheat");
+        cheatMenu.setVisible(false);
+        MenuItem remainingDicesMenuItem = new MenuItem("Remaining Dices");
+        remainingDicesMenuItem.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                public void handle(ActionEvent event)
+                {
+                    TextInputDialog textInputDialog = new TextInputDialog();
+                    Optional<String> result = textInputDialog.showAndWait();
+                    if (result.isPresent())
+                    {
+                        game.getCurrentPlayer().addDebugDices(textInputDialogResultToArrayList(result.get()));
+                        updateUI();
+                    }
+                }
+            });
+
+        MenuItem instaWin = new MenuItem("InstaWin");
+        instaWin.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
             public void handle(ActionEvent event)
             {
-                Platform.exit();
+                game.getCurrentPlayer().setScore(game.getSettings().getMinScoreRequiredToWin());
+                updateUI();
             }
         });
 
-        gameMenu.getItems().addAll(newGameItem, settingsItem, loadItem, saveItem, quitItem);
+        cheatMenu.getItems().addAll(remainingDicesMenuItem, instaWin);
 
         Menu languageMenu = new Menu(language.getLanguage());
         MenuItem deItem = new MenuItem("de");
         deItem.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
             {
-                globalSettings.setSelectedLanguage(deItem.getText());
-                applySettings();
-            }
-        });
+                @Override
+                public void handle(ActionEvent event)
+                {
+                    globalSettings.setSelectedLanguage(deItem.getText());
+                    applySettings();
+                }
+            });
         MenuItem engItem = new MenuItem("eng");
         engItem.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
             {
-                globalSettings.setSelectedLanguage(engItem.getText());
-                applySettings();
-            }
-        });
+                @Override
+                public void handle(ActionEvent event)
+                {
+                    globalSettings.setSelectedLanguage(engItem.getText());
+                    applySettings();
+                }
+            });
         languageMenu.getItems().addAll(deItem, engItem);
-        /*try
-        {
-            URL url = getClass().getResource("/language/");
-            File folder = new File(url.getFile());
-            System.out.println(folder);
-
-        }
-        catch (Exception e)
-        {
-            System.out.println(e.getMessage());
-        }*/
 
         Menu aboutMenu = new Menu(language.getAbout());
         MenuItem infoItem = new MenuItem(language.getZehntausend());
         infoItem.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
             {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText(language.getAbout() + " " + language.getZehntausend() + "\n" + language.getVersion() + ": " + versionNumber);
-                alert.setContentText(language.getAboutContentText());
-                alert.show();
-            }
-        });
+                @Override
+                public void handle(ActionEvent event)
+                {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setHeaderText(language.getAbout() + " " + language.getZehntausend() + "\n" + language.getVersion() + ": " + versionNumber);
+                    alert.setContentText(language.getAboutContentText());
+                    alert.show();
+
+                }
+            });
 
         aboutMenu.getItems().add(infoItem);
 
-        menuBar.getMenus().addAll(gameMenu, languageMenu, aboutMenu);
+        menuBar.getMenus().addAll(gameMenu, languageMenu, cheatMenu, aboutMenu);
+        StringBuilder cheatWaiter = new StringBuilder();
+        root.setOnKeyPressed(new EventHandler<KeyEvent>()
+        {
+            @Override
+            public void handle(KeyEvent event)
+            {
+                String cheatWord = "cheat";
+                if (cheatWaiter.toString().equals(cheatWord))
+                {
+                    cheatWaiter.delete(0, cheatWaiter.length());
+                    cheatMenu.setVisible(true);
+                }
+                else if (cheatWaiter.length() >= cheatWord.length())
+                {
+                    cheatWaiter.delete(0, cheatWaiter.length());
+                }
+                else
+                {
+                    cheatWaiter.append(event.getText());
+                }
+
+            }
+        });
         root.setTop(menuBar);
+    }
+
+    private ArrayList<Integer> textInputDialogResultToArrayList(String result)
+    {
+        System.out.println(result);
+        String[] diceNumbersStringArray = result.toString().split(" ");
+        ArrayList<Integer> numbers = new ArrayList<Integer>();
+        for (String numberString : diceNumbersStringArray)
+        {
+            numbers.add(Integer.parseInt(numberString));
+        }
+        return numbers;
     }
 
     private void applySettings()

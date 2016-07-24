@@ -36,7 +36,17 @@ public class Player
         }
 
         //addDebugDices(new int[]{1, 1, 5, 3, 3, 3});
+    }
 
+    public void addDebugDices(ArrayList<Integer> diceNumbers)
+    {
+        remainingDices.clear();
+        for (Integer i : diceNumbers)
+        {
+            Dice dice = new Dice();
+            dice.setDiceNumber(i);
+            remainingDices.add(dice);
+        }
     }
 
     private void addDebugDices(int[] diceNumbers)
@@ -49,7 +59,6 @@ public class Player
             remainingDices.add(dice);
         }
     }
-
 
     public Turn getCurrentTurn()
     {
@@ -143,4 +152,6 @@ public class Player
     {
         this.settings = settings;
     }
+
+
 }
