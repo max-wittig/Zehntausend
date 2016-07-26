@@ -3,7 +3,10 @@ package com.spaghettic0der.zehntausend;
 
 import java.util.ArrayList;
 
-//saves all drawn dices
+/**
+ * saves the drawn dices in an arrayList
+ * roll is all drawn dices on the screen at once
+ */
 public class Roll
 {
 
@@ -15,6 +18,12 @@ public class Roll
         drawnDices = new ArrayList<>();
     }
 
+    /**
+     * if all dices were rolled in the roll, it needs confirmation
+     *
+     * @param diceNumber total number of dices in the game
+     * @return
+     */
     public boolean needsConfirmation(int diceNumber)
     {
         if (getDrawnDices().size() >= diceNumber)
@@ -32,6 +41,10 @@ public class Roll
         return drawnDices;
     }
 
+    /**
+     * now the object is removed instead of removing the number
+     * @param number
+     */
     @Deprecated
     public void removeDiceWithNumber(int number)
     {
@@ -45,6 +58,10 @@ public class Roll
         }
     }
 
+    /**
+     * removes dice from roll
+     * @param dice
+     */
     public void removeDice(Dice dice)
     {
         drawnDices.remove(dice);

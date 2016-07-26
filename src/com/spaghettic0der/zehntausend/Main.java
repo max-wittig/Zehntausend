@@ -1185,7 +1185,6 @@ public class Main extends Application
             {
                 if (game.isValidState(State.NEXT))
                 {
-                    //game.saveScore();
                     updateScoreOfPlayersInListView();
                     game.nextPlayer();
                     updateUI();

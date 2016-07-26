@@ -2,10 +2,14 @@ package com.spaghettic0der.zehntausend;
 
 import java.util.ArrayList;
 
+/**
+ * a round a multiple rolls. E.g. if the player cleans the board a new set of remaining dices
+ * needs to be created and a new roll is thrown
+ * all rolls of a turn are saved in the roundArrayList
+ */
 public class Round
 {
     private ArrayList<Roll> rollArrayList;
-    private boolean isConfirmingRound = false;
 
     public Round()
     {
@@ -18,6 +22,11 @@ public class Round
         return rollArrayList;
     }
 
+    /**
+     * if there is a roll, where there are 0 dices it isn't valid
+     *
+     * @return
+     */
     public boolean isValid()
     {
         for (Roll currentRoll : rollArrayList)
@@ -35,6 +44,10 @@ public class Round
         return rollArrayList.get(rollArrayList.size() - 1);
     }
 
+    /**
+     * loops through all rolls and adds them to a diceArrayList
+     * @return diceArrayList
+     */
     public ArrayList<Dice> getDrawnDices()
     {
         ArrayList<Dice> dices = new ArrayList<>();
@@ -56,13 +69,4 @@ public class Round
         rollArrayList.add(roll);
     }
 
-    public boolean isConfirmingRound()
-    {
-        return isConfirmingRound;
-    }
-
-    public void setConfirmingRound(boolean confirmingRound)
-    {
-        isConfirmingRound = confirmingRound;
-    }
 }

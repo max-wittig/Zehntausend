@@ -18,6 +18,10 @@ public class Game
         initPlayers();
     }
 
+    /**
+     * initialized all players. Adds objects to arrayList
+     * called by constructor
+     */
     private void initPlayers()
     {
         for (int i = 0; i < settings.getTotalPlayers(); i++)
@@ -26,8 +30,12 @@ public class Game
             players.add(player);
         }
     }
-    //resets dices currently in roll to zero, so that the player cannot continue
-    //if he doesn't draw any dices
+
+    /**
+     * checks if the minScoreIsReached
+     *
+     * @return
+     */
     public boolean minScoreReached()
     {
         if (Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getCurrentTurn().getRoundArrayList(), true, settings) >= settings.getMinScoreRequiredToSaveInRound())
@@ -40,7 +48,7 @@ public class Game
         }
     }
 
-    /* returns boolean, based on rules if game is valid
+    /** returns boolean, based on rules if game is valid
     * is called when roll is called
     * */
     public boolean isValidState(State state)
@@ -89,7 +97,9 @@ public class Game
         }
     }
 
-    //saves score to player.addToScore
+    /**
+     * was used to save the score everytime the player completed it's turn. No longer needed
+     */
     @Deprecated
     public void saveScore()
     {
@@ -102,7 +112,12 @@ public class Game
         }
     }
 
-    //cycles through players, but doesn't save the score --> has to be done with saveScore();
+    /**
+     * sets next player and shows win dialog incase a player already won
+     * is called when player pressed the next button
+     * sets win rank
+     * sets next turn, BEFORE player is changed
+     */
     public void nextPlayer()
     {
         if (!isGameOver)
@@ -149,8 +164,9 @@ public class Game
         }
     }
 
-    //sets next player number automatically and returns, when it found next player
-    //with winRank = -1 which means the player is still in the game and hasn't won
+    /**  next player number automatically and returns void, when it found next player
+     * with winRank = -1 which means the player is still in the game and hasn't won
+     */
     private void setNextPlayerNumber()
     {
         //search from currentPlayerNumber to end of array
@@ -179,10 +195,11 @@ public class Game
 
     }
 
-    //gets a string which contains all winners in order
-    // 1 : Player 3
-    // 2 : Player 1
-    // 3 : Player 2
+    /**gets a string which contains all winners in order
+     * 1 : Player 3
+     * 2 : Player 1
+     * 3 : Player 2
+     * */
     private String getWinString()
     {
         HashMap<Integer, Player> winnersHashMap = getWinners();
@@ -197,6 +214,10 @@ public class Game
         return winStringBuilder.toString();
     }
 
+    /**
+     * gets numbe of winners, based on the players with a winRank != -1
+     * @return
+     */
     private int getNumberOfWinners()
     {
         int numberOfWinners = 0;
@@ -210,7 +231,9 @@ public class Game
         return numberOfWinners;
     }
 
-    //returns rank of player -> player object in Hashmap
+    /**
+     * returns rank of player -> player object in Hashmap
+     */
     private HashMap<Integer, Player> getWinners()
     {
         HashMap<Integer, Player> winPlayersSorted = new HashMap<>();
@@ -221,7 +244,10 @@ public class Game
         return winPlayersSorted;
     }
 
-    //needed for preparing the listView --> fill with empty cells on load
+    /**
+     * needed for preparing the listView --> fill with empty cells on load
+     * if game loaded empty HBoxes need to be created.
+     */
     public ArrayList<Turn> getLongestTurnArrayList()
     {
         int length = 0;
@@ -247,6 +273,11 @@ public class Game
         return settings;
     }
 
+    /**
+     * settings are set if a game was loaded, but settings were changed after the fact
+     * also settings of players are updated
+     * @param settings
+     */
     public void setSettings(Settings settings)
     {
         for (Player player : players)
@@ -261,8 +292,4 @@ public class Game
         return players;
     }
 
-    public int getCurrentPlayerNumber()
-    {
-        return currentPlayerNumber;
-    }
 }
