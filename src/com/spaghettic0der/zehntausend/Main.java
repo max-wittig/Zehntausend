@@ -50,6 +50,7 @@ public class Main extends Application
     private Label testLabel;
     private Label needsToBeConfirmedLabel;
     private ArrayList<Image> imageArrayList;
+    private static boolean selfTrigger = false;
 
     public Main()
     {
@@ -630,6 +631,39 @@ public class Main extends Application
             ScrollPane scrollPane = new ScrollPane(vBox);
             scrollPane.setFitToWidth(true);
             scrollPane.setPannable(true);
+            scrollPane.vvalueProperty().addListener(new ChangeListener<Number>()
+            {
+                @Override
+                public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
+                {
+                    double increment = 0.256;
+
+                    if(!selfTrigger)
+                    {
+                        //scroll down
+                        if(oldValue.doubleValue() < newValue.doubleValue())
+                        {
+                            if((newValue.doubleValue() + increment) < (1.0-increment))
+                            {
+                                selfTrigger = true;
+                                scrollPane.setVvalue(newValue.doubleValue() + increment);
+                            }
+                        }
+                        else
+                        {
+                            if((newValue.doubleValue() - increment) > increment)
+                            {
+                                selfTrigger = true;
+                                scrollPane.setVvalue(newValue.doubleValue() - increment);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        selfTrigger = false;
+                    }
+                }
+            });
 
             titledPane.setContent(scrollPane);
             accordion.getPanes().add(titledPane);
@@ -766,6 +800,7 @@ public class Main extends Application
             public void handle(ActionEvent event)
             {
                 game.getCurrentPlayer().getTurnArrayList().clear();
+                game.getCurrentPlayer().nextTurn();
             }
         });
 
