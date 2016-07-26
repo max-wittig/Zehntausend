@@ -7,7 +7,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,20 +14,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Optional;
 
 public class Main extends Application
 {
     public static Language language;
+    private static boolean selfTrigger = false;
     private final int textButtonWidth = 150;
     private final int textButtonHeight = 50;
     private final int diceButtonSize = 50;
@@ -50,7 +48,6 @@ public class Main extends Application
     private Label testLabel;
     private Label needsToBeConfirmedLabel;
     private ArrayList<Image> imageArrayList;
-    private static boolean selfTrigger = false;
 
     public Main()
     {
@@ -61,6 +58,7 @@ public class Main extends Application
         if (globalSettings == null)
             globalSettings = new Settings();
 
+        //loads language from json in jar package files
         language = jsonHelper.loadLanguage("language_" + globalSettings.getSelectedLanguage());
         if (language == null)
             language = new Language();
@@ -73,6 +71,13 @@ public class Main extends Application
         Application.launch(args);
     }
 
+    /**
+     * called by game, when player won
+     *
+     * @param playerName
+     * @param headerText
+     * @param contentText
+     */
     public static void showWinAlert(String playerName, String headerText, String contentText)
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -81,6 +86,12 @@ public class Main extends Application
         alert.show();
     }
 
+    /**
+     * shows game over dialog with
+     * 1. place, 2. place and 3. place
+     * @param headerText
+     * @param contentText
+     */
     public static void showGameOverDialog(String headerText, String contentText)
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -89,6 +100,10 @@ public class Main extends Application
         alert.show();
     }
 
+    /**
+     * inits the dice images, so that they don't need to be loaded every time their accessed
+     * dice images shown settings can be ajusted
+     */
     private void initDiceImages()
     {
         for (int i = 1; i <= 6; i++)
@@ -98,6 +113,10 @@ public class Main extends Application
         }
     }
 
+    /**
+     * is called everytime a player pressed roll or next
+     * refreshes labels and recreated whole UI
+     */
     private void updateUI()
     {
         remainingDiceHBox.getChildren().clear();
@@ -122,6 +141,10 @@ public class Main extends Application
 
     }
 
+    /**
+     * gets drawn dice buttons from current player and draws them on the screen again
+     * is called everytime something in the UI changes
+     */
     private void createDrawnDiceButtons()
     {
         final ArrayList<Dice> dices = game.getCurrentPlayer().getCurrentTurn().getCurrentRound().getDrawnDices();
@@ -167,6 +190,12 @@ public class Main extends Application
         }
     }
 
+    /**
+     * corresponds to show dice images settings
+     * is called by both createRemaining and createDrawnDices, if setting is enabled
+     * @param diceButton
+     * @param diceNumber
+     */
     private void setDiceImage(Button diceButton, int diceNumber)
     {
         ImageView imageView = new ImageView(imageArrayList.get(diceNumber - 1));
@@ -175,6 +204,10 @@ public class Main extends Application
         diceButton.setGraphic(imageView);
     }
 
+    /**
+     * gets RemainingDiceButtons from current player and draws them on the screen again
+     * is called everytime something in the UI changes
+     */
     private void createRemainingDiceButtons()
     {
         final ArrayList<Dice> dices = game.getCurrentPlayer().getRemainingDices();
@@ -209,6 +242,11 @@ public class Main extends Application
         }
     }
 
+    /**
+     * moves dice that the player clicked on from on arraylist to the other and
+     * updates the UI afterwards --> everything redrawn
+     * @param dice
+     */
     private void moveToDrawnDices(Dice dice)
     {
         ArrayList<Dice> remainingDices = game.getCurrentPlayer().getRemainingDices();
@@ -217,6 +255,11 @@ public class Main extends Application
         updateUI();
     }
 
+    /**
+     * moves dice that the player clicked on from on arraylist to the other and
+     * updates the UI afterwards --> everything redrawn
+     * @param dice
+     */
     private void moveToRemainingDices(Dice dice)
     {
         ArrayList<Dice> drawnDices = game.getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices();
@@ -231,6 +274,10 @@ public class Main extends Application
         }
     }
 
+    /**
+     * if player pressed the roll button and move is not possible
+     * alert is shown to inform the user of that
+     */
     private void showInvalidMoveAlert()
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -239,6 +286,10 @@ public class Main extends Application
         alert.show();
     }
 
+    /**
+     * is called everytime the settings stage is opened via the menuBar
+     * @param primaryStage
+     */
     private void initSettingsStage(Stage primaryStage)
     {
         ArrayList<Settings> settingsArrayList = new ArrayList<>();
@@ -246,6 +297,9 @@ public class Main extends Application
 
         globalSettings.setSettingsName(language.getGlobalSettings());
 
+        /*
+        player has loaded a game, otherwise settings are identical
+         */
         if (gameSettings != globalSettings)
         {
             gameSettings.setSettingsName(language.getGameSettings());
@@ -258,6 +312,11 @@ public class Main extends Application
         Accordion accordion = new Accordion();
         int minWidth = 200;
 
+        /*
+         * This loops through settings because if the player has loaded a game
+         * settings of game and globalSettings can be individually changed
+         * UI elements are created twice
+         */
         for (Settings currentSettings : settingsArrayList)
         {
             TitledPane titledPane = new TitledPane();
@@ -603,6 +662,9 @@ public class Main extends Application
 
                     currentSettings.setDiceImageShown(diceImagesShownCheckBox.isSelected());
 
+                    /*
+                    global settings restart the current game, game settings do not
+                     */
                     if (isGlobal)
                     {
                         jsonHelper.saveSettings(globalSettings);
@@ -631,6 +693,10 @@ public class Main extends Application
             ScrollPane scrollPane = new ScrollPane(vBox);
             scrollPane.setFitToWidth(true);
             scrollPane.setPannable(true);
+
+            /*
+            Makes scrolling in settings slightly faster
+             */
             scrollPane.vvalueProperty().addListener(new ChangeListener<Number>()
             {
                 @Override
@@ -686,6 +752,11 @@ public class Main extends Application
         clearScoreListAddPlayers();
     }
 
+    /**
+     * inits menuBar on top
+     * called by initUI();
+     * @param primaryStage
+     */
     private void initMenu(Stage primaryStage)
     {
         MenuBar menuBar = new MenuBar();
@@ -873,6 +944,14 @@ public class Main extends Application
         root.setTop(menuBar);
     }
 
+    /**
+     * builds a arraylist based on what the user typed in the cheat box for creating
+     * dices
+     * e.g. userInput: 1 5 2 2 2 3
+     *      returnValue => [1,5,2,2,2,3] (as arrayList)
+     * @param result
+     * @return
+     */
     private ArrayList<Integer> textInputDialogResultToArrayList(String result)
     {
         System.out.println(result);
@@ -885,6 +964,9 @@ public class Main extends Application
         return numbers;
     }
 
+    /**
+     * is called by the change language dialog
+     */
     private void applySettings()
     {
         jsonHelper.saveSettings(globalSettings);
@@ -894,12 +976,20 @@ public class Main extends Application
         alert.show();
     }
 
+    /**
+     * clears score list and re-created players
+     * is called when game is loaded from save or when new game is pressed
+     */
     private void clearScoreListAddPlayers()
     {
         observableList.clear();
         addPlayersToListView();
     }
 
+    /**
+     * called by addPlayersToListView
+     * readdeds all the player Labels in the listview, which are inside a HBox
+     */
     private void addPlayersToListView()
     {
         HBox hBox = new HBox();
@@ -916,6 +1006,9 @@ public class Main extends Application
         observableList.add(hBox);
     }
 
+    /**
+     * recreated the whole listView, incase the player loads a saved game
+     */
     private void rebuildListView()
     {
         clearScoreListAddPlayers();
@@ -969,6 +1062,10 @@ public class Main extends Application
         }
     }
 
+    /**
+     * is called by updateScoreOfPlayersInListView
+     * gets the current Hbox and sets the label of the player with it's score
+     */
     private void applyScoreToPlayersInListView()
     {
         HBox hBox = observableList.get(observableList.size() - 1);
@@ -984,7 +1081,10 @@ public class Main extends Application
         }
     }
 
-    //always updates current player score --> after that we switch player
+    /**
+     * if there a enough HBoxes in the observable list it just applys the score of the player
+     * otherwise it calles createEmptyLabelsInListView() and applies the score after that
+     */
     private void updateScoreOfPlayersInListView()
     {
         if (observableList.size() > 1)
@@ -1006,7 +1106,9 @@ public class Main extends Application
         }
     }
 
-    //creates empty labels for each player
+    /**
+     * creates a new HBox and puts empty labels in for each player
+     */
     private void createEmptyLabelsInListView()
     {
         HBox hBox = new HBox();
@@ -1022,14 +1124,23 @@ public class Main extends Application
         observableList.add(hBox);
     }
 
+    /**
+     * is called by initUI and initialized the listView
+     * calls addPlayersToListView
+     */
     private void initListView()
     {
         observableList = FXCollections.observableArrayList();
         ListView<HBox> listView = new ListView<>(observableList);
         listView.setMaxHeight(globalSettings.getHeight() / 3);
         root.setBottom(listView);
+        addPlayersToListView();
     }
 
+    /**
+     * builds whole UI and calls subfunctions e.g. initMenu, initListView
+     * @param primaryStage
+     */
     private void initUI(Stage primaryStage)
     {
         root = new BorderPane();
@@ -1123,12 +1234,15 @@ public class Main extends Application
 
     }
 
+    /**
+     * starts the game
+     * @param primaryStage
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception
     {
         game = new Game(globalSettings);
         initUI(primaryStage);
-        addPlayersToListView();
-        //updateUI();
     }
 }
