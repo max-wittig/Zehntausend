@@ -3,7 +3,10 @@ package com.spaghettic0der.zehntausend;
 
 import java.util.ArrayList;
 
-
+/**
+ * saved all turns, which contains all the rounds, which contain all the rolls, which contain
+ * all the dices that were drawn
+ */
 public class Player
 {
     private ArrayList<Dice> remainingDices;
@@ -24,6 +27,9 @@ public class Player
         nextTurn();
     }
 
+    /**
+     * initalized remainingDices
+     */
     public void initDice()
     {
         remainingDices.clear();
@@ -48,6 +54,7 @@ public class Player
         }
     }
 
+    @Deprecated
     private void addDebugDices(int[] diceNumbers)
     {
         remainingDices.clear();
@@ -64,6 +71,9 @@ public class Player
         return turnArrayList.get(turnArrayList.size() - 1);
     }
 
+    /**
+     * rolls dices and starts a new round, if you clear the board
+     */
     public void rollDice()
     {
         if (!remainingDices.isEmpty())

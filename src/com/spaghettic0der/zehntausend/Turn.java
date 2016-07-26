@@ -3,6 +3,11 @@ package com.spaghettic0der.zehntausend;
 
 import java.util.ArrayList;
 
+/**
+ * a turn contains all rounds
+ * turns are kept in the player object
+ * next button is pressed by player --> new turn begins before player is changed
+ */
 public class Turn
 {
     private ArrayList<Round> roundArrayList;
@@ -50,6 +55,15 @@ public class Turn
         roundArrayList.add(round);
     }
 
+    /**
+     * checks if turn is valid
+     * score >= minScore
+     * if confirmation is enabled in settings
+     * next round can't be empty || null || not many points worth
+     *
+     * @param settings
+     * @return
+     */
     public boolean isValid(Settings settings)
     {
         if (Scoring.getScoreFromAllDicesInRound(getRoundArrayList(), true, settings) < settings.getMinScoreRequiredToSaveInRound())
