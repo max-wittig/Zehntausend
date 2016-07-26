@@ -15,11 +15,24 @@ public class Roll
         drawnDices = new ArrayList<>();
     }
 
+    public boolean needsConfirmation(int diceNumber)
+    {
+        if (getDrawnDices().size() >= diceNumber)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public ArrayList<Dice> getDrawnDices()
     {
         return drawnDices;
     }
 
+    @Deprecated
     public void removeDiceWithNumber(int number)
     {
         for (Dice toRemove : getDrawnDices())
@@ -35,15 +48,5 @@ public class Roll
     public void removeDice(Dice dice)
     {
         drawnDices.remove(dice);
-    }
-
-    public boolean isConfirmingRoll()
-    {
-        return isConfirmingRoll;
-    }
-
-    public void setConfirmingRoll(boolean confirmingRoll)
-    {
-        isConfirmingRoll = confirmingRoll;
     }
 }

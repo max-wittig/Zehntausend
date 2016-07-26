@@ -19,6 +19,7 @@ public class Turn
     }
 
     //from last turn only
+    @Deprecated
     public ArrayList<Dice> getAllDrawnDices()
     {
         ArrayList<Dice> dices = new ArrayList<>();
@@ -51,6 +52,11 @@ public class Turn
 
     public boolean isValid(Settings settings)
     {
+        if (Scoring.getScoreFromAllDicesInRound(getRoundArrayList(), true, settings) < settings.getMinScoreRequiredToSaveInRound())
+        {
+            return false;
+        }
+
         for (int i = 0; i < roundArrayList.size(); i++)
         {
             Round currentRound = roundArrayList.get(i);
@@ -60,13 +66,13 @@ public class Turn
                 nextRound = roundArrayList.get(i + 1);
             }
 
-            if (currentRound.isValid() || currentRound == getCurrentRound())
+            if (currentRound.isValid())
             {
                 for (Roll roll : currentRound.getRollArrayList())
                 {
-                    if (roll.getDrawnDices().size() >= settings.getTotalDiceNumber())
+                    if (settings.isClearAllNeedsConfirmationInNextRound())
                     {
-                        if (settings.isClearAllNeedsConfirmationInNextRound())
+                        if (roll.needsConfirmation(settings.getTotalDiceNumber()))
                         {
                             if (nextRound == null)
                             {
@@ -83,6 +89,10 @@ public class Turn
                     }
                 }
 
+            }
+            else
+            {
+                return false;
             }
         }
         return true;

@@ -134,12 +134,12 @@ public class Scoring
         int sum = 0;
         for (Turn currentTurn : turnArrayList)
         {
-            if (currentTurn.isValid(settings) || !turnValidCheck)
+            if (currentTurn.isValid(settings))
             {
                 for (Round currentRound : currentTurn.getRoundArrayList())
                 {
                     //the current active round should not be validated, because it could be in later
-                    if (currentRound.isValid() || !roundValidCheck || currentRound == activeRound)
+                    if (currentRound.isValid() || currentRound == activeRound)
                     {
                         for (Roll currentRoll : currentRound.getRollArrayList())
                         {

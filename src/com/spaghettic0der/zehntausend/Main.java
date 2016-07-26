@@ -103,10 +103,14 @@ public class Main extends Application
         drawnDiceHBox.getChildren().clear();
         createRemainingDiceButtons();
         createDrawnDiceButtons();
+        Player currentPlayer = game.getCurrentPlayer();
         currentPlayerLabel.setText(language.getCurrentPlayer() + ": " + (game.getCurrentPlayer().getPlayerNumber() + 1));
-        scoreLabel.setText(language.getScore() + ": " + (Scoring.getScoreFromAllDices(game.getCurrentPlayer().getTurnArrayList(), game.getSettings(), false, true, game.getCurrentPlayer().getCurrentTurn().getCurrentRound())));
+        scoreLabel.setText(language.getScore() + ": " + (Scoring.getScoreFromAllDices(game.getCurrentPlayer().getTurnArrayList(), game.getSettings(), true, true, game.getCurrentPlayer().getCurrentTurn().getCurrentRound())));
         scoreInRoundLabel.setText(language.getScoreInRound() + ": " + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getCurrentTurn().getRoundArrayList(), false, game.getSettings()));
-        if (!game.getCurrentPlayer().getCurrentTurn().isValid(game.getSettings()) && game.isValidState(State.ROLL))
+        if (currentPlayer.getCurrentTurn().getCurrentRound().getCurrentRoll()
+                .needsConfirmation(game.getSettings().getTotalDiceNumber())
+                && !currentPlayer.getCurrentTurn().isValid(game.getSettings())
+                && game.isValidState(State.ROLL))
         {
             needsToBeConfirmedLabel.setText(language.getScoreNeedsToBeConfirmed());
         }
@@ -734,6 +738,16 @@ public class Main extends Application
                 }
             });
 
+        MenuItem showDebugScoreMenuItem = new MenuItem("Show Debug Score");
+        showDebugScoreMenuItem.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                scoreLabel.setVisible(true);
+            }
+        });
+
         MenuItem instaWin = new MenuItem("InstaWin");
         instaWin.setOnAction(new EventHandler<ActionEvent>()
         {
@@ -745,7 +759,17 @@ public class Main extends Application
             }
         });
 
-        cheatMenu.getItems().addAll(remainingDicesMenuItem, instaWin);
+        MenuItem clearScoreItem = new MenuItem("Clear Score");
+        clearScoreItem.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                game.getCurrentPlayer().getTurnArrayList().clear();
+            }
+        });
+
+        cheatMenu.getItems().addAll(remainingDicesMenuItem, instaWin, clearScoreItem, showDebugScoreMenuItem);
 
         Menu languageMenu = new Menu(language.getLanguage());
         MenuItem deItem = new MenuItem("de");
@@ -886,12 +910,12 @@ public class Main extends Application
                         ArrayList<Round> roundArrayList = currentTurn.getRoundArrayList();
                         if (roundArrayList != null)
                         {
-                            playerScoreHashMap.put(j, playerScoreHashMap.get(j) + Scoring.getScoreFromAllDicesInRound(roundArrayList, true, globalSettings));
+                            if (currentTurn.isValid(game.getSettings()))
+                                playerScoreHashMap.put(j, playerScoreHashMap.get(j) + Scoring.getScoreFromAllDicesInRound(roundArrayList, true, globalSettings));
 
                             Label label = (Label) currentHBox.getChildren().get(j);
                             if (label != null)
                             {
-                                label.setText("" + playerScoreHashMap.get(j));
                                 if (playerScoreHashMap.get(j) >= game.getSettings().getMinScoreRequiredToWin())
                                 {
                                     label.setText(language.getWonWith() + " " + playerScoreHashMap.get(j));
@@ -1030,6 +1054,7 @@ public class Main extends Application
         currentPlayerLabel = new Label(language.getCurrentPlayer() + ": 0");
         currentPlayerLabel.setFont(new Font(buttonFontSize));
         scoreLabel = new Label(language.getScore() + ": 0");
+        scoreLabel.setVisible(false);
         testLabel = new Label("");
         needsToBeConfirmedLabel = new Label();
         needsToBeConfirmedLabel.setFont(new Font(buttonFontSize));
