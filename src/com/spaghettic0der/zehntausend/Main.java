@@ -754,7 +754,7 @@ public class Main extends Application
             @Override
             public void handle(ActionEvent event)
             {
-                game.getCurrentPlayer().setScore(game.getSettings().getMinScoreRequiredToWin());
+                game.getCurrentPlayer().setWinRank(1);
                 updateUI();
             }
         });
@@ -1039,7 +1039,7 @@ public class Main extends Application
             {
                 if (game.isValidState(State.NEXT))
                 {
-                    game.saveScore();
+                    //game.saveScore();
                     updateScoreOfPlayersInListView();
                     game.nextPlayer();
                     updateUI();

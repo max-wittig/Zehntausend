@@ -90,6 +90,7 @@ public class Game
     }
 
     //saves score to player.addToScore
+    @Deprecated
     public void saveScore()
     {
         //always clear --> if not fullfiled score is gone!
@@ -97,7 +98,7 @@ public class Game
         if (numberOfDicesInLastRoll > 0 && minScoreReached())
         {
             //getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getCurrentTurn().getRoundArrayList(), true, settings));
-            getCurrentPlayer().setScore(Scoring.getScoreFromAllDices(getCurrentPlayer().getTurnArrayList(), settings, true, true, getCurrentPlayer().getCurrentTurn().getCurrentRound()));
+            //getCurrentPlayer().setScore(Scoring.getScoreFromAllDices(getCurrentPlayer().getTurnArrayList(), settings, true, true, getCurrentPlayer().getCurrentTurn().getCurrentRound()));
         }
     }
 

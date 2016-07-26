@@ -8,7 +8,6 @@ public class Player
 {
     private ArrayList<Dice> remainingDices;
     private int playerNumber;
-    private int score = 0;
     private String playerName = null;
     private ArrayList<Turn> turnArrayList;
     private Settings settings;
@@ -87,7 +86,7 @@ public class Player
 
     public boolean hasWon()
     {
-        if (score >= settings.getMinScoreRequiredToWin())
+        if (getScore() >= settings.getMinScoreRequiredToWin())
         {
             return true;
         }
@@ -115,18 +114,9 @@ public class Player
 
     public int getScore()
     {
-        return score;
+        return Scoring.getScoreFromAllDices(turnArrayList, settings, true, true, getCurrentTurn().getCurrentRound());
     }
 
-    public void setScore(int score)
-    {
-        this.score = score;
-    }
-
-    public void addToScore(int number)
-    {
-        score += number;
-    }
 
     public String getPlayerName()
     {
