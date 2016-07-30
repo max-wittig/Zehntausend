@@ -1,6 +1,9 @@
 package com.spaghettic0der.zehntausend;
 
+import javafx.application.Platform;
+
 import java.util.*;
+import java.util.concurrent.SynchronousQueue;
 
 public class Game
 {
@@ -10,10 +13,12 @@ public class Game
     private int currentPlayerNumber = 0;
     private Settings settings;
     private boolean isGameOver = false;
+    private Main main;
 
-    public Game(Settings settings)
+    public Game(Settings settings, Main main)
     {
         this.settings = settings;
+        this.main = main;
         players = new ArrayList<>();
         initPlayers();
     }
@@ -31,37 +36,58 @@ public class Game
             players.add(player);
         }
 
-        for (int i = 0; i < settings.getTotalAI(); i++)
+        for (int i = settings.getTotalPlayers() - settings.getTotalAI(); i < settings.getTotalAI() + settings.getTotalPlayers() - settings.getTotalAI(); i++)
         {
-            AI ai = new AI(i, settings);
+            AI ai = new EasyAI(i, settings, this);
             ai.setPlayerType(PlayerType.COMPUTER);
             players.add(ai);
         }
     }
 
+
     /**
-     * checks if the minScoreIsReached
-     *
-     * @return
+     * moves dice that the player clicked on from on arraylist to the other and
+     * updates the UI afterwards --> everything redrawn
+     * @param dice
      */
-    public boolean minScoreReached()
+    public void moveToDrawnDices(Dice dice)
     {
-        if (Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getCurrentTurn().getRoundArrayList(), true, settings) >= settings.getMinScoreRequiredToSaveInRound())
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        ArrayList<Dice> remainingDices = getCurrentPlayer().getRemainingDices();
+        remainingDices.remove(dice);
+        getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().add(dice);
+
+        main.updateUI();
     }
+
+    /**
+     * moves dice that the player clicked on from on arraylist to the other and
+     * updates the UI afterwards --> everything redrawn
+     *
+     * @param dice
+     */
+    public void moveToRemainingDices(Dice dice)
+    {
+        ArrayList<Dice> drawnDices = getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices();
+        if (drawnDices.size() > 0)
+        {
+            if (drawnDices.contains(dice))
+            {
+                getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().removeDice(dice);
+                getCurrentPlayer().getRemainingDices().add(dice);
+
+            }
+        }
+
+        main.updateUI();
+    }
+
 
     /** returns boolean, based on rules if game is valid
     * is called when roll is called
     * */
     public boolean isValidState(State state)
     {
-        if (!isGameOver)
+        if (!isGameOver && !getCurrentPlayer().isAI())
         {
             //in case scoreInRound < 300 -> State.Next is just not gonna save this round for the player. No additional points
             //but we still need to check so we allow State.Next to go into the method
@@ -113,7 +139,7 @@ public class Game
     {
         //always clear --> if not fullfiled score is gone!
         int numberOfDicesInLastRoll = getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().size();
-        if (numberOfDicesInLastRoll > 0 && minScoreReached())
+        if (numberOfDicesInLastRoll > 0 && Scoring.minScoreReached(getCurrentPlayer(), settings))
         {
             //getCurrentPlayer().addToScore(Scoring.getScoreFromAllDicesInRound(getCurrentPlayer().getCurrentTurn().getRoundArrayList(), true, settings));
             //getCurrentPlayer().setScore(Scoring.getScoreFromAllDices(getCurrentPlayer().getTurnArrayList(), settings, true, true, getCurrentPlayer().getCurrentTurn().getCurrentRound()));
@@ -164,11 +190,20 @@ public class Game
             getCurrentPlayer().nextTurn();
             setNextPlayerNumber();
 
+            moveAI();
         }
         else
         {
             if (!settings.isGameOverAfterFirstPlayerWon())
                 Main.showGameOverDialog(Main.language.getGameOverAlertHeader(), getWinString());
+        }
+    }
+
+    private void moveAI()
+    {
+        if (getCurrentPlayer().isAI())
+        {
+            ((AI) getCurrentPlayer()).draw();
         }
     }
 

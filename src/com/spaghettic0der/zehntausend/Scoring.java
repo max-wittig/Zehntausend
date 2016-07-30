@@ -110,6 +110,23 @@ public class Scoring
         return false;
     }
 
+    /**
+     * checks if the minScoreIsReached
+     *
+     * @return
+     */
+    public static boolean minScoreReached(Player currentPlayer, Settings settings)
+    {
+        if (Scoring.getScoreFromAllDicesInRound(currentPlayer.getCurrentTurn().getRoundArrayList(), true, settings) >= settings.getMinScoreRequiredToSaveInRound())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 
     public static int getScoreFromAllDicesInRound(ArrayList<Round> roundArrayList, boolean validCheck, Settings settings)
     {

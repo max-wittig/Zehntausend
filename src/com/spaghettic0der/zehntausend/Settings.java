@@ -38,6 +38,17 @@ public class Settings
     private int minScoreToConfirm = 50;
 
     private String selectedLanguage = "eng";
+    private AIType aiType = AIType.EASY;
+
+    public AIType getAiType()
+    {
+        return aiType;
+    }
+
+    public void setAiType(AIType aiType)
+    {
+        this.aiType = aiType;
+    }
 
     public int getTotalAI()
     {

@@ -10,10 +10,10 @@ import java.util.ArrayList;
 public class Player
 {
     protected String playerName = null;
-    private ArrayList<Dice> remainingDices;
+    protected ArrayList<Dice> remainingDices;
+    protected ArrayList<Turn> turnArrayList;
+    protected Settings settings;
     private int playerNumber;
-    private ArrayList<Turn> turnArrayList;
-    private Settings settings;
     private int winRank = -1;
     private PlayerType playerType;
 
@@ -164,5 +164,16 @@ public class Player
         this.settings = settings;
     }
 
+    public boolean isAI()
+    {
+        if (PlayerType.COMPUTER == playerType)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
 }

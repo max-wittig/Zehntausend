@@ -48,9 +48,11 @@ public class Main extends Application
     private Label testLabel;
     private Label needsToBeConfirmedLabel;
     private ArrayList<Image> imageArrayList;
+    private Main main;
 
     public Main()
     {
+        main = this;
         imageArrayList = new ArrayList<>();
 
         jsonHelper = new JsonHelper();
@@ -117,7 +119,7 @@ public class Main extends Application
      * is called everytime a player pressed roll or next
      * refreshes labels and recreated whole UI
      */
-    private void updateUI()
+    public void updateUI()
     {
         remainingDiceHBox.getChildren().clear();
         drawnDiceHBox.getChildren().clear();
@@ -159,7 +161,6 @@ public class Main extends Application
             diceButton.setFont(new Font(buttonFontSize));
             if (game.getSettings().isDiceImageShown())
             {
-                String diceImageLocation = "res/" + dices.get(i).getDiceNumber() + ".png";
                 setDiceImage(diceButton, currentDice.getDiceNumber());
             }
             else
@@ -183,7 +184,8 @@ public class Main extends Application
                 @Override
                 public void handle(ActionEvent event)
                 {
-                    moveToRemainingDices(currentDice);
+                    game.moveToRemainingDices(currentDice);
+                    updateUI();
                 }
             });
             drawnDiceHBox.getChildren().add(diceButton);
@@ -234,44 +236,14 @@ public class Main extends Application
                 @Override
                 public void handle(ActionEvent event)
                 {
-                    moveToDrawnDices(currentDice);
+                    game.moveToDrawnDices(currentDice);
+                    updateUI();
                 }
             });
             remainingDiceHBox.getChildren().add(diceButton);
         }
     }
 
-    /**
-     * moves dice that the player clicked on from on arraylist to the other and
-     * updates the UI afterwards --> everything redrawn
-     * @param dice
-     */
-    private void moveToDrawnDices(Dice dice)
-    {
-        ArrayList<Dice> remainingDices = game.getCurrentPlayer().getRemainingDices();
-        remainingDices.remove(dice);
-        game.getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().add(dice);
-        updateUI();
-    }
-
-    /**
-     * moves dice that the player clicked on from on arraylist to the other and
-     * updates the UI afterwards --> everything redrawn
-     * @param dice
-     */
-    private void moveToRemainingDices(Dice dice)
-    {
-        ArrayList<Dice> drawnDices = game.getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices();
-        if (drawnDices.size() > 0)
-        {
-            if (drawnDices.contains(dice))
-            {
-                game.getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().removeDice(dice);
-                game.getCurrentPlayer().getRemainingDices().add(dice);
-                updateUI();
-            }
-        }
-    }
 
     /**
      * if player pressed the roll button and move is not possible
@@ -746,7 +718,7 @@ public class Main extends Application
 
     private void nextGame(Settings settings)
     {
-        game = new Game(settings);
+        game = new Game(settings, this);
         updateUI();
         clearScoreListAddPlayers();
     }
@@ -1195,7 +1167,7 @@ public class Main extends Application
             }
         });
 
-        currentPlayerLabel = new Label(language.getCurrentPlayer() + ": 0");
+        currentPlayerLabel = new Label(language.getCurrentPlayer() + ": 1");
         currentPlayerLabel.setFont(new Font(buttonFontSize));
         scoreLabel = new Label(language.getScore() + ": 0");
         scoreLabel.setVisible(false);
@@ -1240,7 +1212,7 @@ public class Main extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-        game = new Game(globalSettings);
+        game = new Game(globalSettings, this);
         initUI(primaryStage);
     }
 }
