@@ -24,10 +24,18 @@ public class Game
      */
     private void initPlayers()
     {
-        for (int i = 0; i < settings.getTotalPlayers(); i++)
+        for (int i = 0; i < settings.getTotalPlayers() - settings.getTotalAI(); i++)
         {
             Player player = new Player(i, settings);
+            player.setPlayerType(PlayerType.Human);
             players.add(player);
+        }
+
+        for (int i = 0; i < settings.getTotalAI(); i++)
+        {
+            AI ai = new AI(i, settings);
+            ai.setPlayerType(PlayerType.COMPUTER);
+            players.add(ai);
         }
     }
 

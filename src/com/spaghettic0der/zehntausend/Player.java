@@ -9,12 +9,13 @@ import java.util.ArrayList;
  */
 public class Player
 {
+    protected String playerName = null;
     private ArrayList<Dice> remainingDices;
     private int playerNumber;
-    private String playerName = null;
     private ArrayList<Turn> turnArrayList;
     private Settings settings;
     private int winRank = -1;
+    private PlayerType playerType;
 
     public Player(int playerNumber, Settings settings)
     {
@@ -64,6 +65,16 @@ public class Player
             dice.setDiceNumber(diceNumber);
             remainingDices.add(dice);
         }
+    }
+
+    public PlayerType getPlayerType()
+    {
+        return playerType;
+    }
+
+    public void setPlayerType(PlayerType playerType)
+    {
+        this.playerType = playerType;
     }
 
     public Turn getCurrentTurn()

@@ -13,6 +13,7 @@ public class Settings
     //general settings
     private int totalDiceNumber = 6;
     private int totalPlayers = 3;
+    private int totalAI = 1;
     private boolean diceImageShown = false;
     private boolean gameOverAfterFirstPlayerWon = false;
 
@@ -38,14 +39,24 @@ public class Settings
 
     private String selectedLanguage = "eng";
 
-    public void setSelectedLanguage(String selectedLanguage)
+    public int getTotalAI()
     {
-        this.selectedLanguage = selectedLanguage;
+        return totalAI;
+    }
+
+    public void setTotalAI(int totalAI)
+    {
+        this.totalAI = totalAI;
     }
 
     public String getSelectedLanguage()
     {
         return selectedLanguage;
+    }
+
+    public void setSelectedLanguage(String selectedLanguage)
+    {
+        this.selectedLanguage = selectedLanguage;
     }
 
     public int getMinWidth()

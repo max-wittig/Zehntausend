@@ -223,7 +223,6 @@ public class Main extends Application
             diceButton.setId("" + i);
             if (game.getSettings().isDiceImageShown())
             {
-                String diceImageLocation = "res/" + dices.get(i).getDiceNumber() + ".png";
                 setDiceImage(diceButton, currentDice.getDiceNumber());
             }
             else
