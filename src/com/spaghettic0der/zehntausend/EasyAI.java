@@ -1,6 +1,8 @@
 package com.spaghettic0der.zehntausend;
 
 
+import javafx.application.Platform;
+
 public class EasyAI extends AI
 {
     public EasyAI(int playerNumber, Settings settings, Game game)
@@ -22,7 +24,33 @@ public class EasyAI extends AI
             Dice currentDice = remainingDices.get(i);
             if (currentDice.getDiceNumber() == 1 || currentDice.getDiceNumber() == 5)
             {
-                game.moveToDrawnDices(currentDice);
+                try
+                {
+                    Platform.runLater(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            try
+                            {
+                                game.getMain().updateUI();
+                                Thread.sleep(100);
+                                game.moveToDrawnDices(currentDice);
+                                game.getMain().updateUI();
+
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
+                        }
+                    });
+                }
+                catch (Exception e)
+                {
+                    System.out.println(e.getMessage());
+                }
+
             }
         }
 

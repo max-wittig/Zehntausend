@@ -1,8 +1,6 @@
 package com.spaghettic0der.zehntausend;
 
 
-import java.util.ArrayList;
-
 public abstract class AI extends Player
 {
     protected Game game;

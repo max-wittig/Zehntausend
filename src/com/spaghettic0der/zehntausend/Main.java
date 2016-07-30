@@ -185,7 +185,6 @@ public class Main extends Application
                 public void handle(ActionEvent event)
                 {
                     game.moveToRemainingDices(currentDice);
-                    updateUI();
                 }
             });
             drawnDiceHBox.getChildren().add(diceButton);

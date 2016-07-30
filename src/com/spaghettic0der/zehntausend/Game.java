@@ -23,6 +23,11 @@ public class Game
         initPlayers();
     }
 
+    public Main getMain()
+    {
+        return main;
+    }
+
     /**
      * initialized all players. Adds objects to arrayList
      * called by constructor
