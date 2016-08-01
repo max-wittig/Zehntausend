@@ -15,7 +15,7 @@ public abstract class AI extends Player
     public void draw()
     {
         drawPossibleDices();
-        // nextPlayer();
+        nextPlayer();
     }
 
     abstract boolean drawIsPossible();

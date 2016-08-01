@@ -49,11 +49,8 @@ public class NormalAI extends AI
                 }
             }
 
-
             game.getMain().updateUI();
 
         }
-
-        nextPlayer();
     }
 }

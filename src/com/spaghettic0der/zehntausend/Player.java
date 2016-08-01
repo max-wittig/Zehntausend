@@ -41,7 +41,7 @@ public class Player
             remainingDices.add(dice);
         }
 
-        addDebugDices(new int[]{1, 1, 5, 3, 3, 3});
+        //addDebugDices(new int[]{1, 1, 5, 3, 3, 3});
     }
 
     public void addDebugDices(ArrayList<Integer> diceNumbers)
