@@ -1,9 +1,6 @@
 package com.spaghettic0der.zehntausend;
-
-import javafx.application.Platform;
-
 import java.util.*;
-import java.util.concurrent.SynchronousQueue;
+
 
 public class Game
 {
@@ -13,7 +10,7 @@ public class Game
     private int currentPlayerNumber = 0;
     private Settings settings;
     private boolean isGameOver = false;
-    private Main main;
+    private transient Main main;
 
     public Game(Settings settings, Main main)
     {
@@ -44,7 +41,7 @@ public class Game
         for (int i = settings.getTotalPlayers() - settings.getTotalAI(); i < settings.getTotalAI() + settings.getTotalPlayers() - settings.getTotalAI(); i++)
         {
             AI ai = new EasyAI(i, settings, this);
-            ai.setPlayerType(PlayerType.COMPUTER);
+            ai.setPlayerType(PlayerType.Computer);
             players.add(ai);
         }
     }
@@ -60,8 +57,6 @@ public class Game
         ArrayList<Dice> remainingDices = getCurrentPlayer().getRemainingDices();
         remainingDices.remove(dice);
         getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().add(dice);
-
-        main.updateUI();
     }
 
     /**
@@ -79,11 +74,8 @@ public class Game
             {
                 getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().removeDice(dice);
                 getCurrentPlayer().getRemainingDices().add(dice);
-
             }
         }
-
-        main.updateUI();
     }
 
 

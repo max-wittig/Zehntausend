@@ -1,10 +1,16 @@
 package com.spaghettic0der.zehntausend;
 
 
-import javafx.application.Platform;
+import javafx.concurrent.Task;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class EasyAI extends AI
 {
+    private int counter = 0;
     public EasyAI(int playerNumber, Settings settings, Game game)
     {
         super(playerNumber, settings, game);
@@ -19,44 +25,25 @@ public class EasyAI extends AI
     @Override
     void drawPossibleDices()
     {
-        for (int i = 0; i < remainingDices.size(); i++)
+
+        while (!Scoring.minScoreReached(this, settings))
         {
-            Dice currentDice = remainingDices.get(i);
-            if (currentDice.getDiceNumber() == 1 || currentDice.getDiceNumber() == 5)
+            for (int i = 0; i < remainingDices.size(); i++)
             {
-                try
+                Dice currentDice = remainingDices.get(i);
+                if (currentDice.getDiceNumber() == 1 || currentDice.getDiceNumber() == 5)
                 {
-                    Platform.runLater(new Runnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            try
-                            {
-                                game.getMain().updateUI();
-                                Thread.sleep(100);
-                                game.moveToDrawnDices(currentDice);
-                                game.getMain().updateUI();
-
-                            }
-                            catch (Exception e)
-                            {
-
-                            }
-                        }
-                    });
+                    //insert delay here
+                    game.moveToDrawnDices(currentDice);
+                    game.getMain().updateUI();
                 }
-                catch (Exception e)
-                {
-                    System.out.println(e.getMessage());
-                }
-
             }
+
+            if (!Scoring.minScoreReached(this, settings))
+                game.getCurrentPlayer().rollDice();
+            game.getMain().updateUI();
         }
 
-        if (Scoring.minScoreReached(this, settings))
-        {
-
-        }
+        nextPlayer();
     }
 }

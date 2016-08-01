@@ -185,6 +185,7 @@ public class Main extends Application
                 public void handle(ActionEvent event)
                 {
                     game.moveToRemainingDices(currentDice);
+                    updateUI();
                 }
             });
             drawnDiceHBox.getChildren().add(diceButton);
@@ -1055,7 +1056,7 @@ public class Main extends Application
      * if there a enough HBoxes in the observable list it just applys the score of the player
      * otherwise it calles createEmptyLabelsInListView() and applies the score after that
      */
-    private void updateScoreOfPlayersInListView()
+    public void updateScoreOfPlayersInListView()
     {
         if (observableList.size() > 1)
         {

@@ -166,7 +166,7 @@ public class Player
 
     public boolean isAI()
     {
-        if (PlayerType.COMPUTER == playerType)
+        if (PlayerType.Computer == playerType)
         {
             return true;
         }

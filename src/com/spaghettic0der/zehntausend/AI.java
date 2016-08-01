@@ -3,7 +3,7 @@ package com.spaghettic0der.zehntausend;
 
 public abstract class AI extends Player
 {
-    protected Game game;
+    protected transient Game game;
 
     public AI(int playerNumber, Settings settings, Game game)
     {
@@ -19,6 +19,11 @@ public abstract class AI extends Player
 
     abstract void drawPossibleDices();
 
+    protected void nextPlayer()
+    {
+        game.getMain().updateScoreOfPlayersInListView();
+        game.nextPlayer();
+    }
 
 
 }

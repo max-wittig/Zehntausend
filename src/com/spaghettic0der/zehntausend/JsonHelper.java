@@ -2,9 +2,11 @@ package com.spaghettic0der.zehntausend;
 
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import sun.misc.IOUtils;
 
 import java.io.*;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -14,10 +16,13 @@ import java.nio.file.Paths;
 
 public class JsonHelper
 {
+    private GsonBuilder gsonBuilder;
     private Gson gson;
 
     public JsonHelper()
     {
+        gsonBuilder = new GsonBuilder();
+        gsonBuilder.excludeFieldsWithModifiers(Modifier.TRANSIENT);
         gson = new Gson();
     }
 
@@ -28,6 +33,7 @@ public class JsonHelper
 
     public Settings loadSettings()
     {
+
         Settings settings = gson.fromJson(loadJSON("settings.json"), Settings.class);
         if (settings == null)
         {

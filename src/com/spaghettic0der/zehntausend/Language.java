@@ -50,7 +50,7 @@ public class Language
     private String language = "Sprache";
     private String applicationNeedsToBeRestarted = "Application needs to be restarted for the changes to take effect!";
     private String quit = "Quit!";
-    private String AI = "COMPUTER";
+    private String AI = "Computer";
 
     public String getQuit()
     {
