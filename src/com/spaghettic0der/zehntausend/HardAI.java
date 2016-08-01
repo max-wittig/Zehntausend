@@ -10,6 +10,16 @@ public class HardAI extends AI
     }
 
     @Override
+    boolean drawIsPossible()
+    {
+        if (Scoring.containsMultiple(remainingDices) || AIHelper.containsOneOrFive(remainingDices))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     void drawPossibleDices()
     {
 

@@ -10,7 +10,6 @@ import java.util.TimerTask;
 
 public class EasyAI extends AI
 {
-    private int counter = 0;
     public EasyAI(int playerNumber, Settings settings, Game game)
     {
         super(playerNumber, settings, game);
@@ -23,10 +22,19 @@ public class EasyAI extends AI
     }
 
     @Override
+    boolean drawIsPossible()
+    {
+        if (AIHelper.containsOneOrFive(remainingDices))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     void drawPossibleDices()
     {
-
-        while (!Scoring.minScoreReached(this, settings))
+        while (!Scoring.minScoreReached(this, settings) && drawIsPossible())
         {
             for (int i = 0; i < remainingDices.size(); i++)
             {
@@ -43,7 +51,5 @@ public class EasyAI extends AI
                 game.getCurrentPlayer().rollDice();
             game.getMain().updateUI();
         }
-
-        nextPlayer();
     }
 }

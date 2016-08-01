@@ -187,6 +187,32 @@ public class Scoring
         return true;
     }
 
+
+    public static int getScoreFromMultipleDices(int diceNumber, int occurrence)
+    {
+        int score = 0;
+        //3 times 1 == 1000, 4 times 1 == 2000 etc...
+        if (diceNumber == 1)
+        {
+            int sum = diceNumber * 1000;
+            for (int i = 1; i < occurrence - 2; i++)
+            {
+                sum *= 2;
+            }
+            score += sum;
+        }
+        else
+        {
+            int sum = diceNumber * 100;
+            for (int i = 1; i < occurrence - 2; i++)
+            {
+                sum *= 2;
+            }
+            score += sum;
+        }
+        return score;
+    }
+
     public static boolean isPyramid(ArrayList<Dice> dices, boolean pyramidEnabled)
     {
         if (pyramidEnabled)
@@ -206,7 +232,7 @@ public class Scoring
         return false;
     }
 
-    private static HashMap<Integer, Integer> getDiceHashMap(ArrayList<Dice> dices)
+    public static HashMap<Integer, Integer> getDiceHashMap(ArrayList<Dice> dices)
     {
         HashMap<Integer, Integer> diceHashMap = new HashMap<>();
         for (Dice currentDice : dices)
@@ -260,25 +286,7 @@ public class Scoring
             int occurrence = diceHashMap.get(key);
             if (occurrence > 2)
             {
-                //3 times 1 == 1000, 4 times 1 == 2000 etc...
-                if (diceNumber == 1)
-                {
-                    int sum = diceNumber * 1000;
-                    for (int i = 1; i < occurrence - 2; i++)
-                    {
-                        sum *= 2;
-                    }
-                    score += sum;
-                }
-                else
-                {
-                    int sum = diceNumber * 100;
-                    for (int i = 1; i < occurrence - 2; i++)
-                    {
-                        sum *= 2;
-                    }
-                    score += sum;
-                }
+                score += getScoreFromMultipleDices(diceNumber, occurrence);
             }
             else
             {

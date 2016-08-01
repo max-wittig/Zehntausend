@@ -6,7 +6,7 @@ import java.util.Random;
 public class Dice
 {
     private int diceNumber;
-    private Random random;
+    private transient Random random;
 
     public Dice()
     {

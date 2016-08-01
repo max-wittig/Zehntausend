@@ -40,7 +40,7 @@ public class Game
 
         for (int i = settings.getTotalPlayers() - settings.getTotalAI(); i < settings.getTotalAI() + settings.getTotalPlayers() - settings.getTotalAI(); i++)
         {
-            AI ai = new EasyAI(i, settings, this);
+            AI ai = new NormalAI(i, settings, this);
             ai.setPlayerType(PlayerType.Computer);
             players.add(ai);
         }
