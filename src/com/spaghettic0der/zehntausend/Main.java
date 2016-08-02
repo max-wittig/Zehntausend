@@ -141,6 +141,7 @@ public class Main extends Application
             needsToBeConfirmedLabel.setText("");
         }
 
+        Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " UI updated");
     }
 
     /**
@@ -633,6 +634,7 @@ public class Main extends Application
 
                     currentSettings.setDiceImageShown(diceImagesShownCheckBox.isSelected());
 
+                    Debug.write(Debug.getClassName(this) + " - " + " Settings saved");
                     /*
                     global settings restart the current game, game settings do not
                      */
@@ -718,6 +720,7 @@ public class Main extends Application
 
     private void nextGame(Settings settings)
     {
+        Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Next game starting...");
         game = new Game(settings, this);
         updateUI();
         clearScoreListAddPlayers();

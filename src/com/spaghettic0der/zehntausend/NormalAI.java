@@ -9,7 +9,6 @@ public class NormalAI extends AI
         super(playerNumber, settings, game);
     }
 
-
     @Override
     boolean drawIsPossible()
     {

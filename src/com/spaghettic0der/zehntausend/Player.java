@@ -41,6 +41,8 @@ public class Player
             remainingDices.add(dice);
         }
 
+        Debug.write(Debug.getClassName(this) + " " + Debug.getLineNumber() + " Remaining Dices added for " + playerName + ": "
+                + Debug.diceArrayListToString(remainingDices));
         //addDebugDices(new int[]{1, 1, 5, 3, 3, 3});
     }
 
@@ -87,6 +89,7 @@ public class Player
      */
     public void rollDice()
     {
+        Debug.write(Debug.getClassName(this) + " " + Debug.getLineNumber() + " Dices rolled for " + playerName + " ");
         if (!remainingDices.isEmpty())
         {
             for (int i = 0; i < remainingDices.size(); i++)
