@@ -43,5 +43,7 @@
     "couldNotLoadSave": "Konnte Spielstand nicht laden!",
     "error": "Fehler",
     "applicationNeedsToBeRestarted" : "Anwendung muss neu gestartet werden, um die Änderungen zu übernehmen!",
-    "quit": "Beenden"
+    "quit": "Beenden",
+    "AI": "Computer",
+    "restoreDefault":"Standard wiederherstellen"
 }
