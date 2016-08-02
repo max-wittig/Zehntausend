@@ -12,6 +12,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Set;
 
 
 public class JsonHelper
@@ -87,7 +88,7 @@ public class JsonHelper
     {
         try
         {
-            Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Game state loading...");
+            Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Game state loaded");
             return gson.fromJson(loadJSON("game.json"), Game.class);
 
         }
@@ -98,11 +99,18 @@ public class JsonHelper
 
     }
 
+    public Settings restoreSettings()
+    {
+        Settings settings = new Settings();
+        saveSettings(settings);
+        return settings;
+    }
+
     public Language loadLanguage(String languageName)
     {
         try
         {
-            Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Language file loading...");
+            Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Language file loaded");
             InputStream in = getClass().getResourceAsStream("/language/" + languageName + ".json");
 
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
