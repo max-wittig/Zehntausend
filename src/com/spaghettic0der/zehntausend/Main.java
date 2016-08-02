@@ -9,12 +9,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -22,6 +25,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.Set;
 
 public class Main extends Application
 {
@@ -49,6 +53,7 @@ public class Main extends Application
     private Label needsToBeConfirmedLabel;
     private ArrayList<Image> imageArrayList;
     private Main main;
+    private ListView<HBox> listView;
 
     public Main()
     {
@@ -1034,6 +1039,25 @@ public class Main extends Application
             }
 
         }
+        disableScrollBar();
+    }
+
+    /**
+     * hack to disable scrollBar. Thanks Oracle.
+     */
+    private void disableScrollBar()
+    {
+        Set<Node> bars = listView.lookupAll("VirtualScrollBar");
+        for (Node n : bars)
+        {
+            ScrollBar bar = (ScrollBar) n;
+            if (bar.getOrientation() == Orientation.HORIZONTAL)
+            {
+                bar.setVisible(false);
+                bar.setDisable(true);
+                bar.setStyle("-fx-opacity: 0%");
+            }
+        }
     }
 
     /**
@@ -1105,7 +1129,18 @@ public class Main extends Application
     private void initListView()
     {
         observableList = FXCollections.observableArrayList();
-        ListView<HBox> listView = new ListView<>(observableList);
+        listView = new ListView<>(observableList);
+        /**
+         * Another hack, which could be done with listView.setSelectable(false); but oh well thanks oracle
+         */
+        listView.addEventFilter(MouseEvent.ANY, new EventHandler<MouseEvent>()
+        {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                event.consume();
+            }
+        });
         listView.setMaxHeight(globalSettings.getHeight() / 3);
         root.setBottom(listView);
         addPlayersToListView();

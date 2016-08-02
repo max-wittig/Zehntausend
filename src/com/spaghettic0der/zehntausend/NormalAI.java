@@ -48,6 +48,11 @@ public class NormalAI extends AI
                 }
             }
 
+            if (drawIsPossible() && remainingDices.size() > 0)
+            {
+                rollDice();
+            }
+
             game.getMain().updateUI();
 
         }
