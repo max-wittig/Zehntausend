@@ -9,7 +9,6 @@ public class NormalAI extends AI
         super(playerNumber, settings, game);
     }
 
-
     @Override
     boolean drawIsPossible()
     {
@@ -47,6 +46,11 @@ public class NormalAI extends AI
                         game.moveToDrawnDices(dice);
                     }
                 }
+            }
+
+            if (drawIsPossible() && remainingDices.size() > 0)
+            {
+                rollDice();
             }
 
             game.getMain().updateUI();

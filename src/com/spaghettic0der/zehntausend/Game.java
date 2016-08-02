@@ -31,6 +31,7 @@ public class Game
      */
     private void initPlayers()
     {
+        Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Players initiated");
         for (int i = 0; i < settings.getTotalPlayers() - settings.getTotalAI(); i++)
         {
             Player player = new Player(i, settings);
@@ -44,6 +45,7 @@ public class Game
             ai.setPlayerType(PlayerType.Computer);
             players.add(ai);
         }
+
     }
 
 
@@ -57,6 +59,7 @@ public class Game
         ArrayList<Dice> remainingDices = getCurrentPlayer().getRemainingDices();
         remainingDices.remove(dice);
         getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().add(dice);
+        Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Moved DiceNumber " + dice.getDiceNumber() + " to drawn ");
     }
 
     /**
@@ -76,6 +79,7 @@ public class Game
                 getCurrentPlayer().getRemainingDices().add(dice);
             }
         }
+        Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Moved DiceNumber " + dice.getDiceNumber() + " to remaining");
     }
 
 
@@ -84,6 +88,7 @@ public class Game
     * */
     public boolean isValidState(State state)
     {
+        Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Valid state being checked for " + getCurrentPlayer().getPlayerName());
         if (!isGameOver && !getCurrentPlayer().isAI())
         {
             //in case scoreInRound < 300 -> State.Next is just not gonna save this round for the player. No additional points
@@ -172,6 +177,7 @@ public class Game
                     }
 
                     getCurrentPlayer().setWinRank(getNumberOfWinners() + 1);
+                    Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " " + getCurrentPlayer().getPlayerName() + " has won");
                     if (settings.isGameOverAfterFirstPlayerWon())
                     {
                         isGameOver = true;
@@ -209,6 +215,7 @@ public class Game
      */
     private void setNextPlayerNumber()
     {
+        Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Next player ist being set...");
         //search from currentPlayerNumber to end of array
         for (int i = currentPlayerNumber + 1; i < players.size(); i++)
         {

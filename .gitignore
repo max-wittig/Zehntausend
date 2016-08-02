@@ -19,3 +19,4 @@ out/artifacts/Zehntausend_jar/settings.json
 game.json
 *.class
 .class
+debug.txt

@@ -28,12 +28,13 @@ public class JsonHelper
 
     public void saveSettings(Settings settings)
     {
+        Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Settings saved");
         saveJSON(settings, "settings.json");
     }
 
     public Settings loadSettings()
     {
-
+        Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Settings loaded");
         Settings settings = gson.fromJson(loadJSON("settings.json"), Settings.class);
         if (settings == null)
         {
@@ -62,6 +63,7 @@ public class JsonHelper
 
     private void saveJSON(Object object, String filename)
     {
+
         String json = gson.toJson(object);
         try
         {
@@ -85,7 +87,9 @@ public class JsonHelper
     {
         try
         {
+            Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Game state loading...");
             return gson.fromJson(loadJSON("game.json"), Game.class);
+
         }
         catch (Exception e)
         {
@@ -98,6 +102,7 @@ public class JsonHelper
     {
         try
         {
+            Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Language file loading...");
             InputStream in = getClass().getResourceAsStream("/language/" + languageName + ".json");
 
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));

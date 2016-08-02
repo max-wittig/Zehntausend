@@ -9,12 +9,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -22,6 +25,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.Set;
 
 public class Main extends Application
 {
@@ -49,6 +53,7 @@ public class Main extends Application
     private Label needsToBeConfirmedLabel;
     private ArrayList<Image> imageArrayList;
     private Main main;
+    private CustomListView<HBox> listView;
 
     public Main()
     {
@@ -141,6 +146,7 @@ public class Main extends Application
             needsToBeConfirmedLabel.setText("");
         }
 
+        Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " UI updated");
     }
 
     /**
@@ -633,6 +639,7 @@ public class Main extends Application
 
                     currentSettings.setDiceImageShown(diceImagesShownCheckBox.isSelected());
 
+                    Debug.write(Debug.getClassName(this) + " - " + " Settings saved");
                     /*
                     global settings restart the current game, game settings do not
                      */
@@ -718,6 +725,7 @@ public class Main extends Application
 
     private void nextGame(Settings settings)
     {
+        Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Next game starting...");
         game = new Game(settings, this);
         updateUI();
         clearScoreListAddPlayers();
@@ -1031,6 +1039,7 @@ public class Main extends Application
             }
 
         }
+        listView.setHScrollBarEnabled(false);
     }
 
     /**
@@ -1102,7 +1111,8 @@ public class Main extends Application
     private void initListView()
     {
         observableList = FXCollections.observableArrayList();
-        ListView<HBox> listView = new ListView<>(observableList);
+        listView = new CustomListView<>(observableList);
+        listView.setSelectable(false);
         listView.setMaxHeight(globalSettings.getHeight() / 3);
         root.setBottom(listView);
         addPlayersToListView();
@@ -1110,7 +1120,7 @@ public class Main extends Application
 
     /**
      * builds whole UI and calls subfunctions e.g. initMenu, initListView
-     * @param primaryStage
+     * @param primaryStage stage
      */
     private void initUI(Stage primaryStage)
     {
