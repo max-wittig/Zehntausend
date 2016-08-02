@@ -53,7 +53,7 @@ public class Main extends Application
     private Label needsToBeConfirmedLabel;
     private ArrayList<Image> imageArrayList;
     private Main main;
-    private ListView<HBox> listView;
+    private CustomListView<HBox> listView;
 
     public Main()
     {
@@ -1039,25 +1039,7 @@ public class Main extends Application
             }
 
         }
-        disableScrollBar();
-    }
-
-    /**
-     * hack to disable scrollBar. Thanks Oracle.
-     */
-    private void disableScrollBar()
-    {
-        Set<Node> bars = listView.lookupAll("VirtualScrollBar");
-        for (Node n : bars)
-        {
-            ScrollBar bar = (ScrollBar) n;
-            if (bar.getOrientation() == Orientation.HORIZONTAL)
-            {
-                bar.setVisible(false);
-                bar.setDisable(true);
-                bar.setStyle("-fx-opacity: 0%");
-            }
-        }
+        listView.setHScrollBarEnabled(false);
     }
 
     /**
@@ -1129,18 +1111,8 @@ public class Main extends Application
     private void initListView()
     {
         observableList = FXCollections.observableArrayList();
-        listView = new ListView<>(observableList);
-        /**
-         * Another hack, which could be done with listView.setSelectable(false); but oh well thanks oracle
-         */
-        listView.addEventFilter(MouseEvent.ANY, new EventHandler<MouseEvent>()
-        {
-            @Override
-            public void handle(MouseEvent event)
-            {
-                event.consume();
-            }
-        });
+        listView = new CustomListView<>(observableList);
+        listView.setSelectable(false);
         listView.setMaxHeight(globalSettings.getHeight() / 3);
         root.setBottom(listView);
         addPlayersToListView();
@@ -1148,7 +1120,7 @@ public class Main extends Application
 
     /**
      * builds whole UI and calls subfunctions e.g. initMenu, initListView
-     * @param primaryStage
+     * @param primaryStage stage
      */
     private void initUI(Stage primaryStage)
     {
