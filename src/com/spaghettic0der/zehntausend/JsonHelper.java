@@ -3,16 +3,10 @@ package com.spaghettic0der.zehntausend;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import sun.misc.IOUtils;
-
 import java.io.*;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Set;
 
 
 public class JsonHelper
