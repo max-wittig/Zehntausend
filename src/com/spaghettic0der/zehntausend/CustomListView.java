@@ -1,7 +1,6 @@
 package com.spaghettic0der.zehntausend;
 
 import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;

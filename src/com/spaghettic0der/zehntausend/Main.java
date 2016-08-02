@@ -9,15 +9,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -25,7 +22,6 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
-import java.util.Set;
 
 public class Main extends Application
 {
@@ -665,8 +661,30 @@ public class Main extends Application
                     settingsStage.close();
                 }
             });
-            buttonHBox.getChildren().addAll(cancelSettingsButton, saveSettingsButton);
+
+            Button restoreDefaultsButton = new Button(language.getRestoreDefault());
+            restoreDefaultsButton.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                public void handle(ActionEvent event)
+                {
+                    Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Default settings loaded");
+                    Settings tempSettings = jsonHelper.restoreSettings();
+                    if (isGlobal)
+                    {
+                        globalSettings = tempSettings;
+                        nextGame(globalSettings);
+                    }
+                    else
+                    {
+                        game.setSettings(tempSettings);
+                    }
+                    settingsStage.close();
+                }
+            });
+            buttonHBox.getChildren().addAll(cancelSettingsButton, saveSettingsButton, restoreDefaultsButton);
             HBox.setMargin(cancelSettingsButton, new Insets(20, 20, 20, 20));
+            HBox.setMargin(restoreDefaultsButton, new Insets(20, 20, 20, 20));
             vBox.getChildren().add(buttonHBox);
             ScrollPane scrollPane = new ScrollPane(vBox);
             scrollPane.setFitToWidth(true);

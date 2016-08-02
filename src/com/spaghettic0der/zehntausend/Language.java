@@ -51,6 +51,7 @@ public class Language
     private String applicationNeedsToBeRestarted = "Application needs to be restarted for the changes to take effect!";
     private String quit = "Quit!";
     private String AI = "Computer";
+    private String restoreDefault = "Restore Default";
 
     public String getQuit()
     {
@@ -280,5 +281,10 @@ public class Language
     public String getGameOverPlace()
     {
         return gameOverPlace;
+    }
+
+    public String getRestoreDefault()
+    {
+        return restoreDefault;
     }
 }

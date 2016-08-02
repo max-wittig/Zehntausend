@@ -3,13 +3,8 @@ package com.spaghettic0der.zehntausend;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import sun.misc.IOUtils;
-
 import java.io.*;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -87,7 +82,7 @@ public class JsonHelper
     {
         try
         {
-            Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Game state loading...");
+            Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Game state loaded");
             return gson.fromJson(loadJSON("game.json"), Game.class);
 
         }
@@ -98,11 +93,18 @@ public class JsonHelper
 
     }
 
+    public Settings restoreSettings()
+    {
+        Settings settings = new Settings();
+        saveSettings(settings);
+        return settings;
+    }
+
     public Language loadLanguage(String languageName)
     {
         try
         {
-            Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Language file loading...");
+            Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Language file loaded");
             InputStream in = getClass().getResourceAsStream("/language/" + languageName + ".json");
 
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
