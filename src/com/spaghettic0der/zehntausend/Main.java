@@ -142,7 +142,7 @@ public class Main extends Application
         {
             needsToBeConfirmedLabel.setText("");
         }
-
+        listView.setHScrollBarEnabled(false);
         Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " UI updated");
     }
 
@@ -1133,6 +1133,7 @@ public class Main extends Application
         observableList = FXCollections.observableArrayList();
         listView = new CustomListView<>(observableList);
         listView.setSelectable(false);
+        listView.setHScrollBarEnabled(false);
         listView.setMaxHeight(globalSettings.getHeight() / 3);
         root.setBottom(listView);
         addPlayersToListView();
