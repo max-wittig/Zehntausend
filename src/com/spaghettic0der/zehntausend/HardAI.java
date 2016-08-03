@@ -12,11 +12,7 @@ public class HardAI extends AI
     @Override
     boolean drawIsPossible()
     {
-        if (Scoring.containsMultiple(remainingDices) || AIHelper.containsOneOrFive(remainingDices))
-        {
-            return true;
-        }
-        return false;
+        return (Scoring.containsMultiple(remainingDices) || containsOneOrFive(remainingDices));
     }
 
     @Override

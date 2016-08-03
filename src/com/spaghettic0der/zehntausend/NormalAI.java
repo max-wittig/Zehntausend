@@ -12,11 +12,8 @@ public class NormalAI extends AI
     @Override
     boolean drawIsPossible()
     {
-        if (Scoring.containsMultiple(remainingDices) || AIHelper.containsOneOrFive(remainingDices))
-        {
-            return true;
-        }
-        return false;
+        return (Scoring.containsMultiple(remainingDices) || containsOneOrFive(remainingDices));
+
     }
 
     @Override
@@ -26,7 +23,7 @@ public class NormalAI extends AI
         {
             if (Scoring.containsMultiple(remainingDices))
             {
-                ArrayList<Dice> multipleDicesArrayList = AIHelper.getMultipleDices(remainingDices);
+                ArrayList<Dice> multipleDicesArrayList = getMultipleDices(remainingDices);
                 for (int i = 0; i < multipleDicesArrayList.size(); i++)
                 {
                     Dice dice = multipleDicesArrayList.get(i);

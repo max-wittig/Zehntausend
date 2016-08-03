@@ -24,7 +24,7 @@ public class EasyAI extends AI
     @Override
     boolean drawIsPossible()
     {
-        if (AIHelper.containsOneOrFive(remainingDices))
+        if (containsOneOrFive(remainingDices))
         {
             return true;
         }
