@@ -68,7 +68,10 @@ public class CustomListView<T> extends ListView
         if (value)
         {
             if (eventHandler != null)
+            {
                 removeEventFilter(MouseEvent.ANY, eventHandler);
+                eventHandler = null;
+            }
         }
         else
         {
