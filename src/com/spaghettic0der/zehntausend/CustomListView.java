@@ -26,12 +26,17 @@ public class CustomListView<T> extends ListView
      */
     public void setHScrollBarEnabled(boolean value)
     {
+        setScrollBarEnabled(value, Orientation.HORIZONTAL);
+    }
+
+    private void setScrollBarEnabled(boolean value, Orientation orientation)
+    {
         Set<Node> set = this.lookupAll("VirtualScrollBar");
 
         for (Node n : set)
         {
             ScrollBar bar = (ScrollBar) n;
-            if (bar.getOrientation() == Orientation.HORIZONTAL)
+            if (bar.getOrientation() == orientation)
             {
                 if (value)
                 {
@@ -47,6 +52,11 @@ public class CustomListView<T> extends ListView
                 }
             }
         }
+    }
+
+    public void setVScrollBarEnabled(boolean value)
+    {
+        setScrollBarEnabled(value, Orientation.VERTICAL);
     }
 
     /**
