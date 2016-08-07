@@ -1,5 +1,7 @@
 package com.spaghettic0der.zehntausend;
 
+import javafx.beans.value.ChangeListener;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
@@ -15,6 +17,7 @@ public class CustomListView<T> extends ListView
 {
 
     private EventHandler eventHandler = null;
+    private ListChangeListener listChangeListener = null;
 
     public CustomListView(ObservableList items)
     {
@@ -26,12 +29,17 @@ public class CustomListView<T> extends ListView
      */
     public void setHScrollBarEnabled(boolean value)
     {
+        setScrollBarEnabled(value, Orientation.HORIZONTAL);
+    }
+
+    private void setScrollBarEnabled(boolean value, Orientation orientation)
+    {
         Set<Node> set = this.lookupAll("VirtualScrollBar");
 
         for (Node n : set)
         {
             ScrollBar bar = (ScrollBar) n;
-            if (bar.getOrientation() == Orientation.HORIZONTAL)
+            if (bar.getOrientation() == orientation)
             {
                 if (value)
                 {
@@ -49,6 +57,11 @@ public class CustomListView<T> extends ListView
         }
     }
 
+    public void setVScrollBarEnabled(boolean value)
+    {
+        setScrollBarEnabled(value, Orientation.VERTICAL);
+    }
+
     /**
      * It's really not hard to build it into your listView oracle.
      */
@@ -58,7 +71,10 @@ public class CustomListView<T> extends ListView
         if (value)
         {
             if (eventHandler != null)
+            {
                 removeEventFilter(MouseEvent.ANY, eventHandler);
+                eventHandler = null;
+            }
         }
         else
         {
@@ -74,5 +90,39 @@ public class CustomListView<T> extends ListView
             addEventFilter(MouseEvent.ANY, eventHandler);
         }
     }
+
+    public void setAutoScrollEnabled(boolean value)
+    {
+        if (value)
+        {
+            listChangeListener = new ListChangeListener()
+            {
+                @Override
+                public void onChanged(Change c)
+                {
+                    c.next();
+                    final int size = getItems().size();
+                    if (size > 0)
+                    {
+                        scrollTo(size - 1);
+                    }
+                }
+            };
+
+            getItems().addListener(listChangeListener);
+
+        }
+        else
+        {
+            if (listChangeListener != null)
+            {
+                getItems().removeListener(listChangeListener);
+                listChangeListener = null;
+            }
+        }
+
+    }
+
+
 }
 

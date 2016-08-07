@@ -17,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -141,7 +142,7 @@ public class Main extends Application
         {
             needsToBeConfirmedLabel.setText("");
         }
-
+        listView.setHScrollBarEnabled(false);
         Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " UI updated");
     }
 
@@ -736,6 +737,7 @@ public class Main extends Application
 
         settingsStage = new Stage();
         settingsStage.initOwner(primaryStage);
+        settingsStage.initModality(Modality.APPLICATION_MODAL);
         settingsStage.centerOnScreen();
         settingsStage.setScene(settingsScene);
         settingsStage.showAndWait();
@@ -1131,6 +1133,8 @@ public class Main extends Application
         observableList = FXCollections.observableArrayList();
         listView = new CustomListView<>(observableList);
         listView.setSelectable(false);
+        listView.setHScrollBarEnabled(false);
+        listView.setAutoScrollEnabled(true);
         listView.setMaxHeight(globalSettings.getHeight() / 3);
         root.setBottom(listView);
         addPlayersToListView();

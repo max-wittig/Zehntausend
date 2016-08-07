@@ -12,21 +12,17 @@ public class NormalAI extends AI
     @Override
     boolean drawIsPossible()
     {
-        if (Scoring.containsMultiple(remainingDices) || AIHelper.containsOneOrFive(remainingDices))
-        {
-            return true;
-        }
-        return false;
+        return (Scoring.containsMultiple(remainingDices) || containsOneOrFive(remainingDices));
     }
 
     @Override
     void drawPossibleDices()
     {
-        while (!Scoring.minScoreReached(this, settings) && drawIsPossible())
+        while (drawIsPossible())
         {
             if (Scoring.containsMultiple(remainingDices))
             {
-                ArrayList<Dice> multipleDicesArrayList = AIHelper.getMultipleDices(remainingDices);
+                ArrayList<Dice> multipleDicesArrayList = getMultipleDices(remainingDices);
                 for (int i = 0; i < multipleDicesArrayList.size(); i++)
                 {
                     Dice dice = multipleDicesArrayList.get(i);
@@ -48,7 +44,11 @@ public class NormalAI extends AI
                 }
             }
 
-            if (drawIsPossible() && remainingDices.size() > 0)
+            if (Scoring.minScoreReached(this, settings))
+            {
+                break;
+            }
+            else
             {
                 rollDice();
             }

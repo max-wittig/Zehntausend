@@ -11,7 +11,6 @@ public class Roll
 {
 
     private ArrayList<Dice> drawnDices;
-    private boolean isConfirmingRoll = false;
 
     public Roll()
     {
