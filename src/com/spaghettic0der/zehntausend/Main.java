@@ -1134,6 +1134,7 @@ public class Main extends Application
         listView = new CustomListView<>(observableList);
         listView.setSelectable(false);
         listView.setHScrollBarEnabled(false);
+        listView.setAutoScrollEnabled(true);
         listView.setMaxHeight(globalSettings.getHeight() / 3);
         root.setBottom(listView);
         addPlayersToListView();

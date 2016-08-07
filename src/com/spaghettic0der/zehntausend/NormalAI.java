@@ -13,13 +13,12 @@ public class NormalAI extends AI
     boolean drawIsPossible()
     {
         return (Scoring.containsMultiple(remainingDices) || containsOneOrFive(remainingDices));
-
     }
 
     @Override
     void drawPossibleDices()
     {
-        while (!Scoring.minScoreReached(this, settings) && drawIsPossible())
+        while (drawIsPossible())
         {
             if (Scoring.containsMultiple(remainingDices))
             {
@@ -45,7 +44,11 @@ public class NormalAI extends AI
                 }
             }
 
-            if (drawIsPossible() && remainingDices.size() > 0)
+            if (Scoring.minScoreReached(this, settings))
+            {
+                break;
+            }
+            else
             {
                 rollDice();
             }
