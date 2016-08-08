@@ -858,7 +858,16 @@ public class Main extends Application
             @Override
             public void handle(ActionEvent event)
             {
-                game.getCurrentPlayer().setWinRank(1);
+                ArrayList<Dice> drawnDices = game.getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices();
+                drawnDices.clear();
+                for (int i = 0; i < game.getSettings().getTotalDiceNumber(); i++)
+                {
+                    Dice dice = new Dice();
+                    dice.setDiceNumber(1);
+                    drawnDices.add(dice);
+                }
+                updateScoreOfPlayersInListView();
+                game.nextPlayer();
                 updateUI();
             }
         });

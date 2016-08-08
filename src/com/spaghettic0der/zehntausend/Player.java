@@ -57,8 +57,20 @@ public class Player
         }
     }
 
-    @Deprecated
-    private void addDebugDices(int[] diceNumbers)
+    public ArrayList<Dice> getDebugDices(int[] diceNumbers)
+    {
+        ArrayList<Dice> dices = new ArrayList<>();
+        for (Integer diceNumber : diceNumbers)
+        {
+            Dice dice = new Dice();
+            dice.setDiceNumber(diceNumber);
+            dices.add(dice);
+        }
+
+        return dices;
+    }
+
+    public void addDebugDices(int[] diceNumbers)
     {
         remainingDices.clear();
         for (Integer diceNumber : diceNumbers)

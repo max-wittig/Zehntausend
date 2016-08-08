@@ -108,9 +108,7 @@ public class CustomListView<T> extends ListView
                     }
                 }
             };
-
             getItems().addListener(listChangeListener);
-
         }
         else
         {

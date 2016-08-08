@@ -204,7 +204,7 @@ public class Game
 
     private void moveAI()
     {
-        if (getCurrentPlayer().isAI())
+        if (getCurrentPlayer().isAI() && !isGameOver)
         {
             ((AI) getCurrentPlayer()).draw();
         }
