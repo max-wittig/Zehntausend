@@ -1,5 +1,7 @@
-package com.spaghettic0der.zehntausend;
+package com.spaghettic0der.zehntausend.GameLogic;
 
+import com.spaghettic0der.zehntausend.Extras.Debug;
+import com.spaghettic0der.zehntausend.Main;
 
 import java.util.ArrayList;
 
@@ -174,11 +176,6 @@ public class Player
         this.winRank = winRank;
     }
 
-    public void setSettings(Settings settings)
-    {
-        this.settings = settings;
-    }
-
     public boolean isAI()
     {
         if (PlayerType.Computer == playerType)
@@ -191,4 +188,13 @@ public class Player
         }
     }
 
+    public Settings getSettings()
+    {
+        return settings;
+    }
+
+    public void setSettings(Settings settings)
+    {
+        this.settings = settings;
+    }
 }

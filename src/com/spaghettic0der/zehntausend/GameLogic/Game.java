@@ -1,4 +1,10 @@
-package com.spaghettic0der.zehntausend;
+package com.spaghettic0der.zehntausend.GameLogic;
+
+import com.spaghettic0der.zehntausend.AI.AI;
+import com.spaghettic0der.zehntausend.AI.NormalAI;
+import com.spaghettic0der.zehntausend.Extras.Debug;
+import com.spaghettic0der.zehntausend.Main;
+
 import java.util.*;
 
 
@@ -41,13 +47,11 @@ public class Game
 
         for (int i = settings.getTotalPlayers() - settings.getTotalAI(); i < settings.getTotalAI() + settings.getTotalPlayers() - settings.getTotalAI(); i++)
         {
-            AI ai = new NormalAI(i, settings, this);
+            NormalAI ai = new NormalAI(i, settings, this);
             ai.setPlayerType(PlayerType.Computer);
             players.add(ai);
         }
-
     }
-
 
     /**
      * moves dice that the player clicked on from on arraylist to the other and
@@ -204,7 +208,7 @@ public class Game
 
     private void moveAI()
     {
-        if (getCurrentPlayer().isAI() && !isGameOver)
+        if (getCurrentPlayer() instanceof AI && getCurrentPlayer().isAI() && !isGameOver)
         {
             ((AI) getCurrentPlayer()).draw();
         }

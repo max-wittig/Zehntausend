@@ -1,8 +1,13 @@
-package com.spaghettic0der.zehntausend;
+package com.spaghettic0der.zehntausend.Extras;
 
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.spaghettic0der.zehntausend.Extras.Debug;
+import com.spaghettic0der.zehntausend.Extras.Language;
+import com.spaghettic0der.zehntausend.GameLogic.Game;
+import com.spaghettic0der.zehntausend.GameLogic.Settings;
+
 import java.io.*;
 import java.lang.reflect.Modifier;
 import java.nio.file.Files;
@@ -41,6 +46,37 @@ public class JsonHelper
         return settings;
     }
 
+    private void saveObjectOutputStream(Object object, String filename)
+    {
+        try
+        {
+            FileOutputStream fileOutputStream = new FileOutputStream(filename);
+            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(bufferedOutputStream);
+            objectOutputStream.writeObject(object);
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public Object loadObjectInputStream(String filename)
+    {
+        try
+        {
+            FileInputStream fileInputStream = new FileInputStream(filename);
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+            ObjectInputStream objectInputStream = new ObjectInputStream(bufferedInputStream);
+            return objectInputStream.readObject();
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
     private String loadJSON(String filename)
     {
         try
@@ -75,14 +111,16 @@ public class JsonHelper
 
     public void saveGame(Game game)
     {
+        //saveObjectOutputStream(game,"game.save");
         saveJSON(game, "game.json");
     }
 
-    public Game loadGameState()
+    public Game loadGame()
     {
         try
         {
-            Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Game state loaded");
+            Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Game loaded");
+            //return (Game)loadObjectInputStream("game.save");
             return gson.fromJson(loadJSON("game.json"), Game.class);
 
         }
