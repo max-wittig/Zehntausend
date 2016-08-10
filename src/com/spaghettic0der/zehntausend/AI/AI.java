@@ -3,6 +3,7 @@ package com.spaghettic0der.zehntausend.AI;
 
 import com.spaghettic0der.zehntausend.*;
 import com.spaghettic0der.zehntausend.GameLogic.*;
+import javafx.application.Platform;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,10 +74,49 @@ public abstract class AI extends Player
         return multipleDices;
     }
 
+    protected void waitAndUpdate()
+    {
+
+        Platform.runLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                game.getMain().updateUI();
+            }
+        });
+
+        try
+        {
+            Thread.sleep(1500);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public void draw()
     {
-        drawPossibleDices();
-        nextPlayer();
+        Thread thread = new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                drawPossibleDices();
+                Platform.runLater(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        nextPlayer();
+                    }
+                });
+
+            }
+        });
+
+        thread.start();
     }
 
     abstract boolean drawIsPossible();
@@ -87,6 +127,7 @@ public abstract class AI extends Player
     {
         game.getMain().updateScoreOfPlayersInListView();
         game.nextPlayer();
+        game.getMain().updateUI();
     }
 
 

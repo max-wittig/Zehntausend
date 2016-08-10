@@ -15,7 +15,7 @@ public class Settings
     //general settings
     private int totalDiceNumber = 6;
     private int totalPlayers = 3;
-    private int totalAI = 0;
+    private int totalAI = 2;
     private boolean diceImageShown = false;
     private boolean gameOverAfterFirstPlayerWon = false;
 
