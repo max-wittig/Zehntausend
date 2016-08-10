@@ -74,7 +74,7 @@ public abstract class AI extends Player
         return multipleDices;
     }
 
-    protected void waitAndUpdate()
+    protected void updateAndWait()
     {
 
         Platform.runLater(new Runnable()

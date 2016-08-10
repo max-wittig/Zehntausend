@@ -34,7 +34,7 @@ public class NormalAI extends AI
                     if (remainingDices.contains(dice))
                     {
                         game.moveToDrawnDices(dice);
-                        waitAndUpdate();
+                        updateAndWait();
                     }
                 }
             }
@@ -48,7 +48,7 @@ public class NormalAI extends AI
                     if (dice.getDiceNumber() == 5 || dice.getDiceNumber() == 1)
                     {
                         game.moveToDrawnDices(dice);
-                        waitAndUpdate();
+                        updateAndWait();
                     }
                 }
             }
@@ -60,7 +60,7 @@ public class NormalAI extends AI
             else
             {
                 rollDice();
-                waitAndUpdate();
+                updateAndWait();
             }
 
 
