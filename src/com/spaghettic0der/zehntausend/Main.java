@@ -21,7 +21,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -29,7 +28,6 @@ public class Main extends Application
 {
     public static final String VERSION_NUMBER = "1.0.0";
     public static Language language;
-    private static boolean selfTrigger = false;
     private final int textButtonWidth = 150;
     private final int textButtonHeight = 50;
     private final int diceButtonSize = 50;
@@ -112,7 +110,7 @@ public class Main extends Application
     {
         for (int i = 1; i <= 6; i++)
         {
-            Image image = new Image(getClass().getResourceAsStream("res/" + i + ".png"));
+            Image image = new Image(getClass().getResourceAsStream("Images/" + i + ".png"));
             imageArrayList.add(image);
         }
     }

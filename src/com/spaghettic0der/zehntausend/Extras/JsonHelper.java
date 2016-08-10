@@ -3,8 +3,6 @@ package com.spaghettic0der.zehntausend.Extras;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.spaghettic0der.zehntausend.Extras.Debug;
-import com.spaghettic0der.zehntausend.Extras.Language;
 import com.spaghettic0der.zehntausend.GameLogic.Game;
 import com.spaghettic0der.zehntausend.GameLogic.Settings;
 
