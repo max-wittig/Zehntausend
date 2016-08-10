@@ -1,4 +1,4 @@
-package com.spaghettic0der.zehntausend;
+package com.spaghettic0der.zehntausend.Extras;
 
 
 public class Language

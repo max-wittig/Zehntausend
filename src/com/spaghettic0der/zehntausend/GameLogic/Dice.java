@@ -1,5 +1,4 @@
-package com.spaghettic0der.zehntausend;
-
+package com.spaghettic0der.zehntausend.GameLogic;
 
 import java.util.Random;
 

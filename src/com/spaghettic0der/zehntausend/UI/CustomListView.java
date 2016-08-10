@@ -1,6 +1,4 @@
-package com.spaghettic0der.zehntausend;
-
-import javafx.beans.value.ChangeListener;
+package com.spaghettic0der.zehntausend.UI;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -108,9 +106,7 @@ public class CustomListView<T> extends ListView
                     }
                 }
             };
-
             getItems().addListener(listChangeListener);
-
         }
         else
         {

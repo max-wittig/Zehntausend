@@ -1,5 +1,7 @@
-package com.spaghettic0der.zehntausend;
+package com.spaghettic0der.zehntausend.GameLogic;
 
+
+import com.spaghettic0der.zehntausend.AI.AIType;
 
 public class Settings
 {

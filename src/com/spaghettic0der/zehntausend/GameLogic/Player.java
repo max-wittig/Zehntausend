@@ -1,5 +1,7 @@
-package com.spaghettic0der.zehntausend;
+package com.spaghettic0der.zehntausend.GameLogic;
 
+import com.spaghettic0der.zehntausend.Extras.Debug;
+import com.spaghettic0der.zehntausend.Main;
 
 import java.util.ArrayList;
 
@@ -57,8 +59,20 @@ public class Player
         }
     }
 
-    @Deprecated
-    private void addDebugDices(int[] diceNumbers)
+    public ArrayList<Dice> getDebugDices(int[] diceNumbers)
+    {
+        ArrayList<Dice> dices = new ArrayList<>();
+        for (Integer diceNumber : diceNumbers)
+        {
+            Dice dice = new Dice();
+            dice.setDiceNumber(diceNumber);
+            dices.add(dice);
+        }
+
+        return dices;
+    }
+
+    public void addDebugDices(int[] diceNumbers)
     {
         remainingDices.clear();
         for (Integer diceNumber : diceNumbers)
@@ -162,11 +176,6 @@ public class Player
         this.winRank = winRank;
     }
 
-    public void setSettings(Settings settings)
-    {
-        this.settings = settings;
-    }
-
     public boolean isAI()
     {
         if (PlayerType.Computer == playerType)
@@ -179,4 +188,13 @@ public class Player
         }
     }
 
+    public Settings getSettings()
+    {
+        return settings;
+    }
+
+    public void setSettings(Settings settings)
+    {
+        this.settings = settings;
+    }
 }

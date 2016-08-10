@@ -1,12 +1,10 @@
-package com.spaghettic0der.zehntausend;
+package com.spaghettic0der.zehntausend.AI;
 
 
-import javafx.concurrent.Task;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Timer;
-import java.util.TimerTask;
+import com.spaghettic0der.zehntausend.GameLogic.Dice;
+import com.spaghettic0der.zehntausend.GameLogic.Game;
+import com.spaghettic0der.zehntausend.GameLogic.Scoring;
+import com.spaghettic0der.zehntausend.GameLogic.Settings;
 
 public class EasyAI extends AI
 {

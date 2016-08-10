@@ -1,5 +1,8 @@
-package com.spaghettic0der.zehntausend;
+package com.spaghettic0der.zehntausend.AI;
 
+
+import com.spaghettic0der.zehntausend.*;
+import com.spaghettic0der.zehntausend.GameLogic.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +11,7 @@ public abstract class AI extends Player
 {
     protected transient Game game;
 
-    AI(int playerNumber, Settings settings, Game game)
+    public AI(int playerNumber, Settings settings, Game game)
     {
         super(playerNumber, settings);
         this.playerName = Main.language.getAI() + " " + (playerNumber + 1);

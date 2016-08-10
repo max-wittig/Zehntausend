@@ -1,5 +1,7 @@
-package com.spaghettic0der.zehntausend;
+package com.spaghettic0der.zehntausend.Extras;
 
+
+import com.spaghettic0der.zehntausend.GameLogic.Dice;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
