@@ -1,7 +1,7 @@
 package com.spaghettic0der.zehntausend;
 
-import com.spaghettic0der.zehntausend.Extras.Debug;
-import com.spaghettic0der.zehntausend.Extras.JsonHelper;
+import com.spaghettic0der.zehntausend.Helper.Debug;
+import com.spaghettic0der.zehntausend.Helper.JsonHelper;
 import com.spaghettic0der.zehntausend.Extras.Language;
 import com.spaghettic0der.zehntausend.Extras.Settings;
 import com.spaghettic0der.zehntausend.GameLogic.*;

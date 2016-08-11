@@ -1,6 +1,6 @@
 package com.spaghettic0der.zehntausend.GameLogic;
 
-import com.spaghettic0der.zehntausend.Extras.Debug;
+import com.spaghettic0der.zehntausend.Helper.Debug;
 import com.spaghettic0der.zehntausend.Extras.Settings;
 import com.spaghettic0der.zehntausend.Main;
 
@@ -16,7 +16,7 @@ public class Player
     protected ArrayList<Dice> remainingDices;
     protected ArrayList<Turn> turnArrayList;
     protected Settings settings;
-    private int playerNumber;
+    protected int playerNumber;
     private int winRank = -1;
     private PlayerType playerType;
 
@@ -46,7 +46,7 @@ public class Player
 
         Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Remaining Dices added for " + playerName + ": "
                 + Debug.diceArrayListToString(remainingDices));
-        //addDebugDices(new int[]{1, 1, 5, 3, 3, 3});
+        //addDebugDices(new int[]{1, 5, 4, 4, 5, 5});
     }
 
     public void addDebugDices(ArrayList<Integer> diceNumbers)

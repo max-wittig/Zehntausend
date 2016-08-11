@@ -177,16 +177,13 @@ public class Scoring
         HashMap<Integer, Integer> diceHashMap = getDiceHashMap(dices);
         for (Integer key : diceHashMap.keySet())
         {
-            if (key != 5 && key != 1)
+            if (diceHashMap.get(key) >= 3)
             {
-                if (diceHashMap.get(key) < 3)
-                {
-                    return false;
-                }
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 
 

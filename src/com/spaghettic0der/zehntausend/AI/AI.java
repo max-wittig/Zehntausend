@@ -8,17 +8,19 @@ import javafx.application.Platform;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public abstract class AI extends Player
 {
     protected transient Game game;
-    protected int playerNumber;
+    protected Random random;
 
     public AI(int playerNumber, Settings settings, Game game)
     {
         super(playerNumber, settings);
         this.playerNumber = playerNumber;
         this.game = game;
+        random = new Random();
     }
 
     /**
@@ -59,7 +61,7 @@ public abstract class AI extends Player
     /**
      * returns multiple dices in an arrayList for the AI bots. With occ > 2
      */
-    static ArrayList<Dice> getMultipleDices(ArrayList<Dice> dices)
+    protected static ArrayList<Dice> getMultipleDices(ArrayList<Dice> dices)
     {
         ArrayList<Dice> multipleDices = new ArrayList<>();
         HashMap<Integer, Integer> diceHashMap = Scoring.getDiceHashMap(dices);
@@ -74,6 +76,21 @@ public abstract class AI extends Player
             }
         }
         return multipleDices;
+    }
+
+    @Override
+    public void rollDice()
+    {
+        if (canRollDice())
+            super.rollDice();
+    }
+
+    protected boolean canRollDice()
+    {
+        if (getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().size() > 0)
+            return true;
+        else
+            return false;
     }
 
     @Override
