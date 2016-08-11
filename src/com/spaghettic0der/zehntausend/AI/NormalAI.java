@@ -21,6 +21,7 @@ public class NormalAI extends AI
         return AIType.NORMAL;
     }
 
+    @Override
     public String getPlayerName()
     {
         return Main.language.getAI() + " " + Main.language.getNormal() + " " + (playerNumber + 1);
@@ -67,7 +68,15 @@ public class NormalAI extends AI
 
             if (Scoring.minScoreReached(this, settings))
             {
-                break;
+                if (remainingDices.size() <= 0)
+                {
+                    rollDice();
+                    updateAndWait();
+                }
+                else
+                {
+                    break;
+                }
             }
             else
             {

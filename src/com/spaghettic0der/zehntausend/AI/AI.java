@@ -76,6 +76,7 @@ public abstract class AI extends Player
         return multipleDices;
     }
 
+    @Override
     public String getPlayerName()
     {
         return Main.language.getAI() + " " + (playerNumber + 1);

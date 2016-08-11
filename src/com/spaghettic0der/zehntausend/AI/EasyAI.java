@@ -14,6 +14,7 @@ public class EasyAI extends AI
         super(playerNumber, settings, game);
     }
 
+    @Override
     public String getPlayerName()
     {
         return Main.language.getAI() + " " + Main.language.getEasy() + " " + (playerNumber + 1);

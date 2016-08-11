@@ -197,11 +197,6 @@ public class Game
                             Main.showAlert(Main.language.getGameOverAlertHeader(),
                                     Main.language.getGameOverAlertContent() + " " + getCurrentPlayer().getPlayerName());
                         }
-                        else
-                        {
-                            Main.showAlert(Main.language.getWinAlertHeaderText(),
-                                    Main.language.getWinAlertContentText() + " " + getCurrentPlayer().getPlayerName());
-                        }
                     }
 
                     getCurrentPlayer().setWinRank(getNumberOfWinners() + 1);

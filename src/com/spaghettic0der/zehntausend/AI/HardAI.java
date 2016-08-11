@@ -14,6 +14,7 @@ public class HardAI extends AI
         super(playerNumber, settings, game);
     }
 
+    @Override
     public String getPlayerName()
     {
         return Main.language.getAI() + " " + Main.language.getHard() + " " + (playerNumber + 1);
