@@ -57,6 +57,12 @@ public class Language
     private String restoreDefault = "Restore Default";
     private String clear = "Clear";
     private String add = "Add";
+    private String delay = "Delay";
+
+    public String getDelay()
+    {
+        return delay;
+    }
 
     public String getClear()
     {

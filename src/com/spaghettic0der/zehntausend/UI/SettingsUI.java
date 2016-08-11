@@ -126,6 +126,21 @@ public class SettingsUI extends UI
             VBox.setMargin(aiHbox, new Insets(20, 40, 20, 20));
             vBox.getChildren().add(aiHbox);
 
+            //AI delay
+            HBox aiDelayHBox = new HBox();
+            Label aiDelayLabel = new Label(language.getAI() + " " + language.getDelay() + ":");
+            aiDelayLabel.setMinWidth(minWidth);
+            Slider aiDelaySlider = new Slider(0, 3000, currentSettings.getAiDelay());
+            aiDelaySlider.setMajorTickUnit(500);
+            aiDelaySlider.setMinorTickCount(1);
+            aiDelaySlider.setSnapToTicks(true);
+            aiDelaySlider.setShowTickLabels(true);
+            aiDelayHBox.getChildren().addAll(aiDelayLabel, aiDelaySlider);
+            HBox.setHgrow(aiDelaySlider, Priority.ALWAYS);
+            HBox.setMargin(aiDelayLabel, new Insets(0, 20, 0, 20));
+            VBox.setMargin(aiDelayHBox, new Insets(20, 40, 20, 20));
+            vBox.getChildren().add(aiDelayHBox);
+
             //dice count
             HBox diceHBox = new HBox();
             Label diceLabel = new Label(language.getDices() + ":");
@@ -389,7 +404,6 @@ public class SettingsUI extends UI
             vBox.getChildren().add(fullHouseHBox);
             VBox.setMargin(fullHouseHBox, new Insets(20, 20, 20, 40));
 
-
             //game over after first player won
             HBox gameOverAfterFirstPlayerWonHBox = new HBox();
             CheckBox gameOverAfterFirstPlayerWonCheckBox = new CheckBox(language.getGameOverAfterFirstPlayerWon());
@@ -445,6 +459,7 @@ public class SettingsUI extends UI
                     currentSettings.setNumberEasyAI(getNumberEasyAI(chosenAIHBox));
                     currentSettings.setNumberNormalAI(getNumberNormalAI(chosenAIHBox));
                     currentSettings.setNumberHardAI(getNumberHardAI(chosenAIHBox));
+                    currentSettings.setAiDelay((int) aiDelaySlider.getValue());
 
                     Debug.write(Debug.getClassName(this) + " - " + " Settings saved");
                     /*
