@@ -15,7 +15,9 @@ public class Settings
     //general settings
     private int totalDiceNumber = 6;
     private int totalPlayers = 3;
-    private int totalAI = 2;
+    private int numberEasyAI = 0;
+    private int numberNormalAI = 0;
+    private int numberHardAI = 0;
     private boolean diceImageShown = false;
     private boolean gameOverAfterFirstPlayerWon = false;
 
@@ -54,24 +56,34 @@ public class Settings
         this.aiDelay = aiDelay;
     }
 
-    public AIType getAiType()
+    public int getNumberEasyAI()
     {
-        return aiType;
+        return numberEasyAI;
     }
 
-    public void setAiType(AIType aiType)
+    public void setNumberEasyAI(int numberEasyAI)
     {
-        this.aiType = aiType;
+        this.numberEasyAI = numberEasyAI;
     }
 
-    public int getTotalAI()
+    public int getNumberNormalAI()
     {
-        return totalAI;
+        return numberNormalAI;
     }
 
-    public void setTotalAI(int totalAI)
+    public void setNumberNormalAI(int numberNormalAI)
     {
-        this.totalAI = totalAI;
+        this.numberNormalAI = numberNormalAI;
+    }
+
+    public int getNumberHardAI()
+    {
+        return numberHardAI;
+    }
+
+    public void setNumberHardAI(int numberHardAI)
+    {
+        this.numberHardAI = numberHardAI;
     }
 
     public String getSelectedLanguage()

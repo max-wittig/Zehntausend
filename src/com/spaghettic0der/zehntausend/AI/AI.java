@@ -12,11 +12,12 @@ import java.util.HashMap;
 public abstract class AI extends Player
 {
     protected transient Game game;
+    protected int playerNumber;
 
     public AI(int playerNumber, Settings settings, Game game)
     {
         super(playerNumber, settings);
-        this.playerName = Main.language.getAI() + " " + (playerNumber + 1);
+        this.playerNumber = playerNumber;
         this.game = game;
     }
 
@@ -75,6 +76,13 @@ public abstract class AI extends Player
         return multipleDices;
     }
 
+    public String getPlayerName()
+    {
+        return Main.language.getAI() + " " + (playerNumber + 1);
+    }
+
+    protected abstract AIType getAiType();
+
     protected void updateAndWait()
     {
 
@@ -113,10 +121,9 @@ public abstract class AI extends Player
                         nextPlayer();
                     }
                 });
-
             }
         });
-
+        thread.setDaemon(true);
         thread.start();
     }
 

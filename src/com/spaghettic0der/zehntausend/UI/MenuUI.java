@@ -116,7 +116,7 @@ public class MenuUI extends UI
             @Override
             public void handle(ActionEvent event)
             {
-                if (game.getSettings().getTotalAI() <= 0)
+                /*if (game.getSettings().getTotalAI() <= 0)
                 {
                     jsonHelper.saveGame(game);
                 }
@@ -126,7 +126,7 @@ public class MenuUI extends UI
                     alert.setContentText("You cannot save games with AI players currently :(");
                     alert.setHeaderText(null);
                     alert.show();
-                }
+                }*/
             }
         });
 

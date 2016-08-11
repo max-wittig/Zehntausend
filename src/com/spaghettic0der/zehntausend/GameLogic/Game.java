@@ -1,6 +1,8 @@
 package com.spaghettic0der.zehntausend.GameLogic;
 
 import com.spaghettic0der.zehntausend.AI.AI;
+import com.spaghettic0der.zehntausend.AI.EasyAI;
+import com.spaghettic0der.zehntausend.AI.HardAI;
 import com.spaghettic0der.zehntausend.AI.NormalAI;
 import com.spaghettic0der.zehntausend.Extras.Debug;
 import com.spaghettic0der.zehntausend.Extras.Settings;
@@ -25,6 +27,7 @@ public class Game
         this.main = main;
         players = new ArrayList<>();
         initPlayers();
+        initAI();
     }
 
     public Main getMain()
@@ -39,18 +42,35 @@ public class Game
     private void initPlayers()
     {
         Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Players initiated");
-        for (int i = 0; i < settings.getTotalPlayers() - settings.getTotalAI(); i++)
+        for (int i = 0; i < settings.getTotalPlayers(); i++)
         {
             Player player = new Player(i, settings);
             player.setPlayerType(PlayerType.Human);
             players.add(player);
         }
+    }
 
-        for (int i = settings.getTotalPlayers() - settings.getTotalAI(); i < settings.getTotalAI() + settings.getTotalPlayers() - settings.getTotalAI(); i++)
+    private void initAI()
+    {
+        for (int i = 0; i < settings.getNumberEasyAI(); i++)
         {
-            NormalAI ai = new NormalAI(i, settings, this);
-            ai.setPlayerType(PlayerType.Computer);
-            players.add(ai);
+            EasyAI easyAI = new EasyAI(players.size(), settings, this);
+            easyAI.setPlayerType(PlayerType.AI);
+            players.add(easyAI);
+        }
+
+        for (int i = 0; i < settings.getNumberNormalAI(); i++)
+        {
+            NormalAI normalAI = new NormalAI(players.size(), settings, this);
+            normalAI.setPlayerType(PlayerType.AI);
+            players.add(normalAI);
+        }
+
+        for (int i = 0; i < settings.getNumberHardAI(); i++)
+        {
+            HardAI hardAI = new HardAI(players.size(), settings, this);
+            hardAI.setPlayerType(PlayerType.AI);
+            players.add(hardAI);
         }
     }
 
