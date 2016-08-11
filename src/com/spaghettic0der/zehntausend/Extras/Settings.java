@@ -46,6 +46,11 @@ public class Settings
 
     private int aiDelay = 1500;
 
+    public int getTotalNumberPlayersAndAI()
+    {
+        return numberEasyAI + numberNormalAI + numberHardAI + totalPlayers;
+    }
+
     public int getAiDelay()
     {
         return aiDelay;

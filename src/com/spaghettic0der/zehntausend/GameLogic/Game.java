@@ -28,6 +28,9 @@ public class Game
         players = new ArrayList<>();
         initPlayers();
         initAI();
+
+        //if first player is AI player, this starts the game
+        moveAI();
     }
 
     public Main getMain()
@@ -227,6 +230,9 @@ public class Game
         }
     }
 
+    /**
+     * checks to see if current Player is AI. If so. Runs the draw method of the specific instance
+     */
     private void moveAI()
     {
         if (getCurrentPlayer() instanceof AI && getCurrentPlayer().isAI() && !isGameOver)

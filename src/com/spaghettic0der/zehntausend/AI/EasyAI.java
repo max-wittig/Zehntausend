@@ -58,8 +58,11 @@ public class EasyAI extends AI
             }
 
             if (!Scoring.minScoreReached(this, settings))
+            {
                 game.getCurrentPlayer().rollDice();
-            updateAndWait();
+                updateAndWait();
+            }
+
         }
     }
 }

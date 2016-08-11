@@ -78,7 +78,7 @@ public class SettingsUI extends UI
             HBox playerHBox = new HBox();
             Label playerLabel = new Label(language.getPlayers() + ":");
             playerLabel.setMinWidth(minWidth);
-            Slider playerSlider = new Slider(1, 6, currentSettings.getTotalPlayers());
+            Slider playerSlider = new Slider(0, 6, currentSettings.getTotalPlayers());
             if (!isGlobal)
             {
                 playerSlider.setDisable(true);
@@ -450,16 +450,23 @@ public class SettingsUI extends UI
                     /*
                     global settings restart the current game, game settings do not
                      */
-                    if (isGlobal)
+                    if (currentSettings.getTotalNumberPlayersAndAI() > 0)
                     {
-                        jsonHelper.saveSettings(globalSettings);
-                        main.nextGame(globalSettings);
+                        if (isGlobal)
+                        {
+                            jsonHelper.saveSettings(globalSettings);
+                            main.nextGame(globalSettings);
+                        }
+                        else
+                        {
+                            game.setSettings(currentSettings);
+                        }
+                        settingsStage.close();
                     }
                     else
                     {
-                        game.setSettings(currentSettings);
+                        Main.showAlert(null, "No players!");
                     }
-                    settingsStage.close();
                 }
             });
 
