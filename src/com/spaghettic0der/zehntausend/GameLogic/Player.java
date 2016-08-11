@@ -1,6 +1,7 @@
 package com.spaghettic0der.zehntausend.GameLogic;
 
 import com.spaghettic0der.zehntausend.Extras.Debug;
+import com.spaghettic0der.zehntausend.Extras.Settings;
 import com.spaghettic0der.zehntausend.Main;
 
 import java.util.ArrayList;

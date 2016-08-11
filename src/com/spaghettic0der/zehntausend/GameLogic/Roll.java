@@ -1,14 +1,12 @@
 package com.spaghettic0der.zehntausend.GameLogic;
 
-
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * saves the drawn dices in an arrayList
  * roll is all drawn dices on the screen at once
  */
-public class Roll implements Serializable
+public class Roll
 {
 
     private ArrayList<Dice> drawnDices;

@@ -3,6 +3,7 @@ package com.spaghettic0der.zehntausend.GameLogic;
 import com.spaghettic0der.zehntausend.AI.AI;
 import com.spaghettic0der.zehntausend.AI.NormalAI;
 import com.spaghettic0der.zehntausend.Extras.Debug;
+import com.spaghettic0der.zehntausend.Extras.Settings;
 import com.spaghettic0der.zehntausend.Main;
 
 import java.util.*;
@@ -170,13 +171,13 @@ public class Game
                     {
                         if (settings.isGameOverAfterFirstPlayerWon())
                         {
-                            Main.showGameOverDialog(Main.language.getGameOverAlertHeader(),
+                            Main.showAlert(Main.language.getGameOverAlertHeader(),
                                     Main.language.getGameOverAlertContent() + " " + getCurrentPlayer().getPlayerName());
                         }
                         else
                         {
-                            Main.showWinAlert(getCurrentPlayer().getPlayerName(), Main.language.getWinAlertHeaderText(),
-                                    Main.language.getWinAlertContentText());
+                            Main.showAlert(Main.language.getWinAlertHeaderText(),
+                                    Main.language.getWinAlertContentText() + " " + getCurrentPlayer().getPlayerName());
                         }
                     }
 
@@ -202,7 +203,7 @@ public class Game
         else
         {
             if (!settings.isGameOverAfterFirstPlayerWon())
-                Main.showGameOverDialog(Main.language.getGameOverAlertHeader(), getWinString());
+                Main.showAlert(Main.language.getGameOverAlertHeader(), getWinString());
         }
     }
 
@@ -242,7 +243,7 @@ public class Game
 
         //if still nothing set game to over!
         isGameOver = true;
-        Main.showGameOverDialog(Main.language.getWinAlertHeaderText(), getWinString());
+        Main.showAlert(Main.language.getWinAlertHeaderText(), getWinString());
 
     }
 

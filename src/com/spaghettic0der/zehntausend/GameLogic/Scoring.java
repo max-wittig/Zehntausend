@@ -1,6 +1,8 @@
 package com.spaghettic0der.zehntausend.GameLogic;
 
 
+import com.spaghettic0der.zehntausend.Extras.Settings;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 

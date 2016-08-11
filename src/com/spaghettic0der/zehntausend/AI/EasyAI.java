@@ -4,7 +4,7 @@ package com.spaghettic0der.zehntausend.AI;
 import com.spaghettic0der.zehntausend.GameLogic.Dice;
 import com.spaghettic0der.zehntausend.GameLogic.Game;
 import com.spaghettic0der.zehntausend.GameLogic.Scoring;
-import com.spaghettic0der.zehntausend.GameLogic.Settings;
+import com.spaghettic0der.zehntausend.Extras.Settings;
 
 public class EasyAI extends AI
 {

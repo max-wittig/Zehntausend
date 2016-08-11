@@ -2,6 +2,7 @@ package com.spaghettic0der.zehntausend.AI;
 
 
 import com.spaghettic0der.zehntausend.*;
+import com.spaghettic0der.zehntausend.Extras.Settings;
 import com.spaghettic0der.zehntausend.GameLogic.*;
 import javafx.application.Platform;
 
@@ -88,7 +89,7 @@ public abstract class AI extends Player
 
         try
         {
-            Thread.sleep(1500);
+            Thread.sleep(settings.getAiDelay());
         }
         catch (Exception e)
         {

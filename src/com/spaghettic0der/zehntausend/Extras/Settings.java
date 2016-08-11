@@ -1,4 +1,4 @@
-package com.spaghettic0der.zehntausend.GameLogic;
+package com.spaghettic0der.zehntausend.Extras;
 
 
 import com.spaghettic0der.zehntausend.AI.AIType;
@@ -41,6 +41,18 @@ public class Settings
 
     private String selectedLanguage = "eng";
     private AIType aiType = AIType.EASY;
+
+    private int aiDelay = 1500;
+
+    public int getAiDelay()
+    {
+        return aiDelay;
+    }
+
+    public void setAiDelay(int aiDelay)
+    {
+        this.aiDelay = aiDelay;
+    }
 
     public AIType getAiType()
     {

@@ -3,6 +3,7 @@ package com.spaghettic0der.zehntausend;
 import com.spaghettic0der.zehntausend.Extras.Debug;
 import com.spaghettic0der.zehntausend.Extras.JsonHelper;
 import com.spaghettic0der.zehntausend.Extras.Language;
+import com.spaghettic0der.zehntausend.Extras.Settings;
 import com.spaghettic0der.zehntausend.GameLogic.*;
 import com.spaghettic0der.zehntausend.UI.CustomListView;
 import com.spaghettic0der.zehntausend.UI.MenuUI;
@@ -74,27 +75,13 @@ public class Main extends Application
     }
 
     /**
-     * called by game, when player won
-     *
-     * @param playerName
-     * @param headerText
-     * @param contentText
-     */
-    public static void showWinAlert(String playerName, String headerText, String contentText)
-    {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText(headerText);
-        alert.setContentText(contentText + " " + playerName);
-        alert.show();
-    }
-
-    /**
      * shows game over dialog with
      * 1. place, 2. place and 3. place
+     * or Win Alert
      * @param headerText
      * @param contentText
      */
-    public static void showGameOverDialog(String headerText, String contentText)
+    public static void showAlert(String headerText, String contentText)
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(headerText);
@@ -243,19 +230,6 @@ public class Main extends Application
             });
             remainingDiceHBox.getChildren().add(diceButton);
         }
-    }
-
-
-    /**
-     * if player pressed the roll button and move is not possible
-     * alert is shown to inform the user of that
-     */
-    private void showInvalidMoveAlert()
-    {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText(language.getInvalidMove());
-        alert.setContentText(language.getThatsNotAllowed());
-        alert.show();
     }
 
     /**
@@ -482,7 +456,11 @@ public class Main extends Application
                 }
                 else
                 {
-                    showInvalidMoveAlert();
+                    /**
+                     * if player pressed the roll button and move is not possible
+                     * alert is shown to inform the user of that
+                     */
+                    showAlert(null, language.getInvalidMove());
                 }
             }
         });
@@ -504,7 +482,11 @@ public class Main extends Application
                 }
                 else
                 {
-                    showInvalidMoveAlert();
+                    /**
+                     * if player pressed the next button and move is not possible
+                     * alert is shown to inform the user of that
+                     */
+                    showAlert(null, language.getInvalidMove());
                 }
             }
         });
