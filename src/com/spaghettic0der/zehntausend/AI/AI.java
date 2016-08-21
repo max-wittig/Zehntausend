@@ -250,7 +250,6 @@ public abstract class AI extends Player
         ArrayList<Dice> streetDices = new ArrayList<>();
         ArrayList<Dice> sortedDices = Scoring.getSortedDices(remainingDices);
         int startDiceNumber = Scoring.getLowestDiceNumber(remainingDices);
-        Debug.write(sortedDices.toString());
         for (int i = 0; i < sortedDices.size(); i++)
         {
             Dice dice = sortedDices.get(i);
@@ -268,15 +267,7 @@ public abstract class AI extends Player
         if (Scoring.containsMultiple(remainingDices))
         {
             ArrayList<Dice> multipleDicesArrayList = getMultipleDices(remainingDices);
-            for (int i = 0; i < multipleDicesArrayList.size(); i++)
-            {
-                Dice dice = multipleDicesArrayList.get(i);
-                if (remainingDices.contains(dice))
-                {
-                    game.moveToDrawnDices(dice);
-                    updateAndWait();
-                }
-            }
+            drawDicesAndWait(multipleDicesArrayList);
 
             //reroll if found multiple dices
             if ((random.nextFloat() < rollAfterYouDrawnMultiple) && remainingDices.size() >= diceNumberWhereItMakesSenseToRiskRerolling)
@@ -292,6 +283,19 @@ public abstract class AI extends Player
         return (hasWon() && stopRollingIfWinScoreReached);
     }
 
+    private void drawDicesAndWait(ArrayList<Dice> dices)
+    {
+        for (int i = 0; i < dices.size(); i++)
+        {
+            Dice dice = dices.get(i);
+            if (remainingDices.contains(dice))
+            {
+                game.moveToDrawnDices(dice);
+                updateAndWait();
+            }
+        }
+    }
+
     protected void drawStreet()
     {
         //remaining dices contains street and the AI 'sees' the street (drawStreet)
@@ -299,15 +303,7 @@ public abstract class AI extends Player
                 && random.nextFloat() < drawStreet)
         {
             ArrayList<Dice> streetDices = getStreetDices();
-            for (int i = 0; i < streetDices.size(); i++)
-            {
-                Dice dice = streetDices.get(i);
-                if (remainingDices.contains(dice))
-                {
-                    game.moveToDrawnDices(dice);
-                    updateAndWait();
-                }
-            }
+            drawDicesAndWait(streetDices);
         }
     }
 

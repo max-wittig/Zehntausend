@@ -108,6 +108,16 @@ public class Main extends Application
      */
     public void updateUI()
     {
+        if (game.getCurrentPlayer().isAI())
+        {
+            remainingDiceHBox.setDisable(true);
+            drawnDiceHBox.setDisable(true);
+        }
+        else
+        {
+            remainingDiceHBox.setDisable(false);
+            drawnDiceHBox.setDisable(false);
+        }
         remainingDiceHBox.getChildren().clear();
         drawnDiceHBox.getChildren().clear();
         createRemainingDiceButtons();

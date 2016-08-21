@@ -27,4 +27,9 @@ public class Dice
         diceNumber = random.nextInt(6)+1;
     }
 
+    @Override
+    public String toString()
+    {
+        return String.valueOf(diceNumber);
+    }
 }
