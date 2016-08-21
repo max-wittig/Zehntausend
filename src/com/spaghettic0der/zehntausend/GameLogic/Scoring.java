@@ -2,8 +2,10 @@ package com.spaghettic0der.zehntausend.GameLogic;
 
 
 import com.spaghettic0der.zehntausend.Extras.Settings;
+import com.spaghettic0der.zehntausend.Helper.Debug;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class Scoring
@@ -19,6 +21,19 @@ public class Scoring
             }
         }
         return false;
+    }
+
+    public static int getLowestDiceNumber(ArrayList<Dice> dices)
+    {
+        int lowestNumber = 10000;
+        for (Dice dice : dices)
+        {
+            if (dice.getDiceNumber() < lowestNumber)
+            {
+                lowestNumber = dice.getDiceNumber();
+            }
+        }
+        return lowestNumber;
     }
 
     public static boolean isStreet(ArrayList<Dice> dices, boolean streetEnabled, int totalNumberDice)
@@ -184,6 +199,29 @@ public class Scoring
         }
 
         return false;
+    }
+
+    public static ArrayList<Dice> getSortedDices(ArrayList<Dice> dices)
+    {
+        dices.sort(new Comparator<Dice>()
+        {
+            @Override
+            public int compare(Dice o1, Dice o2)
+            {
+                if (o1.getDiceNumber() > o2.getDiceNumber())
+                {
+                    return 1;
+                }
+                else if (o1.getDiceNumber() < o2.getDiceNumber())
+                {
+                    return -1;
+                }
+
+                return 0;
+            }
+        });
+
+        return dices;
     }
 
 

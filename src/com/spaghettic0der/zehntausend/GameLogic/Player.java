@@ -46,7 +46,7 @@ public class Player
 
         Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Remaining Dices added for " + playerName + ": "
                 + Debug.diceArrayListToString(remainingDices));
-        //addDebugDices(new int[]{1, 5, 4, 4, 5, 5});
+        addDebugDices(new int[]{2, 3, 4, 5, 6, 1});
     }
 
     public void addDebugDices(ArrayList<Integer> diceNumbers)

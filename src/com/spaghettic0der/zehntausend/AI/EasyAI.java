@@ -43,27 +43,8 @@ public class EasyAI extends AI
     }
 
     @Override
-    void drawPossibleDices()
+    protected void drawDices()
     {
-        while (!Scoring.minScoreReached(this, settings) && drawIsPossible())
-        {
-            for (int i = 0; i < remainingDices.size(); i++)
-            {
-                Dice currentDice = remainingDices.get(i);
-                if (currentDice.getDiceNumber() == 1 || currentDice.getDiceNumber() == 5)
-                {
-                    //insert delay here
-                    game.moveToDrawnDices(currentDice);
-                    updateAndWait();
-                }
-            }
 
-            if (!Scoring.minScoreReached(this, settings))
-            {
-                game.getCurrentPlayer().rollDice();
-                updateAndWait();
-            }
-
-        }
     }
 }

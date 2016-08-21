@@ -9,6 +9,7 @@ import com.spaghettic0der.zehntausend.Main;
 public class HardAI extends AI
 {
 
+
     public HardAI(int playerNumber, Settings settings, Game game)
     {
         super(playerNumber, settings, game);
@@ -29,12 +30,21 @@ public class HardAI extends AI
     @Override
     boolean drawIsPossible()
     {
-        return (Scoring.containsMultiple(remainingDices) || containsOneOrFive(remainingDices));
+        return
+                (Scoring.containsMultiple(remainingDices)
+                        || containsOneOrFive(remainingDices)
+                        || Scoring.isStreet(remainingDices, settings.isStreetEnabled(), settings.getTotalDiceNumber())
+
+                );
     }
 
     @Override
-    void drawPossibleDices()
+    protected void drawDices()
     {
-
+        drawStreet();
+        drawMultiple(rollAfterYouDrawnMultiple, diceNumberWhereItMakesSenseToRiskRerolling);
+        draw5And1(drawOnlyOne);
     }
+
+
 }
