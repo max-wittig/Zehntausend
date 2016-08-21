@@ -365,4 +365,8 @@ public class Game
         return players;
     }
 
+    public void setGameOver()
+    {
+        isGameOver = true;
+    }
 }
