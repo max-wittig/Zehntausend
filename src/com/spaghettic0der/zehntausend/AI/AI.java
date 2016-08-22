@@ -141,7 +141,7 @@ public abstract class AI extends Player
                 game.getMain().updateUI();
             }
         });
-
+        
         try
         {
             Thread.sleep(settings.getAiDelay());
@@ -150,6 +150,7 @@ public abstract class AI extends Player
         {
             e.printStackTrace();
         }
+
     }
 
     public void draw()
@@ -275,7 +276,7 @@ public abstract class AI extends Player
 
     public void stopThread()
     {
-        if (thread.isAlive())
+        if (thread != null && thread.isAlive())
             thread.stop();
     }
 

@@ -31,16 +31,16 @@ public class SettingsUI extends UI
     private final int MAX_AI = 4;
     private AIType currentType = null;
 
-    public SettingsUI(Game game, Settings globalSettings, Language language, Main main, JsonHelper jsonHelper, Stage primaryStage)
+    public SettingsUI(Settings globalSettings, Language language, Main main, JsonHelper jsonHelper, Stage primaryStage)
     {
-        super(game, globalSettings, language, main, jsonHelper, primaryStage);
+        super(globalSettings, language, main, jsonHelper, primaryStage);
     }
 
     @Override
     public void show()
     {
         ArrayList<Settings> settingsArrayList = new ArrayList<>();
-        Settings gameSettings = game.getSettings();
+        Settings gameSettings = main.getGame().getSettings();
 
         globalSettings.setSettingsName(language.getGlobalSettings());
 
@@ -474,7 +474,7 @@ public class SettingsUI extends UI
                         }
                         else
                         {
-                            game.setSettings(currentSettings);
+                            main.getGame().setSettings(currentSettings);
                         }
 
 
@@ -512,7 +512,7 @@ public class SettingsUI extends UI
                     }
                     else
                     {
-                        game.setSettings(tempSettings);
+                        main.getGame().setSettings(tempSettings);
                     }
                     settingsStage.close();
                 }
