@@ -1,6 +1,7 @@
 package com.spaghettic0der.zehntausend.GameLogic;
 
-import com.spaghettic0der.zehntausend.Extras.Debug;
+import com.spaghettic0der.zehntausend.Helper.Debug;
+import com.spaghettic0der.zehntausend.Extras.Settings;
 import com.spaghettic0der.zehntausend.Main;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class Player
     protected ArrayList<Dice> remainingDices;
     protected ArrayList<Turn> turnArrayList;
     protected Settings settings;
-    private int playerNumber;
+    protected int playerNumber;
     private int winRank = -1;
     private PlayerType playerType;
 
@@ -45,7 +46,7 @@ public class Player
 
         Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Remaining Dices added for " + playerName + ": "
                 + Debug.diceArrayListToString(remainingDices));
-        //addDebugDices(new int[]{1, 1, 5, 3, 3, 3});
+        //addDebugDices(new int[]{2, 3, 4, 5, 6, 1});
     }
 
     public void addDebugDices(ArrayList<Integer> diceNumbers)
@@ -178,7 +179,7 @@ public class Player
 
     public boolean isAI()
     {
-        if (PlayerType.Computer == playerType)
+        if (PlayerType.AI == playerType)
         {
             return true;
         }

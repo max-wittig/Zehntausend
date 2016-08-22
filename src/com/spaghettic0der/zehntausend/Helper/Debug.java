@@ -1,4 +1,4 @@
-package com.spaghettic0der.zehntausend.Extras;
+package com.spaghettic0der.zehntausend.Helper;
 
 
 import com.spaghettic0der.zehntausend.GameLogic.Dice;

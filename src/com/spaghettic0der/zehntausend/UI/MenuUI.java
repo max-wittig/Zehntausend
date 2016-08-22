@@ -2,11 +2,11 @@ package com.spaghettic0der.zehntausend.UI;
 
 
 import com.spaghettic0der.zehntausend.*;
-import com.spaghettic0der.zehntausend.Extras.JsonHelper;
+import com.spaghettic0der.zehntausend.Helper.JsonHelper;
 import com.spaghettic0der.zehntausend.Extras.Language;
 import com.spaghettic0der.zehntausend.GameLogic.Dice;
 import com.spaghettic0der.zehntausend.GameLogic.Game;
-import com.spaghettic0der.zehntausend.GameLogic.Settings;
+import com.spaghettic0der.zehntausend.Extras.Settings;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -116,29 +116,13 @@ public class MenuUI extends UI
             @Override
             public void handle(ActionEvent event)
             {
-                if (game.getSettings().getTotalAI() <= 0)
-                {
-                    jsonHelper.saveGame(game);
-                }
-                else
-                {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setContentText("You cannot save games with AI players currently :(");
-                    alert.setHeaderText(null);
-                    alert.show();
-                }
+                jsonHelper.saveGame(game);
             }
         });
 
         MenuItem quitItem = new MenuItem(language.getQuit());
-        quitItem.setOnAction(new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle(ActionEvent event)
-            {
-                Platform.exit();
-            }
-        });
+        quitItem.setOnAction(event -> Platform.exit());
+
         gameMenu.getItems().addAll(newGameItem, settingsItem, loadItem, saveItem, quitItem);
 
         Menu cheatMenu = new Menu("Cheat");

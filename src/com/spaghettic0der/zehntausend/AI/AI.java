@@ -2,20 +2,54 @@ package com.spaghettic0der.zehntausend.AI;
 
 
 import com.spaghettic0der.zehntausend.*;
+import com.spaghettic0der.zehntausend.Extras.Settings;
 import com.spaghettic0der.zehntausend.GameLogic.*;
+import com.spaghettic0der.zehntausend.Helper.Debug;
+import javafx.application.Platform;
+import javafx.scene.control.ScrollBar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public abstract class AI extends Player
 {
     protected transient Game game;
+    protected Random random;
+    //AI rolls dices again, even though score >= minScore
+    protected float diceRollRisk = 0.2f;
+
+    protected float drawOnlyOne = 0.5f;
+
+    //AI rolls dices again, after it found multiple dices in the same roll
+    protected float rollAfterYouDrawnMultiple = 0.7f;
+
+    //if all dices have been drawn. Take the risk to re-roll all 6?
+    protected float reRollAfterYouDrawnAllDices = 1f;
+
+    protected int diceNumberWhereItMakesSenseToRiskRerolling = 3;
+    protected boolean stopRollingIfWinScoreReached = true;
+
+    protected Thread thread;
+    //sees the street 100% of the time
+    protected float drawStreet = 1f;
 
     public AI(int playerNumber, Settings settings, Game game)
     {
         super(playerNumber, settings);
-        this.playerName = Main.language.getAI() + " " + (playerNumber + 1);
+        this.playerNumber = playerNumber;
         this.game = game;
+        random = new Random();
+    }
+
+    protected void noRisk()
+    {
+        diceNumberWhereItMakesSenseToRiskRerolling = 0;
+        drawOnlyOne = 0;
+        diceRollRisk = 0;
+        stopRollingIfWinScoreReached = true;
+        rollAfterYouDrawnMultiple = 0;
+        reRollAfterYouDrawnAllDices = 0;
     }
 
     /**
@@ -24,7 +58,7 @@ public abstract class AI extends Player
      * @param dices arrayList
      * @return (1 or 5) ? true : false
      */
-    static boolean containsOneOrFive(ArrayList<Dice> dices)
+    protected boolean containsOneOrFive(ArrayList<Dice> dices)
     {
         if (Scoring.containsDiceNumber(1, dices) || Scoring.containsDiceNumber(5, dices))
         {
@@ -41,7 +75,7 @@ public abstract class AI extends Player
      * @param toAdd  arrayList with existing dices, where dice is gonna be added. Needed to check if dice is already in
      * @return Dice, which is not already in toAdd
      */
-    private static Dice getDiceWithNumber(int number, ArrayList<Dice> dices, ArrayList<Dice> toAdd)
+    private Dice getDiceWithNumber(int number, ArrayList<Dice> dices, ArrayList<Dice> toAdd)
     {
         for (Dice dice : dices)
         {
@@ -56,7 +90,7 @@ public abstract class AI extends Player
     /**
      * returns multiple dices in an arrayList for the AI bots. With occ > 2
      */
-    static ArrayList<Dice> getMultipleDices(ArrayList<Dice> dices)
+    protected ArrayList<Dice> getMultipleDices(ArrayList<Dice> dices)
     {
         ArrayList<Dice> multipleDices = new ArrayList<>();
         HashMap<Integer, Integer> diceHashMap = Scoring.getDiceHashMap(dices);
@@ -73,20 +107,220 @@ public abstract class AI extends Player
         return multipleDices;
     }
 
+    @Override
+    public void rollDice()
+    {
+        if (canRollDice())
+            super.rollDice();
+    }
+
+    protected boolean canRollDice()
+    {
+        if (getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().size() > 0)
+            return true;
+        else
+            return false;
+    }
+
+    @Override
+    public String getPlayerName()
+    {
+        return Main.language.getAI() + " " + (playerNumber + 1);
+    }
+
+    protected abstract AIType getAiType();
+
+    protected void updateAndWait()
+    {
+
+        Platform.runLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                game.getMain().updateUI();
+            }
+        });
+
+        try
+        {
+            Thread.sleep(settings.getAiDelay());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public void draw()
     {
-        drawPossibleDices();
-        nextPlayer();
+        thread = new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                drawPossibleDices();
+                Platform.runLater(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        nextPlayer();
+                    }
+                });
+            }
+        });
+        thread.setDaemon(true);
+        thread.start();
     }
 
     abstract boolean drawIsPossible();
-
-    abstract void drawPossibleDices();
 
     private void nextPlayer()
     {
         game.getMain().updateScoreOfPlayersInListView();
         game.nextPlayer();
+        game.getMain().updateUI();
+    }
+
+    protected void draw5And1(float drawOnlyOne)
+    {
+        //can't use foreach here, because of "JavaFX Application Thread" java.util.ConcurrentModificationException
+        for (int i = 0; i < remainingDices.size(); i++)
+        {
+            Dice dice = remainingDices.get(i);
+            if (remainingDices.contains(dice))
+            {
+                if (dice.getDiceNumber() == 1 || dice.getDiceNumber() == 5)
+                {
+                    game.moveToDrawnDices(dice);
+                    updateAndWait();
+                    if ((random.nextFloat() < drawOnlyOne) && getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().size() > 1)
+                    {
+                        rollDice();
+                        updateAndWait();
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    protected boolean cancelLoop()
+    {
+        if (Scoring.minScoreReached(this, settings) && canRollDice())
+        {
+            if (remainingDices.size() <= 0 && random.nextFloat() < reRollAfterYouDrawnAllDices)
+            {
+                rollDice();
+                updateAndWait();
+            }
+            else
+            {
+                if ((random.nextFloat() < diceRollRisk && remainingDices.size() >= diceNumberWhereItMakesSenseToRiskRerolling))
+                {
+                    rollDice();
+                    updateAndWait();
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+        else
+        {
+            rollDice();
+            updateAndWait();
+        }
+
+        return false;
+    }
+
+    protected abstract void drawDices();
+
+
+    protected void drawPossibleDices()
+    {
+        while (drawIsPossible())
+        {
+            if (winScoreReached(stopRollingIfWinScoreReached))
+                return;
+
+            drawDices();
+            if (cancelLoop())
+            {
+                break;
+            }
+        }
+
+    }
+
+    private ArrayList<Dice> getStreetDices()
+    {
+        ArrayList<Dice> streetDices = new ArrayList<>();
+        ArrayList<Dice> sortedDices = Scoring.getSortedDices(remainingDices);
+        int startDiceNumber = Scoring.getLowestDiceNumber(remainingDices);
+        for (int i = 0; i < sortedDices.size(); i++)
+        {
+            Dice dice = sortedDices.get(i);
+            if (sortedDices.contains(dice) && sortedDices.get(i).getDiceNumber() == startDiceNumber)
+            {
+                streetDices.add(dice);
+                startDiceNumber++;
+            }
+        }
+        return streetDices;
+    }
+
+    public void stopThread()
+    {
+        thread.stop();
+    }
+
+    protected void drawMultiple(float rollAfterYouDrawnMultiple, int diceNumberWhereItMakesSenseToRiskRerolling)
+    {
+        if (Scoring.containsMultiple(remainingDices))
+        {
+            ArrayList<Dice> multipleDicesArrayList = getMultipleDices(remainingDices);
+            drawDicesAndWait(multipleDicesArrayList);
+
+            //reroll if found multiple dices
+            if ((random.nextFloat() < rollAfterYouDrawnMultiple) && remainingDices.size() >= diceNumberWhereItMakesSenseToRiskRerolling)
+            {
+                rollDice();
+                drawPossibleDices();
+            }
+        }
+    }
+
+    protected boolean winScoreReached(boolean stopRollingIfWinScoreReached)
+    {
+        return (hasWon() && stopRollingIfWinScoreReached);
+    }
+
+    private void drawDicesAndWait(ArrayList<Dice> dices)
+    {
+        for (int i = 0; i < dices.size(); i++)
+        {
+            Dice dice = dices.get(i);
+            if (remainingDices.contains(dice))
+            {
+                game.moveToDrawnDices(dice);
+                updateAndWait();
+            }
+        }
+    }
+
+    protected void drawStreet()
+    {
+        //remaining dices contains street and the AI 'sees' the street (drawStreet)
+        if (Scoring.isStreet(remainingDices, settings.isStreetEnabled(), settings.getTotalDiceNumber())
+                && random.nextFloat() < drawStreet)
+        {
+            ArrayList<Dice> streetDices = getStreetDices();
+            drawDicesAndWait(streetDices);
+        }
     }
 
 

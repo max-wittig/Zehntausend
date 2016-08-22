@@ -1,10 +1,11 @@
-package com.spaghettic0der.zehntausend.Extras;
+package com.spaghettic0der.zehntausend.Helper;
 
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.spaghettic0der.zehntausend.Extras.Language;
+import com.spaghettic0der.zehntausend.Extras.Settings;
 import com.spaghettic0der.zehntausend.GameLogic.Game;
-import com.spaghettic0der.zehntausend.GameLogic.Settings;
 
 import java.io.*;
 import java.lang.reflect.Modifier;

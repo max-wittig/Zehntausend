@@ -50,8 +50,44 @@ public class Language
     private String language = "Sprache";
     private String applicationNeedsToBeRestarted = "Application needs to be restarted for the changes to take effect!";
     private String quit = "Quit!";
-    private String AI = "Computer";
+    private String AI = "AI";
+    private String easy = "Easy";
+    private String normal = "Normal";
+    private String hard = "Hard";
     private String restoreDefault = "Restore Default";
+    private String clear = "Clear";
+    private String add = "Add";
+    private String delay = "Delay";
+
+    public String getDelay()
+    {
+        return delay;
+    }
+
+    public String getClear()
+    {
+        return clear;
+    }
+
+    public String getAdd()
+    {
+        return add;
+    }
+
+    public String getEasy()
+    {
+        return easy;
+    }
+
+    public String getNormal()
+    {
+        return normal;
+    }
+
+    public String getHard()
+    {
+        return hard;
+    }
 
     public String getQuit()
     {

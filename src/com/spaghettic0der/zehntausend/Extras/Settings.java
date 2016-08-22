@@ -1,4 +1,4 @@
-package com.spaghettic0der.zehntausend.GameLogic;
+package com.spaghettic0der.zehntausend.Extras;
 
 
 import com.spaghettic0der.zehntausend.AI.AIType;
@@ -15,7 +15,9 @@ public class Settings
     //general settings
     private int totalDiceNumber = 6;
     private int totalPlayers = 3;
-    private int totalAI = 0;
+    private int numberEasyAI = 0;
+    private int numberNormalAI = 0;
+    private int numberHardAI = 0;
     private boolean diceImageShown = false;
     private boolean gameOverAfterFirstPlayerWon = false;
 
@@ -42,24 +44,51 @@ public class Settings
     private String selectedLanguage = "eng";
     private AIType aiType = AIType.EASY;
 
-    public AIType getAiType()
+    private int aiDelay = 1500;
+
+    public int getTotalNumberPlayersAndAI()
     {
-        return aiType;
+        return numberEasyAI + numberNormalAI + numberHardAI + totalPlayers;
     }
 
-    public void setAiType(AIType aiType)
+    public int getAiDelay()
     {
-        this.aiType = aiType;
+        return aiDelay;
     }
 
-    public int getTotalAI()
+    public void setAiDelay(int aiDelay)
     {
-        return totalAI;
+        this.aiDelay = aiDelay;
     }
 
-    public void setTotalAI(int totalAI)
+    public int getNumberEasyAI()
     {
-        this.totalAI = totalAI;
+        return numberEasyAI;
+    }
+
+    public void setNumberEasyAI(int numberEasyAI)
+    {
+        this.numberEasyAI = numberEasyAI;
+    }
+
+    public int getNumberNormalAI()
+    {
+        return numberNormalAI;
+    }
+
+    public void setNumberNormalAI(int numberNormalAI)
+    {
+        this.numberNormalAI = numberNormalAI;
+    }
+
+    public int getNumberHardAI()
+    {
+        return numberHardAI;
+    }
+
+    public void setNumberHardAI(int numberHardAI)
+    {
+        this.numberHardAI = numberHardAI;
     }
 
     public String getSelectedLanguage()

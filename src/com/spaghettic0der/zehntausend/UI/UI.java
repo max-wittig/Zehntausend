@@ -2,10 +2,10 @@ package com.spaghettic0der.zehntausend.UI;
 
 
 import com.spaghettic0der.zehntausend.*;
-import com.spaghettic0der.zehntausend.Extras.JsonHelper;
+import com.spaghettic0der.zehntausend.Helper.JsonHelper;
 import com.spaghettic0der.zehntausend.Extras.Language;
 import com.spaghettic0der.zehntausend.GameLogic.Game;
-import com.spaghettic0der.zehntausend.GameLogic.Settings;
+import com.spaghettic0der.zehntausend.Extras.Settings;
 import javafx.stage.Stage;
 
 public abstract class UI

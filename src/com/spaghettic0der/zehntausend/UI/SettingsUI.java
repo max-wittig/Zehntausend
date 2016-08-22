@@ -2,17 +2,19 @@ package com.spaghettic0der.zehntausend.UI;
 
 
 import com.spaghettic0der.zehntausend.*;
-import com.spaghettic0der.zehntausend.Extras.Debug;
-import com.spaghettic0der.zehntausend.Extras.JsonHelper;
+import com.spaghettic0der.zehntausend.AI.AIType;
+import com.spaghettic0der.zehntausend.Helper.Debug;
+import com.spaghettic0der.zehntausend.Helper.JsonHelper;
 import com.spaghettic0der.zehntausend.Extras.Language;
 import com.spaghettic0der.zehntausend.GameLogic.Game;
-import com.spaghettic0der.zehntausend.GameLogic.Settings;
+import com.spaghettic0der.zehntausend.Extras.Settings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -21,18 +23,20 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.util.ArrayList;
 
 public class SettingsUI extends UI
 {
     private static boolean selfTrigger = false;
+    private final int MAX_AI = 4;
+    private AIType currentType = null;
 
     public SettingsUI(Game game, Settings globalSettings, Language language, Main main, JsonHelper jsonHelper, Stage primaryStage)
     {
         super(game, globalSettings, language, main, jsonHelper, primaryStage);
     }
 
+    @Override
     public void show()
     {
         ArrayList<Settings> settingsArrayList = new ArrayList<>();
@@ -74,7 +78,7 @@ public class SettingsUI extends UI
             HBox playerHBox = new HBox();
             Label playerLabel = new Label(language.getPlayers() + ":");
             playerLabel.setMinWidth(minWidth);
-            Slider playerSlider = new Slider(2, 6, currentSettings.getTotalPlayers());
+            Slider playerSlider = new Slider(0, 6, currentSettings.getTotalPlayers());
             if (!isGlobal)
             {
                 playerSlider.setDisable(true);
@@ -88,6 +92,54 @@ public class SettingsUI extends UI
             HBox.setMargin(playerLabel, new Insets(0, 20, 0, 20));
             VBox.setMargin(playerHBox, new Insets(20, 40, 20, 20));
             vBox.getChildren().add(playerHBox);
+
+            //AI Count
+            HBox aiHbox = new HBox();
+            HBox chosenAIHBox = new HBox();
+            chosenAIHBox.setSpacing(1);
+            restoreAI(chosenAIHBox, currentSettings);
+            Label aiLabel = new Label(language.getAI() + ":");
+            aiLabel.setMinWidth(minWidth);
+            Button aiAddButton = new Button(language.getAdd());
+            currentType = AIType.NORMAL;
+            aiAddButton.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                public void handle(ActionEvent event)
+                {
+                    if (chosenAIHBox.getChildren().size() <= MAX_AI)
+                    {
+                        AIButton aiButton = new AIButton(currentType);
+                        aiButton.setOnAction(e ->
+                        {
+                            aiButton.nextType();
+                        });
+                        chosenAIHBox.getChildren().add(aiButton);
+                    }
+                }
+            });
+            Button clearAIButton = new Button(language.getClear());
+            clearAIButton.setOnAction(event -> chosenAIHBox.getChildren().clear());
+            VBox aiButtonVBox = new VBox(aiAddButton, clearAIButton);
+            aiHbox.getChildren().addAll(aiLabel, aiButtonVBox, chosenAIHBox);
+            HBox.setMargin(aiLabel, new Insets(0, 20, 0, 20));
+            VBox.setMargin(aiHbox, new Insets(20, 40, 20, 20));
+            vBox.getChildren().add(aiHbox);
+
+            //AI delay
+            HBox aiDelayHBox = new HBox();
+            Label aiDelayLabel = new Label(language.getAI() + " " + language.getDelay() + ":");
+            aiDelayLabel.setMinWidth(minWidth);
+            Slider aiDelaySlider = new Slider(0, 3000, currentSettings.getAiDelay());
+            aiDelaySlider.setMajorTickUnit(500);
+            aiDelaySlider.setMinorTickCount(1);
+            aiDelaySlider.setSnapToTicks(true);
+            aiDelaySlider.setShowTickLabels(true);
+            aiDelayHBox.getChildren().addAll(aiDelayLabel, aiDelaySlider);
+            HBox.setHgrow(aiDelaySlider, Priority.ALWAYS);
+            HBox.setMargin(aiDelayLabel, new Insets(0, 20, 0, 20));
+            VBox.setMargin(aiDelayHBox, new Insets(20, 40, 20, 20));
+            vBox.getChildren().add(aiDelayHBox);
 
             //dice count
             HBox diceHBox = new HBox();
@@ -128,7 +180,8 @@ public class SettingsUI extends UI
             VBox.setMargin(minScoreHBox, new Insets(20, 40, 20, 20));
             vBox.getChildren().add(minScoreHBox);
 
-            //rules
+
+            //-----------------rules------------------
 
             //street
             HBox streetHBox = new HBox();
@@ -253,7 +306,6 @@ public class SettingsUI extends UI
             });
 
             //pyramid
-            //six dices in a row
             HBox pyramidHBox = new HBox();
             pyramidHBox.setPrefWidth(currentSettings.getWidth());
             CheckBox pyramidCheckBox = new CheckBox(language.getPyramid());
@@ -352,7 +404,6 @@ public class SettingsUI extends UI
             vBox.getChildren().add(fullHouseHBox);
             VBox.setMargin(fullHouseHBox, new Insets(20, 20, 20, 40));
 
-
             //game over after first player won
             HBox gameOverAfterFirstPlayerWonHBox = new HBox();
             CheckBox gameOverAfterFirstPlayerWonCheckBox = new CheckBox(language.getGameOverAfterFirstPlayerWon());
@@ -405,20 +456,34 @@ public class SettingsUI extends UI
 
                     currentSettings.setDiceImageShown(diceImagesShownCheckBox.isSelected());
 
+                    currentSettings.setNumberEasyAI(getNumberEasyAI(chosenAIHBox));
+                    currentSettings.setNumberNormalAI(getNumberNormalAI(chosenAIHBox));
+                    currentSettings.setNumberHardAI(getNumberHardAI(chosenAIHBox));
+                    currentSettings.setAiDelay((int) aiDelaySlider.getValue());
+
                     Debug.write(Debug.getClassName(this) + " - " + " Settings saved");
                     /*
                     global settings restart the current game, game settings do not
                      */
-                    if (isGlobal)
+                    if (currentSettings.getTotalNumberPlayersAndAI() > 0)
                     {
-                        jsonHelper.saveSettings(globalSettings);
-                        main.nextGame(globalSettings);
+                        if (isGlobal)
+                        {
+                            jsonHelper.saveSettings(globalSettings);
+                            main.nextGame(globalSettings);
+                        }
+                        else
+                        {
+                            game.setSettings(currentSettings);
+                        }
+
+
+                        settingsStage.close();
                     }
                     else
                     {
-                        game.setSettings(currentSettings);
+                        Main.showAlert(null, "No players!");
                     }
-                    settingsStage.close();
                 }
             });
 
@@ -502,13 +567,89 @@ public class SettingsUI extends UI
 
         }
         borderPane.setCenter(accordion);
-
-
         settingsStage = new Stage();
         settingsStage.initOwner(primaryStage);
         settingsStage.initModality(Modality.APPLICATION_MODAL);
         settingsStage.centerOnScreen();
         settingsStage.setScene(settingsScene);
         settingsStage.showAndWait();
+    }
+
+    private void restoreEasyAI(HBox chosenAIHBox, Settings currentSettings)
+    {
+        restoreAICount(chosenAIHBox, currentSettings.getNumberEasyAI(), AIType.EASY);
+    }
+
+    private void restoreNormalAI(HBox chosenAIHBox, Settings currentSettings)
+    {
+        restoreAICount(chosenAIHBox, currentSettings.getNumberNormalAI(), AIType.NORMAL);
+    }
+
+    private void restoreHardAI(HBox chosenAIHBox, Settings currentSettings)
+    {
+        restoreAICount(chosenAIHBox, currentSettings.getNumberHardAI(), AIType.HARD);
+    }
+
+    private void restoreAI(HBox chosenAIHBox, Settings currentSettings)
+    {
+        restoreEasyAI(chosenAIHBox, currentSettings);
+        restoreNormalAI(chosenAIHBox, currentSettings);
+        restoreHardAI(chosenAIHBox, currentSettings);
+    }
+
+    private void restoreAICount(HBox chosenAIHBox, int numberAI, AIType currentTypeRestore)
+    {
+        for (int i = 0; i < numberAI; i++)
+        {
+            AIButton aiButton = new AIButton(currentTypeRestore);
+            aiButton.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                public void handle(ActionEvent event)
+                {
+                    aiButton.nextType();
+                }
+            });
+            chosenAIHBox.getChildren().add(aiButton);
+        }
+    }
+
+    private int getNumberEasyAI(HBox chosenAIHBox)
+    {
+        int number = 0;
+        for (Node node : chosenAIHBox.getChildren())
+        {
+            if (node.getId().equals(AIType.EASY.toString()))
+            {
+                number++;
+            }
+        }
+        return number;
+    }
+
+    private int getNumberNormalAI(HBox chosenAIHBox)
+    {
+        int number = 0;
+        for (Node node : chosenAIHBox.getChildren())
+        {
+            if (node.getId().equals(AIType.NORMAL.toString()))
+            {
+                number++;
+            }
+        }
+        return number;
+    }
+
+    private int getNumberHardAI(HBox chosenAIHBox)
+    {
+        int number = 0;
+        for (Node node : chosenAIHBox.getChildren())
+        {
+            if (node.getId().equals(AIType.HARD.toString()))
+            {
+                number++;
+            }
+        }
+        return number;
     }
 }

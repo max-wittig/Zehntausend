@@ -3,10 +3,12 @@ package com.spaghettic0der.zehntausend.AI;
 
 import com.spaghettic0der.zehntausend.GameLogic.Game;
 import com.spaghettic0der.zehntausend.GameLogic.Scoring;
-import com.spaghettic0der.zehntausend.GameLogic.Settings;
+import com.spaghettic0der.zehntausend.Extras.Settings;
+import com.spaghettic0der.zehntausend.Main;
 
 public class HardAI extends AI
 {
+
 
     public HardAI(int playerNumber, Settings settings, Game game)
     {
@@ -14,14 +16,35 @@ public class HardAI extends AI
     }
 
     @Override
-    boolean drawIsPossible()
+    public String getPlayerName()
     {
-        return (Scoring.containsMultiple(remainingDices) || containsOneOrFive(remainingDices));
+        return Main.language.getAI() + " " + Main.language.getHard() + " " + (playerNumber + 1);
     }
 
     @Override
-    void drawPossibleDices()
+    protected AIType getAiType()
     {
-
+        return AIType.HARD;
     }
+
+    @Override
+    boolean drawIsPossible()
+    {
+        return
+                (Scoring.containsMultiple(remainingDices)
+                        || containsOneOrFive(remainingDices)
+                        || Scoring.isStreet(remainingDices, settings.isStreetEnabled(), settings.getTotalDiceNumber())
+
+                );
+    }
+
+    @Override
+    protected void drawDices()
+    {
+        drawStreet();
+        drawMultiple(rollAfterYouDrawnMultiple, diceNumberWhereItMakesSenseToRiskRerolling);
+        draw5And1(drawOnlyOne);
+    }
+
+
 }
