@@ -10,7 +10,6 @@ import javafx.stage.Stage;
 
 public abstract class UI
 {
-    protected Game game;
     protected Settings globalSettings;
     protected Language language;
     protected Main main;
@@ -18,9 +17,9 @@ public abstract class UI
     protected Stage settingsStage;
     protected Stage primaryStage;
 
-    public UI(Game game, Settings globalSettings, Language language, Main main, JsonHelper jsonHelper, Stage primaryStage)
+    public UI(Settings globalSettings, Language language, Main main, JsonHelper jsonHelper, Stage primaryStage)
     {
-        this.game = game;
+
         this.globalSettings = globalSettings;
         this.language = language;
         this.main = main;

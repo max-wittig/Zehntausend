@@ -248,13 +248,12 @@ public class Main extends Application
      */
     public void initSettingsStage(Stage primaryStage)
     {
-        new SettingsUI(game, globalSettings, language, this, jsonHelper, primaryStage).show();
+        new SettingsUI(globalSettings, language, this, jsonHelper, primaryStage).show();
     }
 
     public void nextGame(Settings settings)
     {
         //end old game, so that AI bots stop playing and instance can be destroyed
-        //game.setGameOver();
         game.stopAIThreads();
         Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Next game starting...");
         game = new Game(settings, this);
@@ -269,7 +268,7 @@ public class Main extends Application
      */
     private void initMenu(Stage primaryStage)
     {
-        new MenuUI(game, globalSettings, language, main, jsonHelper, primaryStage, root).show();
+        new MenuUI(globalSettings, language, main, jsonHelper, primaryStage, root).show();
     }
 
     /**
@@ -280,6 +279,16 @@ public class Main extends Application
     {
         observableList.clear();
         addPlayersToListView();
+    }
+
+    public Game getGame()
+    {
+        return game;
+    }
+
+    public void setGame(Game game)
+    {
+        this.game = game;
     }
 
     /**

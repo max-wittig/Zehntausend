@@ -125,6 +125,7 @@ public class JsonHelper
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             return null;
         }
 

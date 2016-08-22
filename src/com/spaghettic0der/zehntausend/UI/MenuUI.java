@@ -22,9 +22,9 @@ public class MenuUI extends UI
 {
     private BorderPane root;
 
-    public MenuUI(Game game, Settings globalSettings, Language language, Main main, JsonHelper jsonHelper, Stage primaryStage, BorderPane root)
+    public MenuUI(Settings globalSettings, Language language, Main main, JsonHelper jsonHelper, Stage primaryStage, BorderPane root)
     {
-        super(game, globalSettings, language, main, jsonHelper, primaryStage);
+        super(globalSettings, language, main, jsonHelper, primaryStage);
         this.root = root;
     }
 
@@ -97,7 +97,7 @@ public class MenuUI extends UI
                 Game gameToLoad = jsonHelper.loadGame();
                 if (gameToLoad != null)
                 {
-                    game = gameToLoad;
+                    main.setGame(gameToLoad);
                     main.updateUI();
                     main.rebuildListView();
                 }
@@ -116,14 +116,14 @@ public class MenuUI extends UI
             @Override
             public void handle(ActionEvent event)
             {
-                jsonHelper.saveGame(game);
+                jsonHelper.saveGame(main.getGame());
             }
         });
 
         MenuItem quitItem = new MenuItem(language.getQuit());
         quitItem.setOnAction(event -> Platform.exit());
 
-        gameMenu.getItems().addAll(newGameItem, settingsItem, loadItem, saveItem, quitItem);
+        gameMenu.getItems().addAll(newGameItem, settingsItem, /*loadItem, saveItem,*/ quitItem);
 
         Menu cheatMenu = new Menu("Cheat");
         cheatMenu.setVisible(false);
@@ -137,7 +137,7 @@ public class MenuUI extends UI
                 Optional<String> result = textInputDialog.showAndWait();
                 if (result.isPresent())
                 {
-                    game.getCurrentPlayer().addDebugDices(textInputDialogResultToArrayList(result.get()));
+                    main.getGame().getCurrentPlayer().addDebugDices(textInputDialogResultToArrayList(result.get()));
                     main.updateUI();
                 }
             }
@@ -159,16 +159,16 @@ public class MenuUI extends UI
             @Override
             public void handle(ActionEvent event)
             {
-                ArrayList<Dice> drawnDices = game.getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices();
+                ArrayList<Dice> drawnDices = main.getGame().getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices();
                 drawnDices.clear();
-                for (int i = 0; i < game.getSettings().getTotalDiceNumber(); i++)
+                for (int i = 0; i < main.getGame().getSettings().getTotalDiceNumber(); i++)
                 {
                     Dice dice = new Dice();
                     dice.setDiceNumber(1);
                     drawnDices.add(dice);
                 }
                 main.updateScoreOfPlayersInListView();
-                game.nextPlayer();
+                main.getGame().nextPlayer();
                 main.updateUI();
             }
         });
@@ -179,8 +179,8 @@ public class MenuUI extends UI
             @Override
             public void handle(ActionEvent event)
             {
-                game.getCurrentPlayer().getTurnArrayList().clear();
-                game.getCurrentPlayer().nextTurn();
+                main.getGame().getCurrentPlayer().getTurnArrayList().clear();
+                main.getGame().getCurrentPlayer().nextTurn();
             }
         });
 
