@@ -15,7 +15,7 @@ import java.util.Random;
 public abstract class AI extends Player
 {
     protected transient Game game;
-    protected Random random;
+    protected transient Random random;
     //AI rolls dices again, even though score >= minScore
     protected float diceRollRisk = 0.2f;
 
@@ -275,7 +275,8 @@ public abstract class AI extends Player
 
     public void stopThread()
     {
-        thread.stop();
+        if (thread.isAlive())
+            thread.stop();
     }
 
     protected void drawMultiple(float rollAfterYouDrawnMultiple, int diceNumberWhereItMakesSenseToRiskRerolling)

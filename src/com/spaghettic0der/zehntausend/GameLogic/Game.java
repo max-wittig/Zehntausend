@@ -7,7 +7,6 @@ import com.spaghettic0der.zehntausend.AI.NormalAI;
 import com.spaghettic0der.zehntausend.Helper.Debug;
 import com.spaghettic0der.zehntausend.Extras.Settings;
 import com.spaghettic0der.zehntausend.Main;
-import javafx.application.Platform;
 
 import java.util.*;
 
