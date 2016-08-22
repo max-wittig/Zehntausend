@@ -476,6 +476,8 @@ public class SettingsUI extends UI
                         {
                             game.setSettings(currentSettings);
                         }
+
+
                         settingsStage.close();
                     }
                     else

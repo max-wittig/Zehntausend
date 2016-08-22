@@ -14,14 +14,6 @@ public class NormalAI extends AI
         //noRisk();
     }
 
-    private void noRisk()
-    {
-        diceNumberWhereItMakesSenseToRiskRerolling = 0;
-        drawOnlyOne = 0;
-        rollAfterYouDrawnMultiple = 0;
-        reRollAfterYouDrawnAllDices = 0;
-    }
-
     @Override
     protected AIType getAiType()
     {

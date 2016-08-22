@@ -254,7 +254,8 @@ public class Main extends Application
     public void nextGame(Settings settings)
     {
         //end old game, so that AI bots stop playing and instance can be destroyed
-        game.setGameOver();
+        //game.setGameOver();
+        game.stopAIThreads();
         Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Next game starting...");
         game = new Game(settings, this);
         updateUI();

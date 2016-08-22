@@ -7,6 +7,7 @@ import com.spaghettic0der.zehntausend.AI.NormalAI;
 import com.spaghettic0der.zehntausend.Helper.Debug;
 import com.spaghettic0der.zehntausend.Extras.Settings;
 import com.spaghettic0der.zehntausend.Main;
+import javafx.application.Platform;
 
 import java.util.*;
 
@@ -285,6 +286,17 @@ public class Game
             }
         }
         return winStringBuilder.toString();
+    }
+
+    public void stopAIThreads()
+    {
+        for (Player player : players)
+        {
+            if (player instanceof AI)
+            {
+                ((AI) player).stopThread();
+            }
+        }
     }
 
     /**

@@ -30,6 +30,7 @@ public abstract class AI extends Player
     protected int diceNumberWhereItMakesSenseToRiskRerolling = 3;
     protected boolean stopRollingIfWinScoreReached = true;
 
+    protected Thread thread;
     //sees the street 100% of the time
     protected float drawStreet = 1f;
 
@@ -39,6 +40,16 @@ public abstract class AI extends Player
         this.playerNumber = playerNumber;
         this.game = game;
         random = new Random();
+    }
+
+    protected void noRisk()
+    {
+        diceNumberWhereItMakesSenseToRiskRerolling = 0;
+        drawOnlyOne = 0;
+        diceRollRisk = 0;
+        stopRollingIfWinScoreReached = true;
+        rollAfterYouDrawnMultiple = 0;
+        reRollAfterYouDrawnAllDices = 0;
     }
 
     /**
@@ -143,7 +154,7 @@ public abstract class AI extends Player
 
     public void draw()
     {
-        Thread thread = new Thread(new Runnable()
+        thread = new Thread(new Runnable()
         {
             @Override
             public void run()
@@ -260,6 +271,11 @@ public abstract class AI extends Player
             }
         }
         return streetDices;
+    }
+
+    public void stopThread()
+    {
+        thread.stop();
     }
 
     protected void drawMultiple(float rollAfterYouDrawnMultiple, int diceNumberWhereItMakesSenseToRiskRerolling)
