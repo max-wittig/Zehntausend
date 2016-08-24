@@ -4,12 +4,22 @@ import java.util.Random;
 
 public class Dice
 {
+    private static int i = 0;
+    private final boolean isDebug = false;
     private int diceNumber;
     private transient Random random;
 
     public Dice()
     {
-        random = new Random();
+        if (isDebug)
+        {
+            i++;
+            random = new Random(i);
+        }
+        else
+        {
+            random = new Random();
+        }
     }
 
     public int getDiceNumber()

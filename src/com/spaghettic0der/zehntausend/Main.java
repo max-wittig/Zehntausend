@@ -213,32 +213,38 @@ public class Main extends Application
         final ArrayList<Dice> dices = game.getCurrentPlayer().getRemainingDices();
         for (int i = 0; i < game.getCurrentPlayer().getRemainingDices().size(); i++)
         {
-            Dice currentDice = dices.get(i);
-            Button diceButton = new Button();
-            diceButton.setPrefWidth(diceButtonSize);
-            diceButton.setPrefHeight(diceButtonSize);
-            HBox.setMargin(diceButton, new Insets(0, 2, 0, 2));
-            diceButton.setStyle("-fx-background-color: aliceblue; -fx-border-color: black");
-            diceButton.setFont(new Font(buttonFontSize));
-            diceButton.setId("" + i);
-            if (game.getSettings().isDiceImageShown())
+            if (dices.get(i) != null)
             {
-                setDiceImage(diceButton, currentDice.getDiceNumber());
-            }
-            else
-            {
-                diceButton.setText("" + game.getCurrentPlayer().getRemainingDices().get(i).getDiceNumber());
-            }
-            diceButton.setOnAction(new EventHandler<ActionEvent>()
-            {
-                @Override
-                public void handle(ActionEvent event)
+                Dice currentDice = dices.get(i);
+                if (currentDice != null && game.getCurrentPlayer().getRemainingDices().contains(currentDice))
                 {
-                    game.moveToDrawnDices(currentDice);
-                    updateUI();
+                    Button diceButton = new Button();
+                    diceButton.setPrefWidth(diceButtonSize);
+                    diceButton.setPrefHeight(diceButtonSize);
+                    HBox.setMargin(diceButton, new Insets(0, 2, 0, 2));
+                    diceButton.setStyle("-fx-background-color: aliceblue; -fx-border-color: black");
+                    diceButton.setFont(new Font(buttonFontSize));
+                    diceButton.setId("" + i);
+                    if (game.getSettings().isDiceImageShown())
+                    {
+                        setDiceImage(diceButton, currentDice.getDiceNumber());
+                    }
+                    else
+                    {
+                        diceButton.setText("" + game.getCurrentPlayer().getRemainingDices().get(i).getDiceNumber());
+                    }
+                    diceButton.setOnAction(new EventHandler<ActionEvent>()
+                    {
+                        @Override
+                        public void handle(ActionEvent event)
+                        {
+                            game.moveToDrawnDices(currentDice);
+                            updateUI();
+                        }
+                    });
+                    remainingDiceHBox.getChildren().add(diceButton);
                 }
-            });
-            remainingDiceHBox.getChildren().add(diceButton);
+            }
         }
     }
 

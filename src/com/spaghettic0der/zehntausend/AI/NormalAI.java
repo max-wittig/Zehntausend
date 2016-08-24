@@ -29,7 +29,9 @@ public class NormalAI extends AI
     @Override
     boolean drawIsPossible()
     {
-        return (Scoring.containsMultiple(remainingDices) || containsOneOrFive(remainingDices));
+        return (Scoring.containsMultiple(remainingDices) ||
+                containsOneOrFive(remainingDices) ||
+                Scoring.isStreet(remainingDices, settings.isStreetEnabled(), settings.getTotalDiceNumber()));
     }
 
 
@@ -37,8 +39,8 @@ public class NormalAI extends AI
     protected void drawDices()
     {
         drawStreet();
-        drawMultiple(rollAfterYouDrawnMultiple, diceNumberWhereItMakesSenseToRiskRerolling);
-        draw5And1(drawOnlyOne);
+        drawMultiple();
+        draw5And1();
 
     }
 

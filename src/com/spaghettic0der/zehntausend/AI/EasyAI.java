@@ -10,6 +10,7 @@ public class EasyAI extends AI
     public EasyAI(int playerNumber, Settings settings, Game game)
     {
         super(playerNumber, settings, game);
+        stopDrawing5And1 = 0.3f;
     }
 
     @Override
@@ -43,6 +44,7 @@ public class EasyAI extends AI
     @Override
     protected void drawDices()
     {
-
+        draw5And1();
+        drawMultiple();
     }
 }

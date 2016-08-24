@@ -42,8 +42,8 @@ public class HardAI extends AI
     protected void drawDices()
     {
         drawStreet();
-        drawMultiple(rollAfterYouDrawnMultiple, diceNumberWhereItMakesSenseToRiskRerolling);
-        draw5And1(drawOnlyOne);
+        drawMultiple();
+        draw5And1();
     }
 
 
