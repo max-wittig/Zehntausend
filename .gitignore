@@ -20,3 +20,4 @@ game.json
 *.class
 .class
 debug.txt
+target/
