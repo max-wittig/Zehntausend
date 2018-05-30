@@ -1,13 +1,13 @@
 package com.spaghettic0der.zehntausend;
 
-import com.spaghettic0der.zehntausend.Helper.Debug;
-import com.spaghettic0der.zehntausend.Helper.JsonHelper;
-import com.spaghettic0der.zehntausend.Extras.Language;
-import com.spaghettic0der.zehntausend.Extras.Settings;
-import com.spaghettic0der.zehntausend.GameLogic.*;
-import com.spaghettic0der.zehntausend.UI.CustomListView;
-import com.spaghettic0der.zehntausend.UI.MenuUI;
-import com.spaghettic0der.zehntausend.UI.SettingsUI;
+import com.spaghettic0der.zehntausend.helper.Debug;
+import com.spaghettic0der.zehntausend.helper.JsonHelper;
+import com.spaghettic0der.zehntausend.extras.Language;
+import com.spaghettic0der.zehntausend.extras.Settings;
+import com.spaghettic0der.zehntausend.gamelogic.*;
+import com.spaghettic0der.zehntausend.ui.CustomListView;
+import com.spaghettic0der.zehntausend.ui.MenuUI;
+import com.spaghettic0der.zehntausend.ui.SettingsUI;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -97,14 +97,14 @@ public class Main extends Application
     {
         for (int i = 1; i <= 6; i++)
         {
-            Image image = new Image(getClass().getResourceAsStream("Images/" + i + ".png"));
+            Image image = new Image(getClass().getResourceAsStream("/images/" + i + ".png"));
             imageArrayList.add(image);
         }
     }
 
     /**
      * is called everytime a player pressed roll or next
-     * refreshes labels and recreated whole UI
+     * refreshes labels and recreated whole ui
      */
     public void updateUI()
     {
@@ -138,12 +138,12 @@ public class Main extends Application
             needsToBeConfirmedLabel.setText("");
         }
         listView.setHScrollBarEnabled(false);
-        Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " UI updated");
+        Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " ui updated");
     }
 
     /**
      * gets drawn dice buttons from current player and draws them on the screen again
-     * is called everytime something in the UI changes
+     * is called everytime something in the ui changes
      */
     private void createDrawnDiceButtons()
     {
@@ -206,7 +206,7 @@ public class Main extends Application
 
     /**
      * gets RemainingDiceButtons from current player and draws them on the screen again
-     * is called everytime something in the UI changes
+     * is called everytime something in the ui changes
      */
     private void createRemainingDiceButtons()
     {
@@ -253,7 +253,7 @@ public class Main extends Application
 
     public void nextGame(Settings settings)
     {
-        //end old game, so that AI bots stop playing and instance can be destroyed
+        //end old game, so that ai bots stop playing and instance can be destroyed
         game.stopAIThreads();
         Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Next game starting...");
         game = new Game(settings, this);
@@ -447,7 +447,7 @@ public class Main extends Application
     }
 
     /**
-     * builds whole UI and calls subfunctions e.g. initMenu, initListView
+     * builds whole ui and calls subfunctions e.g. initMenu, initListView
      * @param primaryStage stage
      */
     private void initUI(Stage primaryStage)
