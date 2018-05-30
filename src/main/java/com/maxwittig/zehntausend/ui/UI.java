@@ -1,14 +1,15 @@
-package com.spaghettic0der.zehntausend.ui;
+package com.maxwittig.zehntausend.ui;
 
 
-import com.spaghettic0der.zehntausend.*;
-import com.spaghettic0der.zehntausend.helper.JsonHelper;
-import com.spaghettic0der.zehntausend.extras.Language;
-import com.spaghettic0der.zehntausend.extras.Settings;
+import com.maxwittig.zehntausend.Main;
+import com.maxwittig.zehntausend.extras.Settings;
+import com.maxwittig.zehntausend.Main;
+import com.maxwittig.zehntausend.extras.Language;
+import com.maxwittig.zehntausend.extras.Settings;
+import com.maxwittig.zehntausend.helper.JsonHelper;
 import javafx.stage.Stage;
 
-public abstract class UI
-{
+public abstract class UI {
     protected Settings globalSettings;
     protected Language language;
     protected Main main;
@@ -16,8 +17,7 @@ public abstract class UI
     protected Stage settingsStage;
     protected Stage primaryStage;
 
-    public UI(Settings globalSettings, Language language, Main main, JsonHelper jsonHelper, Stage primaryStage)
-    {
+    public UI(Settings globalSettings, Language language, Main main, JsonHelper jsonHelper, Stage primaryStage) {
 
         this.globalSettings = globalSettings;
         this.language = language;

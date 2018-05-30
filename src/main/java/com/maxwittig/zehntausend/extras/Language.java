@@ -1,8 +1,7 @@
-package com.spaghettic0der.zehntausend.extras;
+package com.maxwittig.zehntausend.extras;
 
 
-public class Language
-{
+public class Language {
     private String languageFile = "English";
     private String winAlertHeaderText = "You won!";
     private String winAlertContentText = "Congrats";
@@ -59,268 +58,215 @@ public class Language
     private String add = "Add";
     private String delay = "Delay";
 
-    public String getDelay()
-    {
+    public String getDelay() {
         return delay;
     }
 
-    public String getClear()
-    {
+    public String getClear() {
         return clear;
     }
 
-    public String getAdd()
-    {
+    public String getAdd() {
         return add;
     }
 
-    public String getEasy()
-    {
+    public String getEasy() {
         return easy;
     }
 
-    public String getNormal()
-    {
+    public String getNormal() {
         return normal;
     }
 
-    public String getHard()
-    {
+    public String getHard() {
         return hard;
     }
 
-    public String getQuit()
-    {
+    public String getQuit() {
         return quit;
     }
 
-    public String getAI()
-    {
+    public String getAI() {
         return AI;
     }
 
-    public String getApplicationNeedsToBeRestarted()
-    {
+    public String getApplicationNeedsToBeRestarted() {
         return applicationNeedsToBeRestarted;
     }
 
-    public String getError()
-    {
+    public String getError() {
         return error;
     }
 
-    public String getCouldNotLoadSave()
-    {
+    public String getCouldNotLoadSave() {
         return couldNotLoadSave;
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return language;
     }
 
-    public String getPlayer()
-    {
+    public String getPlayer() {
         return player;
     }
 
-    public String getSettings()
-    {
+    public String getSettings() {
         return settings;
     }
 
-    public String getWinScore()
-    {
+    public String getWinScore() {
         return winScore;
     }
 
-    public String getMinScoreToSave()
-    {
+    public String getMinScoreToSave() {
         return minScoreToSave;
     }
 
-    public String getStreet()
-    {
+    public String getStreet() {
         return street;
     }
 
-    public String getThreeTimesTwo()
-    {
+    public String getThreeTimesTwo() {
         return threeTimesTwo;
     }
 
-    public String getSixDicesInARow()
-    {
+    public String getSixDicesInARow() {
         return sixDicesInARow;
     }
 
-    public String getPyramid()
-    {
+    public String getPyramid() {
         return pyramid;
     }
 
-    public String getConfirmationScore()
-    {
+    public String getConfirmationScore() {
         return confirmationScore;
     }
 
-    public String getFullHouse()
-    {
+    public String getFullHouse() {
         return fullHouse;
     }
 
-    public String getGameOverAfterFirstPlayerWon()
-    {
+    public String getGameOverAfterFirstPlayerWon() {
         return gameOverAfterFirstPlayerWon;
     }
 
-    public String getShowDiceImages()
-    {
+    public String getShowDiceImages() {
         return showDiceImages;
     }
 
-    public String getSave()
-    {
+    public String getSave() {
         return save;
     }
 
-    public String getCancel()
-    {
+    public String getCancel() {
         return cancel;
     }
 
-    public String getGame()
-    {
+    public String getGame() {
         return game;
     }
 
-    public String getNewString()
-    {
+    public String getNewString() {
         return newString;
     }
 
-    public String getLoad()
-    {
+    public String getLoad() {
         return load;
     }
 
-    public String getAbout()
-    {
+    public String getAbout() {
         return about;
     }
 
-    public String getZehntausend()
-    {
+    public String getZehntausend() {
         return zehntausend;
     }
 
-    public String getVersion()
-    {
+    public String getVersion() {
         return version;
     }
 
-    public String getAboutContentText()
-    {
+    public String getAboutContentText() {
         return aboutContentText;
     }
 
-    public String getWonWith()
-    {
+    public String getWonWith() {
         return wonWith;
     }
 
-    public String getRoll()
-    {
+    public String getRoll() {
         return roll;
     }
 
-    public String getNext()
-    {
+    public String getNext() {
         return next;
     }
 
-    public String getPlayers()
-    {
+    public String getPlayers() {
         return players;
     }
 
-    public String getDices()
-    {
+    public String getDices() {
         return dices;
     }
 
-    public String getGlobalSettings()
-    {
+    public String getGlobalSettings() {
         return globalSettings;
     }
 
-    public String getGameSettings()
-    {
+    public String getGameSettings() {
         return gameSettings;
     }
 
-    public String getInvalidMove()
-    {
+    public String getInvalidMove() {
         return invalidMove;
     }
 
-    public String getThatsNotAllowed()
-    {
+    public String getThatsNotAllowed() {
         return thatsNotAllowed;
     }
 
-    public String getCurrentPlayer()
-    {
+    public String getCurrentPlayer() {
         return currentPlayer;
     }
 
-    public String getScore()
-    {
+    public String getScore() {
         return score;
     }
 
-    public String getScoreInRound()
-    {
+    public String getScoreInRound() {
         return scoreInRound;
     }
 
-    public String getScoreNeedsToBeConfirmed()
-    {
+    public String getScoreNeedsToBeConfirmed() {
         return scoreNeedsToBeConfirmed;
     }
 
-    public String getWinAlertHeaderText()
-    {
+    public String getWinAlertHeaderText() {
         return winAlertHeaderText;
     }
 
-    public String getWinAlertContentText()
-    {
+    public String getWinAlertContentText() {
         return winAlertContentText;
     }
 
-    public String getGameOverAlertHeader()
-    {
+    public String getGameOverAlertHeader() {
         return gameOverAlertHeader;
     }
 
-    public void setGameOverAlertHeader(String gameOverAlertHeader)
-    {
+    public void setGameOverAlertHeader(String gameOverAlertHeader) {
         this.gameOverAlertHeader = gameOverAlertHeader;
     }
 
-    public String getGameOverAlertContent()
-    {
+    public String getGameOverAlertContent() {
         return gameOverAlertContent;
     }
 
-    public String getGameOverPlace()
-    {
+    public String getGameOverPlace() {
         return gameOverPlace;
     }
 
-    public String getRestoreDefault()
-    {
+    public String getRestoreDefault() {
         return restoreDefault;
     }
 }

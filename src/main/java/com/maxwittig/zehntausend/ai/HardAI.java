@@ -1,35 +1,34 @@
-package com.spaghettic0der.zehntausend.ai;
+package com.maxwittig.zehntausend.ai;
 
 
-import com.spaghettic0der.zehntausend.gamelogic.Game;
-import com.spaghettic0der.zehntausend.gamelogic.Scoring;
-import com.spaghettic0der.zehntausend.extras.Settings;
-import com.spaghettic0der.zehntausend.Main;
+import com.maxwittig.zehntausend.Main;
+import com.maxwittig.zehntausend.extras.Settings;
+import com.maxwittig.zehntausend.gamelogic.Game;
+import com.maxwittig.zehntausend.gamelogic.Scoring;
+import com.maxwittig.zehntausend.Main;
+import com.maxwittig.zehntausend.extras.Settings;
+import com.maxwittig.zehntausend.gamelogic.Game;
+import com.maxwittig.zehntausend.gamelogic.Scoring;
 
-public class HardAI extends AI
-{
+public class HardAI extends AI {
 
 
-    public HardAI(int playerNumber, Settings settings, Game game)
-    {
+    public HardAI(int playerNumber, Settings settings, Game game) {
         super(playerNumber, settings, game);
     }
 
     @Override
-    public String getPlayerName()
-    {
+    public String getPlayerName() {
         return Main.language.getAI() + " " + Main.language.getHard() + " " + (playerNumber + 1);
     }
 
     @Override
-    protected AIType getAiType()
-    {
+    protected AIType getAiType() {
         return AIType.HARD;
     }
 
     @Override
-    boolean drawIsPossible()
-    {
+    boolean drawIsPossible() {
         return
                 (Scoring.containsMultiple(remainingDices)
                         || containsOneOrFive(remainingDices)
@@ -39,8 +38,7 @@ public class HardAI extends AI
     }
 
     @Override
-    protected void drawDices()
-    {
+    protected void drawDices() {
         drawStreet();
         drawMultiple(rollAfterYouDrawnMultiple, diceNumberWhereItMakesSenseToRiskRerolling);
         draw5And1(drawOnlyOne);

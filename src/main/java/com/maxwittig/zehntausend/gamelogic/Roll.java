@@ -1,4 +1,4 @@
-package com.spaghettic0der.zehntausend.gamelogic;
+package com.maxwittig.zehntausend.gamelogic;
 
 import java.util.ArrayList;
 
@@ -6,13 +6,11 @@ import java.util.ArrayList;
  * saves the drawn dices in an arrayList
  * roll is all drawn dices on the screen at once
  */
-public class Roll
-{
+public class Roll {
 
     private ArrayList<Dice> drawnDices;
 
-    public Roll()
-    {
+    public Roll() {
         drawnDices = new ArrayList<>();
     }
 
@@ -22,34 +20,27 @@ public class Roll
      * @param diceNumber total number of dices in the game
      * @return
      */
-    public boolean needsConfirmation(int diceNumber)
-    {
-        if (getDrawnDices().size() >= diceNumber)
-        {
+    public boolean needsConfirmation(int diceNumber) {
+        if (getDrawnDices().size() >= diceNumber) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
 
-    public ArrayList<Dice> getDrawnDices()
-    {
+    public ArrayList<Dice> getDrawnDices() {
         return drawnDices;
     }
 
     /**
      * now the object is removed instead of removing the number
+     *
      * @param number
      */
     @Deprecated
-    public void removeDiceWithNumber(int number)
-    {
-        for (Dice toRemove : getDrawnDices())
-        {
-            if (toRemove.getDiceNumber() == number)
-            {
+    public void removeDiceWithNumber(int number) {
+        for (Dice toRemove : getDrawnDices()) {
+            if (toRemove.getDiceNumber() == number) {
                 getDrawnDices().remove(toRemove);
                 break;
             }
@@ -58,10 +49,10 @@ public class Roll
 
     /**
      * removes dice from roll
+     *
      * @param dice
      */
-    public void removeDice(Dice dice)
-    {
+    public void removeDice(Dice dice) {
         drawnDices.remove(dice);
     }
 }

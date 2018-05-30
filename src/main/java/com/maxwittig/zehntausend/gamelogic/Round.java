@@ -1,4 +1,4 @@
-package com.spaghettic0der.zehntausend.gamelogic;
+package com.maxwittig.zehntausend.gamelogic;
 
 import java.util.ArrayList;
 
@@ -7,18 +7,15 @@ import java.util.ArrayList;
  * needs to be created and a new roll is thrown
  * all rolls of a turn are saved in the roundArrayList
  */
-public class Round
-{
+public class Round {
     private ArrayList<Roll> rollArrayList;
 
-    public Round()
-    {
+    public Round() {
         rollArrayList = new ArrayList<>();
         nextRoll();
     }
 
-    public ArrayList<Roll> getRollArrayList()
-    {
+    public ArrayList<Roll> getRollArrayList() {
         return rollArrayList;
     }
 
@@ -27,35 +24,29 @@ public class Round
      *
      * @return
      */
-    public boolean isValid()
-    {
-        for (Roll currentRoll : rollArrayList)
-        {
-            if (currentRoll.getDrawnDices().isEmpty())
-            {
+    public boolean isValid() {
+        for (Roll currentRoll : rollArrayList) {
+            if (currentRoll.getDrawnDices().isEmpty()) {
                 return false;
             }
         }
         return true;
     }
 
-    public Roll getCurrentRoll()
-    {
+    public Roll getCurrentRoll() {
         return rollArrayList.get(rollArrayList.size() - 1);
     }
 
     /**
      * loops through all rolls and adds them to a diceArrayList
+     *
      * @return diceArrayList
      */
-    public ArrayList<Dice> getDrawnDices()
-    {
+    public ArrayList<Dice> getDrawnDices() {
         ArrayList<Dice> dices = new ArrayList<>();
 
-        for (Roll currentRoll : getRollArrayList())
-        {
-            for (Dice currentDice : currentRoll.getDrawnDices())
-            {
+        for (Roll currentRoll : getRollArrayList()) {
+            for (Dice currentDice : currentRoll.getDrawnDices()) {
                 dices.add(currentDice);
             }
         }
@@ -63,8 +54,7 @@ public class Round
         return dices;
     }
 
-    public void nextRoll()
-    {
+    public void nextRoll() {
         Roll roll = new Roll();
         rollArrayList.add(roll);
     }

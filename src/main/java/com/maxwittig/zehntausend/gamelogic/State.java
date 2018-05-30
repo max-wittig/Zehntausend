@@ -1,11 +1,10 @@
-package com.spaghettic0der.zehntausend.gamelogic;
+package com.maxwittig.zehntausend.gamelogic;
 
 
 /**
  * state for validCheck in the Game Class
  */
-public enum State
-{
+public enum State {
     WIN,
     ROLL,
     NEXT

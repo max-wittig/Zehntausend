@@ -1,12 +1,18 @@
-package com.spaghettic0der.zehntausend.ui;
+package com.maxwittig.zehntausend.ui;
 
 
-import com.spaghettic0der.zehntausend.*;
-import com.spaghettic0der.zehntausend.helper.JsonHelper;
-import com.spaghettic0der.zehntausend.extras.Language;
-import com.spaghettic0der.zehntausend.gamelogic.Dice;
-import com.spaghettic0der.zehntausend.gamelogic.Game;
-import com.spaghettic0der.zehntausend.extras.Settings;
+import com.maxwittig.zehntausend.Main;
+import com.maxwittig.zehntausend.extras.Language;
+import com.maxwittig.zehntausend.extras.Settings;
+import com.maxwittig.zehntausend.gamelogic.Dice;
+import com.maxwittig.zehntausend.gamelogic.Game;
+import com.maxwittig.zehntausend.helper.JsonHelper;
+import com.maxwittig.zehntausend.Main;
+import com.maxwittig.zehntausend.extras.Language;
+import com.maxwittig.zehntausend.extras.Settings;
+import com.maxwittig.zehntausend.gamelogic.Dice;
+import com.maxwittig.zehntausend.gamelogic.Game;
+import com.maxwittig.zehntausend.helper.JsonHelper;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,12 +24,10 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class MenuUI extends UI
-{
+public class MenuUI extends UI {
     private BorderPane root;
 
-    public MenuUI(Settings globalSettings, Language language, Main main, JsonHelper jsonHelper, Stage primaryStage, BorderPane root)
-    {
+    public MenuUI(Settings globalSettings, Language language, Main main, JsonHelper jsonHelper, Stage primaryStage, BorderPane root) {
         super(globalSettings, language, main, jsonHelper, primaryStage);
         this.root = root;
     }
@@ -38,13 +42,11 @@ public class MenuUI extends UI
      * @param result
      * @return
      */
-    private ArrayList<Integer> textInputDialogResultToArrayList(String result)
-    {
+    private ArrayList<Integer> textInputDialogResultToArrayList(String result) {
         System.out.println(result);
         String[] diceNumbersStringArray = result.toString().split(" ");
         ArrayList<Integer> numbers = new ArrayList<Integer>();
-        for (String numberString : diceNumbersStringArray)
-        {
+        for (String numberString : diceNumbersStringArray) {
             numbers.add(Integer.parseInt(numberString));
         }
         return numbers;
@@ -53,8 +55,7 @@ public class MenuUI extends UI
     /**
      * is called by the change language dialog
      */
-    private void applySettings()
-    {
+    private void applySettings() {
         jsonHelper.saveSettings(globalSettings);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText("");
@@ -63,46 +64,36 @@ public class MenuUI extends UI
     }
 
     @Override
-    public void show()
-    {
+    public void show() {
         MenuBar menuBar = new MenuBar();
         menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
 
         Menu gameMenu = new Menu(language.getGame());
 
         MenuItem newGameItem = new MenuItem(language.getNewString());
-        newGameItem.setOnAction(new EventHandler<ActionEvent>()
-        {
+        newGameItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
+            public void handle(ActionEvent event) {
                 main.nextGame(globalSettings);
             }
         });
         MenuItem settingsItem = new MenuItem(language.getSettings());
-        settingsItem.setOnAction(new EventHandler<ActionEvent>()
-        {
+        settingsItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
+            public void handle(ActionEvent event) {
                 main.initSettingsStage(primaryStage);
             }
         });
         MenuItem loadItem = new MenuItem(language.getLoad());
-        loadItem.setOnAction(new EventHandler<ActionEvent>()
-        {
+        loadItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
+            public void handle(ActionEvent event) {
                 Game gameToLoad = jsonHelper.loadGame();
-                if (gameToLoad != null)
-                {
+                if (gameToLoad != null) {
                     main.setGame(gameToLoad);
                     main.updateUI();
                     main.rebuildListView();
-                }
-                else
-                {
+                } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setHeaderText(language.getError());
                     alert.setContentText(language.getCouldNotLoadSave());
@@ -111,11 +102,9 @@ public class MenuUI extends UI
             }
         });
         MenuItem saveItem = new MenuItem(language.getSave());
-        saveItem.setOnAction(new EventHandler<ActionEvent>()
-        {
+        saveItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
+            public void handle(ActionEvent event) {
                 jsonHelper.saveGame(main.getGame());
             }
         });
@@ -128,15 +117,12 @@ public class MenuUI extends UI
         Menu cheatMenu = new Menu("Cheat");
         cheatMenu.setVisible(false);
         MenuItem remainingDicesMenuItem = new MenuItem("Remaining Dices");
-        remainingDicesMenuItem.setOnAction(new EventHandler<ActionEvent>()
-        {
+        remainingDicesMenuItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
+            public void handle(ActionEvent event) {
                 TextInputDialog textInputDialog = new TextInputDialog();
                 Optional<String> result = textInputDialog.showAndWait();
-                if (result.isPresent())
-                {
+                if (result.isPresent()) {
                     main.getGame().getCurrentPlayer().addDebugDices(textInputDialogResultToArrayList(result.get()));
                     main.updateUI();
                 }
@@ -144,25 +130,20 @@ public class MenuUI extends UI
         });
 
         MenuItem showDebugScoreMenuItem = new MenuItem("Show Debug Score");
-        showDebugScoreMenuItem.setOnAction(new EventHandler<ActionEvent>()
-        {
+        showDebugScoreMenuItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
+            public void handle(ActionEvent event) {
                 main.getScoreLabel().setVisible(true);
             }
         });
 
         MenuItem instaWin = new MenuItem("InstaWin");
-        instaWin.setOnAction(new EventHandler<ActionEvent>()
-        {
+        instaWin.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
+            public void handle(ActionEvent event) {
                 ArrayList<Dice> drawnDices = main.getGame().getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices();
                 drawnDices.clear();
-                for (int i = 0; i < main.getGame().getSettings().getTotalDiceNumber(); i++)
-                {
+                for (int i = 0; i < main.getGame().getSettings().getTotalDiceNumber(); i++) {
                     Dice dice = new Dice();
                     dice.setDiceNumber(1);
                     drawnDices.add(dice);
@@ -174,11 +155,9 @@ public class MenuUI extends UI
         });
 
         MenuItem clearScoreItem = new MenuItem("Clear Score");
-        clearScoreItem.setOnAction(new EventHandler<ActionEvent>()
-        {
+        clearScoreItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
+            public void handle(ActionEvent event) {
                 main.getGame().getCurrentPlayer().getTurnArrayList().clear();
                 main.getGame().getCurrentPlayer().nextTurn();
             }
@@ -188,21 +167,17 @@ public class MenuUI extends UI
 
         Menu languageMenu = new Menu(language.getLanguage());
         MenuItem deItem = new MenuItem("de");
-        deItem.setOnAction(new EventHandler<ActionEvent>()
-        {
+        deItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
+            public void handle(ActionEvent event) {
                 globalSettings.setSelectedLanguage(deItem.getText());
                 applySettings();
             }
         });
         MenuItem engItem = new MenuItem("eng");
-        engItem.setOnAction(new EventHandler<ActionEvent>()
-        {
+        engItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
+            public void handle(ActionEvent event) {
                 globalSettings.setSelectedLanguage(engItem.getText());
                 applySettings();
             }
@@ -211,11 +186,9 @@ public class MenuUI extends UI
 
         Menu aboutMenu = new Menu(language.getAbout());
         MenuItem infoItem = new MenuItem(language.getZehntausend());
-        infoItem.setOnAction(new EventHandler<ActionEvent>()
-        {
+        infoItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
+            public void handle(ActionEvent event) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setHeaderText(language.getAbout() + " " + language.getZehntausend() + "\n" + language.getVersion() + ": " + Main.VERSION_NUMBER);
                 alert.setContentText(language.getAboutContentText());
@@ -228,23 +201,16 @@ public class MenuUI extends UI
 
         menuBar.getMenus().addAll(gameMenu, languageMenu, cheatMenu, aboutMenu);
         StringBuilder cheatWaiter = new StringBuilder();
-        root.setOnKeyPressed(new EventHandler<KeyEvent>()
-        {
+        root.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
-            public void handle(KeyEvent event)
-            {
+            public void handle(KeyEvent event) {
                 String cheatWord = "cheat";
-                if (cheatWaiter.toString().equals(cheatWord))
-                {
+                if (cheatWaiter.toString().equals(cheatWord)) {
                     cheatWaiter.delete(0, cheatWaiter.length());
                     cheatMenu.setVisible(true);
-                }
-                else if (!cheatMenu.isVisible() && cheatWaiter.length() >= cheatWord.length())
-                {
+                } else if (!cheatMenu.isVisible() && cheatWaiter.length() >= cheatWord.length()) {
                     cheatWaiter.delete(0, cheatWaiter.length());
-                }
-                else if (!cheatMenu.isVisible())
-                {
+                } else if (!cheatMenu.isVisible()) {
                     cheatWaiter.append(event.getText());
                 }
 

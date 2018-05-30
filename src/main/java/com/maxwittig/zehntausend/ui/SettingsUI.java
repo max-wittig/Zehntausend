@@ -1,12 +1,18 @@
-package com.spaghettic0der.zehntausend.ui;
+package com.maxwittig.zehntausend.ui;
 
 
-import com.spaghettic0der.zehntausend.*;
-import com.spaghettic0der.zehntausend.ai.AIType;
-import com.spaghettic0der.zehntausend.helper.Debug;
-import com.spaghettic0der.zehntausend.helper.JsonHelper;
-import com.spaghettic0der.zehntausend.extras.Language;
-import com.spaghettic0der.zehntausend.extras.Settings;
+import com.maxwittig.zehntausend.Main;
+import com.maxwittig.zehntausend.ai.AIType;
+import com.maxwittig.zehntausend.extras.Language;
+import com.maxwittig.zehntausend.extras.Settings;
+import com.maxwittig.zehntausend.helper.Debug;
+import com.maxwittig.zehntausend.helper.JsonHelper;
+import com.maxwittig.zehntausend.Main;
+import com.maxwittig.zehntausend.ai.AIType;
+import com.maxwittig.zehntausend.extras.Language;
+import com.maxwittig.zehntausend.extras.Settings;
+import com.maxwittig.zehntausend.helper.Debug;
+import com.maxwittig.zehntausend.helper.JsonHelper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -22,22 +28,20 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import java.util.ArrayList;
 
-public class SettingsUI extends UI
-{
+public class SettingsUI extends UI {
     private static boolean selfTrigger = false;
     private final int MAX_AI = 4;
     private AIType currentType = null;
 
-    public SettingsUI(Settings globalSettings, Language language, Main main, JsonHelper jsonHelper, Stage primaryStage)
-    {
+    public SettingsUI(Settings globalSettings, Language language, Main main, JsonHelper jsonHelper, Stage primaryStage) {
         super(globalSettings, language, main, jsonHelper, primaryStage);
     }
 
     @Override
-    public void show()
-    {
+    public void show() {
         ArrayList<Settings> settingsArrayList = new ArrayList<>();
         Settings gameSettings = main.getGame().getSettings();
 
@@ -46,8 +50,7 @@ public class SettingsUI extends UI
         /*
         player has loaded a game, otherwise settings are identical
          */
-        if (gameSettings != globalSettings)
-        {
+        if (gameSettings != globalSettings) {
             gameSettings.setSettingsName(language.getGameSettings());
             settingsArrayList.add(gameSettings);
         }
@@ -63,13 +66,11 @@ public class SettingsUI extends UI
          * settings of game and globalSettings can be individually changed
          * ui elements are created twice
          */
-        for (Settings currentSettings : settingsArrayList)
-        {
+        for (Settings currentSettings : settingsArrayList) {
             TitledPane titledPane = new TitledPane();
             titledPane.setText(currentSettings.getSettingsName());
             boolean isGlobal = (currentSettings.getSettingsName().equals(globalSettings.getSettingsName()));
-            if (isGlobal)
-            {
+            if (isGlobal) {
                 accordion.setExpandedPane(titledPane);
             }
             VBox vBox = new VBox();
@@ -78,8 +79,7 @@ public class SettingsUI extends UI
             Label playerLabel = new Label(language.getPlayers() + ":");
             playerLabel.setMinWidth(minWidth);
             Slider playerSlider = new Slider(0, 6, currentSettings.getTotalPlayers());
-            if (!isGlobal)
-            {
+            if (!isGlobal) {
                 playerSlider.setDisable(true);
             }
             playerSlider.setMajorTickUnit(1);
@@ -101,13 +101,10 @@ public class SettingsUI extends UI
             aiLabel.setMinWidth(minWidth);
             Button aiAddButton = new Button(language.getAdd());
             currentType = AIType.NORMAL;
-            aiAddButton.setOnAction(new EventHandler<ActionEvent>()
-            {
+            aiAddButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(ActionEvent event)
-                {
-                    if (chosenAIHBox.getChildren().size() <= MAX_AI)
-                    {
+                public void handle(ActionEvent event) {
+                    if (chosenAIHBox.getChildren().size() <= MAX_AI) {
                         AIButton aiButton = new AIButton(currentType);
                         aiButton.setOnAction(e ->
                         {
@@ -198,27 +195,19 @@ public class SettingsUI extends UI
             HBox.setHgrow(streetTextField, Priority.ALWAYS);
             VBox.setMargin(streetHBox, new Insets(20, 20, 20, 20));
 
-            if (!streetCheckBox.isSelected())
-            {
+            if (!streetCheckBox.isSelected()) {
                 streetTextField.setDisable(true);
-            }
-            else
-            {
+            } else {
                 streetTextField.setDisable(false);
             }
 
 
-            streetCheckBox.setOnAction(new EventHandler<ActionEvent>()
-            {
+            streetCheckBox.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(ActionEvent event)
-                {
-                    if (!streetCheckBox.isSelected())
-                    {
+                public void handle(ActionEvent event) {
+                    if (!streetCheckBox.isSelected()) {
                         streetTextField.setDisable(true);
-                    }
-                    else
-                    {
+                    } else {
                         streetTextField.setDisable(false);
                     }
                 }
@@ -239,26 +228,18 @@ public class SettingsUI extends UI
             HBox.setHgrow(threeXTwoTextField, Priority.ALWAYS);
             VBox.setMargin(threeXTwoHBox, new Insets(20, 20, 20, 20));
 
-            if (!threeXTwoCheckBox.isSelected())
-            {
+            if (!threeXTwoCheckBox.isSelected()) {
                 threeXTwoTextField.setDisable(true);
-            }
-            else
-            {
+            } else {
                 threeXTwoTextField.setDisable(false);
             }
 
-            threeXTwoCheckBox.setOnAction(new EventHandler<ActionEvent>()
-            {
+            threeXTwoCheckBox.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(ActionEvent event)
-                {
-                    if (!threeXTwoCheckBox.isSelected())
-                    {
+                public void handle(ActionEvent event) {
+                    if (!threeXTwoCheckBox.isSelected()) {
                         threeXTwoTextField.setDisable(true);
-                    }
-                    else
-                    {
+                    } else {
                         threeXTwoTextField.setDisable(false);
                     }
                 }
@@ -279,26 +260,18 @@ public class SettingsUI extends UI
             HBox.setHgrow(sixDicesInARowTextField, Priority.ALWAYS);
             VBox.setMargin(sixDicesInARowHBox, new Insets(20, 20, 20, 20));
 
-            if (!sixDicesInARowCheckBox.isSelected())
-            {
+            if (!sixDicesInARowCheckBox.isSelected()) {
                 sixDicesInARowTextField.setDisable(true);
-            }
-            else
-            {
+            } else {
                 sixDicesInARowTextField.setDisable(false);
             }
 
-            sixDicesInARowCheckBox.setOnAction(new EventHandler<ActionEvent>()
-            {
+            sixDicesInARowCheckBox.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(ActionEvent event)
-                {
-                    if (!sixDicesInARowCheckBox.isSelected())
-                    {
+                public void handle(ActionEvent event) {
+                    if (!sixDicesInARowCheckBox.isSelected()) {
                         sixDicesInARowTextField.setDisable(true);
-                    }
-                    else
-                    {
+                    } else {
                         sixDicesInARowTextField.setDisable(false);
                     }
                 }
@@ -319,26 +292,18 @@ public class SettingsUI extends UI
             HBox.setHgrow(pyramidTextField, Priority.ALWAYS);
             VBox.setMargin(pyramidHBox, new Insets(20, 20, 20, 20));
 
-            if (!pyramidCheckBox.isSelected())
-            {
+            if (!pyramidCheckBox.isSelected()) {
                 pyramidTextField.setDisable(true);
-            }
-            else
-            {
+            } else {
                 pyramidTextField.setDisable(false);
             }
 
-            pyramidCheckBox.setOnAction(new EventHandler<ActionEvent>()
-            {
+            pyramidCheckBox.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(ActionEvent event)
-                {
-                    if (!pyramidCheckBox.isSelected())
-                    {
+                public void handle(ActionEvent event) {
+                    if (!pyramidCheckBox.isSelected()) {
                         pyramidTextField.setDisable(true);
-                    }
-                    else
-                    {
+                    } else {
                         pyramidTextField.setDisable(false);
                     }
                 }
@@ -360,26 +325,18 @@ public class SettingsUI extends UI
             HBox.setHgrow(confirmationTextField, Priority.ALWAYS);
             VBox.setMargin(confirmationHBox, new Insets(20, 20, 20, 20));
 
-            if (!confirmationCheckBox.isSelected())
-            {
+            if (!confirmationCheckBox.isSelected()) {
                 confirmationTextField.setDisable(true);
-            }
-            else
-            {
+            } else {
                 confirmationTextField.setDisable(false);
             }
 
-            confirmationCheckBox.setOnAction(new EventHandler<ActionEvent>()
-            {
+            confirmationCheckBox.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(ActionEvent event)
-                {
-                    if (!confirmationCheckBox.isSelected())
-                    {
+                public void handle(ActionEvent event) {
+                    if (!confirmationCheckBox.isSelected()) {
                         confirmationTextField.setDisable(true);
-                    }
-                    else
-                    {
+                    } else {
                         confirmationTextField.setDisable(false);
                     }
                 }
@@ -390,11 +347,9 @@ public class SettingsUI extends UI
             CheckBox fullHouseCheckBox = new CheckBox(language.getFullHouse());
             fullHouseCheckBox.setSelected(currentSettings.isFullHouseEnabled());
             fullHouseCheckBox.setDisable(diceSlider.getValue() != 5);
-            diceSlider.valueProperty().addListener(new ChangeListener<Number>()
-            {
+            diceSlider.valueProperty().addListener(new ChangeListener<Number>() {
                 @Override
-                public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
-                {
+                public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                     fullHouseCheckBox.setDisable(diceSlider.getValue() != 5);
                 }
             });
@@ -423,11 +378,9 @@ public class SettingsUI extends UI
             HBox buttonHBox = new HBox();
             buttonHBox.setAlignment(Pos.CENTER);
             Button saveSettingsButton = new Button(language.getSave());
-            saveSettingsButton.setOnAction(new EventHandler<ActionEvent>()
-            {
+            saveSettingsButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(ActionEvent event)
-                {
+                public void handle(ActionEvent event) {
                     currentSettings.setTotalPlayers((int) playerSlider.getValue());
                     currentSettings.setTotalDiceNumber((int) diceSlider.getValue());
 
@@ -464,53 +417,40 @@ public class SettingsUI extends UI
                     /*
                     global settings restart the current game, game settings do not
                      */
-                    if (currentSettings.getTotalNumberPlayersAndAI() > 0)
-                    {
-                        if (isGlobal)
-                        {
+                    if (currentSettings.getTotalNumberPlayersAndAI() > 0) {
+                        if (isGlobal) {
                             jsonHelper.saveSettings(globalSettings);
                             main.nextGame(globalSettings);
-                        }
-                        else
-                        {
+                        } else {
                             main.getGame().setSettings(currentSettings);
                         }
 
 
                         settingsStage.close();
-                    }
-                    else
-                    {
+                    } else {
                         Main.showAlert(null, "No players!");
                     }
                 }
             });
 
             Button cancelSettingsButton = new Button(language.getCancel());
-            cancelSettingsButton.setOnAction(new EventHandler<ActionEvent>()
-            {
+            cancelSettingsButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(ActionEvent event)
-                {
+                public void handle(ActionEvent event) {
                     settingsStage.close();
                 }
             });
 
             Button restoreDefaultsButton = new Button(language.getRestoreDefault());
-            restoreDefaultsButton.setOnAction(new EventHandler<ActionEvent>()
-            {
+            restoreDefaultsButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(ActionEvent event)
-                {
+                public void handle(ActionEvent event) {
                     Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Default settings loaded");
                     Settings tempSettings = jsonHelper.restoreSettings();
-                    if (isGlobal)
-                    {
+                    if (isGlobal) {
                         globalSettings = tempSettings;
                         main.nextGame(globalSettings);
-                    }
-                    else
-                    {
+                    } else {
                         main.getGame().setSettings(tempSettings);
                     }
                     settingsStage.close();
@@ -527,35 +467,25 @@ public class SettingsUI extends UI
             /*
             Makes scrolling in settings slightly faster
              */
-            scrollPane.vvalueProperty().addListener(new ChangeListener<Number>()
-            {
+            scrollPane.vvalueProperty().addListener(new ChangeListener<Number>() {
                 @Override
-                public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
-                {
+                public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                     double increment = 0.256;
 
-                    if (!selfTrigger)
-                    {
+                    if (!selfTrigger) {
                         //scroll down
-                        if (oldValue.doubleValue() < newValue.doubleValue())
-                        {
-                            if ((newValue.doubleValue() + increment) < (1.0 - increment))
-                            {
+                        if (oldValue.doubleValue() < newValue.doubleValue()) {
+                            if ((newValue.doubleValue() + increment) < (1.0 - increment)) {
                                 selfTrigger = true;
                                 scrollPane.setVvalue(newValue.doubleValue() + increment);
                             }
-                        }
-                        else
-                        {
-                            if ((newValue.doubleValue() - increment) > increment)
-                            {
+                        } else {
+                            if ((newValue.doubleValue() - increment) > increment) {
                                 selfTrigger = true;
                                 scrollPane.setVvalue(newValue.doubleValue() - increment);
                             }
                         }
-                    }
-                    else
-                    {
+                    } else {
                         selfTrigger = false;
                     }
                 }
@@ -574,38 +504,30 @@ public class SettingsUI extends UI
         settingsStage.showAndWait();
     }
 
-    private void restoreEasyAI(HBox chosenAIHBox, Settings currentSettings)
-    {
+    private void restoreEasyAI(HBox chosenAIHBox, Settings currentSettings) {
         restoreAICount(chosenAIHBox, currentSettings.getNumberEasyAI(), AIType.EASY);
     }
 
-    private void restoreNormalAI(HBox chosenAIHBox, Settings currentSettings)
-    {
+    private void restoreNormalAI(HBox chosenAIHBox, Settings currentSettings) {
         restoreAICount(chosenAIHBox, currentSettings.getNumberNormalAI(), AIType.NORMAL);
     }
 
-    private void restoreHardAI(HBox chosenAIHBox, Settings currentSettings)
-    {
+    private void restoreHardAI(HBox chosenAIHBox, Settings currentSettings) {
         restoreAICount(chosenAIHBox, currentSettings.getNumberHardAI(), AIType.HARD);
     }
 
-    private void restoreAI(HBox chosenAIHBox, Settings currentSettings)
-    {
+    private void restoreAI(HBox chosenAIHBox, Settings currentSettings) {
         restoreEasyAI(chosenAIHBox, currentSettings);
         restoreNormalAI(chosenAIHBox, currentSettings);
         restoreHardAI(chosenAIHBox, currentSettings);
     }
 
-    private void restoreAICount(HBox chosenAIHBox, int numberAI, AIType currentTypeRestore)
-    {
-        for (int i = 0; i < numberAI; i++)
-        {
+    private void restoreAICount(HBox chosenAIHBox, int numberAI, AIType currentTypeRestore) {
+        for (int i = 0; i < numberAI; i++) {
             AIButton aiButton = new AIButton(currentTypeRestore);
-            aiButton.setOnAction(new EventHandler<ActionEvent>()
-            {
+            aiButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(ActionEvent event)
-                {
+                public void handle(ActionEvent event) {
                     aiButton.nextType();
                 }
             });
@@ -613,39 +535,30 @@ public class SettingsUI extends UI
         }
     }
 
-    private int getNumberEasyAI(HBox chosenAIHBox)
-    {
+    private int getNumberEasyAI(HBox chosenAIHBox) {
         int number = 0;
-        for (Node node : chosenAIHBox.getChildren())
-        {
-            if (node.getId().equals(AIType.EASY.toString()))
-            {
+        for (Node node : chosenAIHBox.getChildren()) {
+            if (node.getId().equals(AIType.EASY.toString())) {
                 number++;
             }
         }
         return number;
     }
 
-    private int getNumberNormalAI(HBox chosenAIHBox)
-    {
+    private int getNumberNormalAI(HBox chosenAIHBox) {
         int number = 0;
-        for (Node node : chosenAIHBox.getChildren())
-        {
-            if (node.getId().equals(AIType.NORMAL.toString()))
-            {
+        for (Node node : chosenAIHBox.getChildren()) {
+            if (node.getId().equals(AIType.NORMAL.toString())) {
                 number++;
             }
         }
         return number;
     }
 
-    private int getNumberHardAI(HBox chosenAIHBox)
-    {
+    private int getNumberHardAI(HBox chosenAIHBox) {
         int number = 0;
-        for (Node node : chosenAIHBox.getChildren())
-        {
-            if (node.getId().equals(AIType.HARD.toString()))
-            {
+        for (Node node : chosenAIHBox.getChildren()) {
+            if (node.getId().equals(AIType.HARD.toString())) {
                 number++;
             }
         }

@@ -1,13 +1,13 @@
-package com.spaghettic0der.zehntausend;
+package com.maxwittig.zehntausend;
 
-import com.spaghettic0der.zehntausend.helper.Debug;
-import com.spaghettic0der.zehntausend.helper.JsonHelper;
-import com.spaghettic0der.zehntausend.extras.Language;
-import com.spaghettic0der.zehntausend.extras.Settings;
-import com.spaghettic0der.zehntausend.gamelogic.*;
-import com.spaghettic0der.zehntausend.ui.CustomListView;
-import com.spaghettic0der.zehntausend.ui.MenuUI;
-import com.spaghettic0der.zehntausend.ui.SettingsUI;
+import com.maxwittig.zehntausend.extras.Language;
+import com.maxwittig.zehntausend.extras.Settings;
+import com.maxwittig.zehntausend.gamelogic.*;
+import com.maxwittig.zehntausend.helper.Debug;
+import com.maxwittig.zehntausend.helper.JsonHelper;
+import com.maxwittig.zehntausend.ui.CustomListView;
+import com.maxwittig.zehntausend.ui.MenuUI;
+import com.maxwittig.zehntausend.ui.SettingsUI;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,17 +16,22 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Main extends Application
-{
+public class Main extends Application {
     public static final String VERSION_NUMBER = "1.0.0";
     public static Language language;
     private final int textButtonWidth = 150;
@@ -51,8 +56,7 @@ public class Main extends Application
     private Main main;
     private CustomListView<HBox> listView;
 
-    public Main()
-    {
+    public Main() {
         main = this;
         imageArrayList = new ArrayList<>();
 
@@ -69,8 +73,7 @@ public class Main extends Application
         initDiceImages();
     }
 
-    public static void main(String[] args) throws Exception
-    {
+    public static void main(String[] args) throws Exception {
         Application.launch(args);
     }
 
@@ -78,11 +81,11 @@ public class Main extends Application
      * shows game over dialog with
      * 1. place, 2. place and 3. place
      * or Win Alert
+     *
      * @param headerText
      * @param contentText
      */
-    public static void showAlert(String headerText, String contentText)
-    {
+    public static void showAlert(String headerText, String contentText) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(headerText);
         alert.setContentText(contentText);
@@ -93,10 +96,8 @@ public class Main extends Application
      * inits the dice images, so that they don't need to be loaded every time their accessed
      * dice images shown settings can be ajusted
      */
-    private void initDiceImages()
-    {
-        for (int i = 1; i <= 6; i++)
-        {
+    private void initDiceImages() {
+        for (int i = 1; i <= 6; i++) {
             Image image = new Image(getClass().getResourceAsStream("/images/" + i + ".png"));
             imageArrayList.add(image);
         }
@@ -106,15 +107,11 @@ public class Main extends Application
      * is called everytime a player pressed roll or next
      * refreshes labels and recreated whole ui
      */
-    public void updateUI()
-    {
-        if (game.getCurrentPlayer().isAI())
-        {
+    public void updateUI() {
+        if (game.getCurrentPlayer().isAI()) {
             remainingDiceHBox.setDisable(true);
             drawnDiceHBox.setDisable(true);
-        }
-        else
-        {
+        } else {
             remainingDiceHBox.setDisable(false);
             drawnDiceHBox.setDisable(false);
         }
@@ -127,14 +124,11 @@ public class Main extends Application
         scoreLabel.setText(language.getScore() + ": " + (Scoring.getScoreFromAllDices(game.getCurrentPlayer().getTurnArrayList(), game.getSettings(), true, true, game.getCurrentPlayer().getCurrentTurn().getCurrentRound())));
         scoreInRoundLabel.setText(language.getScoreInRound() + ": " + Scoring.getScoreFromAllDicesInRound(game.getCurrentPlayer().getCurrentTurn().getRoundArrayList(), false, game.getSettings()));
         if (currentPlayer.getCurrentTurn().getCurrentRound().getCurrentRoll()
-                .needsConfirmation(game.getSettings().getTotalDiceNumber())
-                && !currentPlayer.getCurrentTurn().isValid(game.getSettings())
-                && game.isValidState(State.ROLL))
-        {
+            .needsConfirmation(game.getSettings().getTotalDiceNumber())
+            && !currentPlayer.getCurrentTurn().isValid(game.getSettings())
+            && game.isValidState(State.ROLL)) {
             needsToBeConfirmedLabel.setText(language.getScoreNeedsToBeConfirmed());
-        }
-        else
-        {
+        } else {
             needsToBeConfirmedLabel.setText("");
         }
         listView.setHScrollBarEnabled(false);
@@ -145,43 +139,33 @@ public class Main extends Application
      * gets drawn dice buttons from current player and draws them on the screen again
      * is called everytime something in the ui changes
      */
-    private void createDrawnDiceButtons()
-    {
+    private void createDrawnDiceButtons() {
         final ArrayList<Dice> dices = game.getCurrentPlayer().getCurrentTurn().getCurrentRound().getDrawnDices();
 
-        for (int i = 0; i < dices.size(); i++)
-        {
+        for (int i = 0; i < dices.size(); i++) {
             Dice currentDice = dices.get(i);
             Button diceButton = new Button();
             diceButton.setPrefWidth(diceButtonSize);
             diceButton.setPrefHeight(diceButtonSize);
             HBox.setMargin(diceButton, new Insets(0, 2, 0, 2));
             diceButton.setFont(new Font(buttonFontSize));
-            if (game.getSettings().isDiceImageShown())
-            {
+            if (game.getSettings().isDiceImageShown()) {
                 setDiceImage(diceButton, currentDice.getDiceNumber());
-            }
-            else
-            {
+            } else {
                 diceButton.setText("" + dices.get(i).getDiceNumber());
             }
 
             //checks if dices are in last roll -> if so you can still move them back --> yellowgreen color
-            if (game.getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().contains(dices.get(i)))
-            {
+            if (game.getCurrentPlayer().getCurrentTurn().getCurrentRound().getCurrentRoll().getDrawnDices().contains(dices.get(i))) {
                 diceButton.setStyle("-fx-background-color: #d3ffd5; -fx-border-color: black");
-            }
-            else
-            {
+            } else {
                 diceButton.setStyle("-fx-background-color: #ffe9e6; -fx-border-color: black");
             }
 
             diceButton.setId("" + i);
-            diceButton.setOnAction(new EventHandler<ActionEvent>()
-            {
+            diceButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(ActionEvent event)
-                {
+                public void handle(ActionEvent event) {
                     game.moveToRemainingDices(currentDice);
                     updateUI();
                 }
@@ -193,11 +177,11 @@ public class Main extends Application
     /**
      * corresponds to show dice images settings
      * is called by both createRemaining and createDrawnDices, if setting is enabled
+     *
      * @param diceButton
      * @param diceNumber
      */
-    private void setDiceImage(Button diceButton, int diceNumber)
-    {
+    private void setDiceImage(Button diceButton, int diceNumber) {
         ImageView imageView = new ImageView(imageArrayList.get(diceNumber - 1));
         imageView.setFitWidth(diceButtonSize - 20);
         imageView.setFitHeight(diceButtonSize - 20);
@@ -208,11 +192,9 @@ public class Main extends Application
      * gets RemainingDiceButtons from current player and draws them on the screen again
      * is called everytime something in the ui changes
      */
-    private void createRemainingDiceButtons()
-    {
+    private void createRemainingDiceButtons() {
         final ArrayList<Dice> dices = game.getCurrentPlayer().getRemainingDices();
-        for (int i = 0; i < game.getCurrentPlayer().getRemainingDices().size(); i++)
-        {
+        for (int i = 0; i < game.getCurrentPlayer().getRemainingDices().size(); i++) {
             Dice currentDice = dices.get(i);
             Button diceButton = new Button();
             diceButton.setPrefWidth(diceButtonSize);
@@ -221,19 +203,14 @@ public class Main extends Application
             diceButton.setStyle("-fx-background-color: aliceblue; -fx-border-color: black");
             diceButton.setFont(new Font(buttonFontSize));
             diceButton.setId("" + i);
-            if (game.getSettings().isDiceImageShown())
-            {
+            if (game.getSettings().isDiceImageShown()) {
                 setDiceImage(diceButton, currentDice.getDiceNumber());
-            }
-            else
-            {
+            } else {
                 diceButton.setText("" + game.getCurrentPlayer().getRemainingDices().get(i).getDiceNumber());
             }
-            diceButton.setOnAction(new EventHandler<ActionEvent>()
-            {
+            diceButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(ActionEvent event)
-                {
+                public void handle(ActionEvent event) {
                     game.moveToDrawnDices(currentDice);
                     updateUI();
                 }
@@ -244,15 +221,14 @@ public class Main extends Application
 
     /**
      * is called everytime the settings stage is opened via the menuBar
+     *
      * @param primaryStage
      */
-    public void initSettingsStage(Stage primaryStage)
-    {
+    public void initSettingsStage(Stage primaryStage) {
         new SettingsUI(globalSettings, language, this, jsonHelper, primaryStage).show();
     }
 
-    public void nextGame(Settings settings)
-    {
+    public void nextGame(Settings settings) {
         //end old game, so that ai bots stop playing and instance can be destroyed
         game.stopAIThreads();
         Debug.write(Debug.getClassName(this) + " - " + Debug.getLineNumber() + " Next game starting...");
@@ -264,10 +240,10 @@ public class Main extends Application
     /**
      * inits menuBar on top
      * called by initUI();
+     *
      * @param primaryStage
      */
-    private void initMenu(Stage primaryStage)
-    {
+    private void initMenu(Stage primaryStage) {
         new MenuUI(globalSettings, language, main, jsonHelper, primaryStage, root).show();
     }
 
@@ -275,19 +251,16 @@ public class Main extends Application
      * clears score list and re-created players
      * is called when game is loaded from save or when new game is pressed
      */
-    private void clearScoreListAddPlayers()
-    {
+    private void clearScoreListAddPlayers() {
         observableList.clear();
         addPlayersToListView();
     }
 
-    public Game getGame()
-    {
+    public Game getGame() {
         return game;
     }
 
-    public void setGame(Game game)
-    {
+    public void setGame(Game game) {
         this.game = game;
     }
 
@@ -295,12 +268,10 @@ public class Main extends Application
      * called by addPlayersToListView
      * readdeds all the player Labels in the listview, which are inside a HBox
      */
-    private void addPlayersToListView()
-    {
+    private void addPlayersToListView() {
         HBox hBox = new HBox();
         hBox.setPrefWidth(globalSettings.getWidth() - 20);
-        for (Player player : game.getPlayers())
-        {
+        for (Player player : game.getPlayers()) {
             Label label = new Label(player.getPlayerName());
             label.setAlignment(Pos.CENTER);
             label.setPrefWidth(hBox.getPrefWidth() / game.getPlayers().size());
@@ -314,48 +285,36 @@ public class Main extends Application
     /**
      * recreated the whole listView, incase the player loads a saved game
      */
-    public void rebuildListView()
-    {
+    public void rebuildListView() {
         clearScoreListAddPlayers();
 
-        for (int i = 0; i < game.getLongestTurnArrayList().size() - 1; i++)
-        {
+        for (int i = 0; i < game.getLongestTurnArrayList().size() - 1; i++) {
             createEmptyLabelsInListView();
         }
 
         HashMap<Integer, Integer> playerScoreHashMap = new HashMap<>();
-        for (int i = 1; i < observableList.size(); i++)
-        {
+        for (int i = 1; i < observableList.size(); i++) {
             HBox currentHBox = observableList.get(i);
-            for (int j = 0; j < game.getPlayers().size(); j++)
-            {
-                if (playerScoreHashMap.get(j) == null)
-                {
+            for (int j = 0; j < game.getPlayers().size(); j++) {
+                if (playerScoreHashMap.get(j) == null) {
                     playerScoreHashMap.put(j, 0);
                 }
 
                 ArrayList<Turn> turnArrayList = game.getPlayers().get(j).getTurnArrayList();
-                if (turnArrayList != null && turnArrayList.size() > i)
-                {
+                if (turnArrayList != null && turnArrayList.size() > i) {
                     Turn currentTurn = turnArrayList.get(i - 1);
-                    if (currentTurn != null)
-                    {
+                    if (currentTurn != null) {
                         ArrayList<Round> roundArrayList = currentTurn.getRoundArrayList();
-                        if (roundArrayList != null)
-                        {
+                        if (roundArrayList != null) {
                             if (currentTurn.isValid(game.getSettings()))
                                 playerScoreHashMap.put(j, playerScoreHashMap.get(j) + Scoring.getScoreFromAllDicesInRound(roundArrayList, true, globalSettings));
 
                             Label label = (Label) currentHBox.getChildren().get(j);
-                            if (label != null)
-                            {
-                                if (playerScoreHashMap.get(j) >= game.getSettings().getMinScoreRequiredToWin())
-                                {
+                            if (label != null) {
+                                if (playerScoreHashMap.get(j) >= game.getSettings().getMinScoreRequiredToWin()) {
                                     label.setText(language.getWonWith() + " " + playerScoreHashMap.get(j));
                                     label.setStyle("-fx-underline: true");
-                                }
-                                else
-                                {
+                                } else {
                                     label.setText("" + playerScoreHashMap.get(j));
                                 }
                             }
@@ -372,17 +331,13 @@ public class Main extends Application
      * is called by updateScoreOfPlayersInListView
      * gets the current Hbox and sets the label of the player with it's score
      */
-    private void applyScoreToPlayersInListView()
-    {
+    private void applyScoreToPlayersInListView() {
         HBox hBox = observableList.get(observableList.size() - 1);
         Label label = (Label) hBox.getChildren().get(game.getCurrentPlayer().getPlayerNumber());
-        if (game.getCurrentPlayer().hasWon())
-        {
+        if (game.getCurrentPlayer().hasWon()) {
             label.setText(language.getWonWith() + " " + game.getCurrentPlayer().getScore());
             label.setStyle("-fx-underline: true");
-        }
-        else
-        {
+        } else {
             label.setText("" + game.getCurrentPlayer().getScore());
         }
     }
@@ -391,22 +346,15 @@ public class Main extends Application
      * if there a enough HBoxes in the observable list it just applys the score of the player
      * otherwise it calles createEmptyLabelsInListView() and applies the score after that
      */
-    public void updateScoreOfPlayersInListView()
-    {
-        if (observableList.size() > 1)
-        {
-            if (game.getCurrentPlayer().getTurnArrayList().size() >= observableList.size())
-            {
+    public void updateScoreOfPlayersInListView() {
+        if (observableList.size() > 1) {
+            if (game.getCurrentPlayer().getTurnArrayList().size() >= observableList.size()) {
                 createEmptyLabelsInListView();
                 applyScoreToPlayersInListView();
-            }
-            else
-            {
+            } else {
                 applyScoreToPlayersInListView();
             }
-        }
-        else
-        {
+        } else {
             createEmptyLabelsInListView();
             applyScoreToPlayersInListView();
         }
@@ -415,12 +363,10 @@ public class Main extends Application
     /**
      * creates a new HBox and puts empty labels in for each player
      */
-    private void createEmptyLabelsInListView()
-    {
+    private void createEmptyLabelsInListView() {
         HBox hBox = new HBox();
         hBox.setPrefWidth(globalSettings.getWidth() - 20);
-        for (int i = 0; i < game.getPlayers().size(); i++)
-        {
+        for (int i = 0; i < game.getPlayers().size(); i++) {
             Label label = new Label("");
             label.setAlignment(Pos.CENTER);
             label.setPrefWidth(hBox.getPrefWidth() / game.getPlayers().size());
@@ -434,8 +380,7 @@ public class Main extends Application
      * is called by initUI and initialized the listView
      * calls addPlayersToListView
      */
-    private void initListView()
-    {
+    private void initListView() {
         observableList = FXCollections.observableArrayList();
         listView = new CustomListView<>(observableList);
         listView.setSelectable(false);
@@ -448,10 +393,10 @@ public class Main extends Application
 
     /**
      * builds whole ui and calls subfunctions e.g. initMenu, initListView
+     *
      * @param primaryStage stage
      */
-    private void initUI(Stage primaryStage)
-    {
+    private void initUI(Stage primaryStage) {
         root = new BorderPane();
         centerVBox = new VBox();
         root.setCenter(centerVBox);
@@ -466,18 +411,13 @@ public class Main extends Application
         rollButton.setPrefWidth(textButtonWidth);
         rollButton.setPrefHeight(textButtonHeight);
         rollButton.setFont(new Font(buttonFontSize));
-        rollButton.setOnAction(new EventHandler<ActionEvent>()
-        {
+        rollButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
-                if (game.isValidState(State.ROLL))
-                {
+            public void handle(ActionEvent event) {
+                if (game.isValidState(State.ROLL)) {
                     game.getCurrentPlayer().rollDice();
                     updateUI();
-                }
-                else
-                {
+                } else {
                     /**
                      * if player pressed the roll button and move is not possible
                      * alert is shown to inform the user of that
@@ -491,19 +431,14 @@ public class Main extends Application
         nextButton.setPrefHeight(textButtonHeight);
         nextButton.setPrefWidth(textButtonWidth);
         nextButton.setFont(new Font(buttonFontSize));
-        nextButton.setOnAction(new EventHandler<ActionEvent>()
-        {
+        nextButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
-                if (game.isValidState(State.NEXT))
-                {
+            public void handle(ActionEvent event) {
+                if (game.isValidState(State.NEXT)) {
                     updateScoreOfPlayersInListView();
                     game.nextPlayer();
                     updateUI();
-                }
-                else
-                {
+                } else {
                     /**
                      * if player pressed the next button and move is not possible
                      * alert is shown to inform the user of that
@@ -550,19 +485,18 @@ public class Main extends Application
 
     }
 
-    public Label getScoreLabel()
-    {
+    public Label getScoreLabel() {
         return scoreLabel;
     }
 
     /**
      * starts the game
+     *
      * @param primaryStage
      * @throws Exception
      */
     @Override
-    public void start(Stage primaryStage) throws Exception
-    {
+    public void start(Stage primaryStage) throws Exception {
         game = new Game(globalSettings, this);
         initUI(primaryStage);
     }

@@ -1,10 +1,9 @@
-package com.spaghettic0der.zehntausend.extras;
+package com.maxwittig.zehntausend.extras;
 
 
-import com.spaghettic0der.zehntausend.ai.AIType;
+import com.maxwittig.zehntausend.ai.AIType;
 
-public class Settings
-{
+public class Settings {
     private String settingsName = "";
     //oracle bug workaround
     private int minWidth = 800;
@@ -46,268 +45,215 @@ public class Settings
 
     private int aiDelay = 1500;
 
-    public int getTotalNumberPlayersAndAI()
-    {
+    public int getTotalNumberPlayersAndAI() {
         return numberEasyAI + numberNormalAI + numberHardAI + totalPlayers;
     }
 
-    public int getAiDelay()
-    {
+    public int getAiDelay() {
         return aiDelay;
     }
 
-    public void setAiDelay(int aiDelay)
-    {
+    public void setAiDelay(int aiDelay) {
         this.aiDelay = aiDelay;
     }
 
-    public int getNumberEasyAI()
-    {
+    public int getNumberEasyAI() {
         return numberEasyAI;
     }
 
-    public void setNumberEasyAI(int numberEasyAI)
-    {
+    public void setNumberEasyAI(int numberEasyAI) {
         this.numberEasyAI = numberEasyAI;
     }
 
-    public int getNumberNormalAI()
-    {
+    public int getNumberNormalAI() {
         return numberNormalAI;
     }
 
-    public void setNumberNormalAI(int numberNormalAI)
-    {
+    public void setNumberNormalAI(int numberNormalAI) {
         this.numberNormalAI = numberNormalAI;
     }
 
-    public int getNumberHardAI()
-    {
+    public int getNumberHardAI() {
         return numberHardAI;
     }
 
-    public void setNumberHardAI(int numberHardAI)
-    {
+    public void setNumberHardAI(int numberHardAI) {
         this.numberHardAI = numberHardAI;
     }
 
-    public String getSelectedLanguage()
-    {
+    public String getSelectedLanguage() {
         return selectedLanguage;
     }
 
-    public void setSelectedLanguage(String selectedLanguage)
-    {
+    public void setSelectedLanguage(String selectedLanguage) {
         this.selectedLanguage = selectedLanguage;
     }
 
-    public int getMinWidth()
-    {
+    public int getMinWidth() {
         return minWidth;
     }
 
-    public int getMinHeight()
-    {
+    public int getMinHeight() {
         return minHeight;
     }
 
-    public boolean isDiceImageShown()
-    {
+    public boolean isDiceImageShown() {
         return diceImageShown;
     }
 
-    public void setDiceImageShown(boolean diceImageShown)
-    {
+    public void setDiceImageShown(boolean diceImageShown) {
         this.diceImageShown = diceImageShown;
     }
 
-    public int getWidth()
-    {
+    public int getWidth() {
         return width;
     }
 
-    public void setWidth(int width)
-    {
+    public void setWidth(int width) {
         this.width = width;
     }
 
-    public int getHeight()
-    {
+    public int getHeight() {
         return height;
     }
 
-    public void setHeight(int height)
-    {
+    public void setHeight(int height) {
         this.height = height;
     }
 
-    public int getTotalDiceNumber()
-    {
+    public int getTotalDiceNumber() {
         return totalDiceNumber;
     }
 
-    public void setTotalDiceNumber(int totalDiceNumber)
-    {
+    public void setTotalDiceNumber(int totalDiceNumber) {
         this.totalDiceNumber = totalDiceNumber;
     }
 
-    public int getTotalPlayers()
-    {
+    public int getTotalPlayers() {
         return totalPlayers;
     }
 
-    public void setTotalPlayers(int totalPlayers)
-    {
+    public void setTotalPlayers(int totalPlayers) {
         this.totalPlayers = totalPlayers;
     }
 
-    public boolean isStreetEnabled()
-    {
+    public boolean isStreetEnabled() {
         return streetEnabled;
     }
 
-    public void setStreetEnabled(boolean streetEnabled)
-    {
+    public void setStreetEnabled(boolean streetEnabled) {
         this.streetEnabled = streetEnabled;
     }
 
-    public int getScoreStreet()
-    {
+    public int getScoreStreet() {
         return scoreStreet;
     }
 
-    public void setScoreStreet(int scoreStreet)
-    {
+    public void setScoreStreet(int scoreStreet) {
         this.scoreStreet = scoreStreet;
     }
 
-    public int getMinScoreRequiredToSaveInRound()
-    {
+    public int getMinScoreRequiredToSaveInRound() {
         return minScoreRequiredToSaveInRound;
     }
 
-    public void setMinScoreRequiredToSaveInRound(int minScoreRequiredToSaveInRound)
-    {
+    public void setMinScoreRequiredToSaveInRound(int minScoreRequiredToSaveInRound) {
         this.minScoreRequiredToSaveInRound = minScoreRequiredToSaveInRound;
     }
 
-    public int getMinScoreRequiredToWin()
-    {
+    public int getMinScoreRequiredToWin() {
         return minScoreRequiredToWin;
     }
 
-    public void setMinScoreRequiredToWin(int minScoreRequiredToWin)
-    {
+    public void setMinScoreRequiredToWin(int minScoreRequiredToWin) {
         this.minScoreRequiredToWin = minScoreRequiredToWin;
     }
 
-    public boolean isThreeXTwoEnabled()
-    {
+    public boolean isThreeXTwoEnabled() {
         return threeXTwoEnabled;
     }
 
-    public void setThreeXTwoEnabled(boolean threeXTwoEnabled)
-    {
+    public void setThreeXTwoEnabled(boolean threeXTwoEnabled) {
         this.threeXTwoEnabled = threeXTwoEnabled;
     }
 
-    public int getScoreThreeXTwo()
-    {
+    public int getScoreThreeXTwo() {
         return scoreThreeXTwo;
     }
 
-    public void setScoreThreeXTwo(int scoreThreeXTwo)
-    {
+    public void setScoreThreeXTwo(int scoreThreeXTwo) {
         this.scoreThreeXTwo = scoreThreeXTwo;
     }
 
-    public boolean isSixDicesInARowEnabled()
-    {
+    public boolean isSixDicesInARowEnabled() {
         return sixDicesInARowEnabled;
     }
 
-    public void setSixDicesInARowEnabled(boolean sixDicesInARowEnabled)
-    {
+    public void setSixDicesInARowEnabled(boolean sixDicesInARowEnabled) {
         this.sixDicesInARowEnabled = sixDicesInARowEnabled;
     }
 
-    public int getScoreSixDicesInARow()
-    {
+    public int getScoreSixDicesInARow() {
         return scoreSixDicesInARow;
     }
 
-    public void setScoreSixDicesInARow(int scoreSixDicesInARow)
-    {
+    public void setScoreSixDicesInARow(int scoreSixDicesInARow) {
         this.scoreSixDicesInARow = scoreSixDicesInARow;
     }
 
-    public boolean isGameOverAfterFirstPlayerWon()
-    {
+    public boolean isGameOverAfterFirstPlayerWon() {
         return gameOverAfterFirstPlayerWon;
     }
 
-    public void setGameOverAfterFirstPlayerWon(boolean gameOverAfterFirstPlayerWon)
-    {
+    public void setGameOverAfterFirstPlayerWon(boolean gameOverAfterFirstPlayerWon) {
         this.gameOverAfterFirstPlayerWon = gameOverAfterFirstPlayerWon;
     }
 
-    public String getSettingsName()
-    {
+    public String getSettingsName() {
         return settingsName;
     }
 
-    public void setSettingsName(String settingsName)
-    {
+    public void setSettingsName(String settingsName) {
         this.settingsName = settingsName;
     }
 
-    public boolean isFullHouseEnabled()
-    {
+    public boolean isFullHouseEnabled() {
         return fullHouseEnabled;
     }
 
-    public void setFullHouseEnabled(boolean fullHouseEnabled)
-    {
+    public void setFullHouseEnabled(boolean fullHouseEnabled) {
         this.fullHouseEnabled = fullHouseEnabled;
     }
 
-    public boolean isPyramidEnabled()
-    {
+    public boolean isPyramidEnabled() {
         return pyramidEnabled;
     }
 
-    public void setPyramidEnabled(boolean pyramidEnabled)
-    {
+    public void setPyramidEnabled(boolean pyramidEnabled) {
         this.pyramidEnabled = pyramidEnabled;
     }
 
-    public int getScorePyramid()
-    {
+    public int getScorePyramid() {
         return scorePyramid;
     }
 
-    public void setScorePyramid(int scorePyramid)
-    {
+    public void setScorePyramid(int scorePyramid) {
         this.scorePyramid = scorePyramid;
     }
 
-    public boolean isClearAllNeedsConfirmationInNextRound()
-    {
+    public boolean isClearAllNeedsConfirmationInNextRound() {
         return clearAllNeedsConfirmationInNextRound;
     }
 
-    public void setClearAllNeedsConfirmationInNextRound(boolean clearAllNeedsConfirmationInNextRound)
-    {
+    public void setClearAllNeedsConfirmationInNextRound(boolean clearAllNeedsConfirmationInNextRound) {
         this.clearAllNeedsConfirmationInNextRound = clearAllNeedsConfirmationInNextRound;
     }
 
-    public int getMinScoreToConfirm()
-    {
+    public int getMinScoreToConfirm() {
         return minScoreToConfirm;
     }
 
-    public void setMinScoreToConfirm(int minScoreToConfirm)
-    {
+    public void setMinScoreToConfirm(int minScoreToConfirm) {
         this.minScoreToConfirm = minScoreToConfirm;
     }
 
